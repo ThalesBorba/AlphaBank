@@ -1,10 +1,11 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.IdTypeEnum;
+
 public class PersonalIdentity {
 
     private String id;
-    //todo enum
-    private String idType;
+    private IdTypeEnum idType;
     private String publisher;
     private String publisherCountry;
 

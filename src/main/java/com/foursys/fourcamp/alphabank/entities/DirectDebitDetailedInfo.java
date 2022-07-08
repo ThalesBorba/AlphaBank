@@ -1,5 +1,7 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -12,8 +14,7 @@ public class DirectDebitDetailedInfo {
     private String accountId;
     private String productType;
     private String productName;
-    //todo enum?
-    private String status;
+    private StatusEnum status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     private Amount amount;

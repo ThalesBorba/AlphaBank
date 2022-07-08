@@ -1,5 +1,5 @@
 package com.foursys.fourcamp.alphabank.enums;
 
-public enum IdType {
+public enum IdTypeEnum {
     NOTHING, IDCARD, PASSPORT, OTHER
 }

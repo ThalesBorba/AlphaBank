@@ -1,6 +1,6 @@
 package com.foursys.fourcamp.alphabank.enums;
 
-public enum Language {
+public enum OurShareEnum {
 
-    EN, EL
+    OUR, SHARE
 }

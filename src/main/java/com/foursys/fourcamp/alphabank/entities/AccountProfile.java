@@ -1,5 +1,7 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -9,8 +11,7 @@ public class AccountProfile {
     private String accountId;
     @Size(min = 1, max = 40)
     private String accountCode;
-    //todo Enum
-    private String productIdentifier;
+    private ProductIdentifierEnum productIdentifier;
     @Pattern(regexp = "^[A-Z]{3,3}$")
     private String currency;
     @Size(min = 1, max = 50)

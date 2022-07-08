@@ -1,8 +1,9 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+
 public class ProductIdentifier {
 
     private String accountCode;
-    //todo Enum?
-    private String productIdentifier;
+    private ProductIdentifierEnum productIdentifier;
 }

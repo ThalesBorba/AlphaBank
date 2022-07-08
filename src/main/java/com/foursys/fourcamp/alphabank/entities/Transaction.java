@@ -1,5 +1,8 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+
 import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,11 +16,9 @@ public class Transaction {
     private String transactionId;
     @Size(min = 1, max = 40)
     private String accountId;
-    //todo Enum?
-    private String productIdentifier;
+    private ProductIdentifierEnum productIdentifier;
     private Amount amount;
-    //todo Enum
-    private String creditDebitIndicator;
+    private CreditDebitIndicatorEnum creditDebitIndicator;
     @NotBlank
     @Column(unique = true)
     private String OriginatorAccount;

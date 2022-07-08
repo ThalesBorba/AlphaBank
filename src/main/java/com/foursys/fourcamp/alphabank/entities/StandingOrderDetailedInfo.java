@@ -1,5 +1,7 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -10,8 +12,7 @@ public class StandingOrderDetailedInfo {
     private String name;
     //todo relacionamento
     private String accountId;
-    //todo Enum?
-    private String status;
+    private StatusEnum status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,11 +1,12 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+
 import javax.validation.constraints.Size;
 
 public class CreditorAccount {
 
-    //todo enum?
-    private String productIdentifier;
+    private ProductIdentifierEnum productIdentifier;
     @Size(min = 1, max = 34)
     private String identification;
     @Size(min = 1, max = 70)

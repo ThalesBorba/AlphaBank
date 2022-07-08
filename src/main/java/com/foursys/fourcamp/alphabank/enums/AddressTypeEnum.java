@@ -1,6 +1,6 @@
 package com.foursys.fourcamp.alphabank.enums;
 
-public enum AdressTypeEnum {
+public enum AddressTypeEnum {
 
     HOME, WORK
 }

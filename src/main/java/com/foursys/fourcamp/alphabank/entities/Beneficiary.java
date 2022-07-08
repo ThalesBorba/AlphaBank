@@ -1,5 +1,9 @@
 package com.foursys.fourcamp.alphabank.entities;
 
+import com.foursys.fourcamp.alphabank.enums.CustomerTypeEnum;
+import com.foursys.fourcamp.alphabank.enums.GenderEnum;
+import com.foursys.fourcamp.alphabank.enums.LanguageEnum;
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -8,8 +12,7 @@ import java.util.List;
 public class Beneficiary {
 
     private String customerNumber;
-    //todo enum?
-    private String customerType;
+    private CustomerTypeEnum customerType;
     private String companyName;
     private String companyTitle;
     private String lastName;
@@ -17,11 +20,9 @@ public class Beneficiary {
     private String fatherName;
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthDate;
-    //todo enum?
-    private String language;
+    private LanguageEnum language;
     private String nationality;
-    //todo enum?
-    private String gender;
+    private GenderEnum gender;
     private TaxInformation taxInformation;
     //Identity é uma classe que já existe
     private PersonalIdentity personalIdentity;
