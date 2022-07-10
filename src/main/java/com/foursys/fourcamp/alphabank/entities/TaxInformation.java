@@ -1,6 +1,8 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-public class TaxInformation {
+import java.io.Serializable;
+
+public class TaxInformation implements Serializable {
 
     private String vat;
     private String taxOffice;

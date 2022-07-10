@@ -2,7 +2,9 @@ package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.IdTypeEnum;
 
-public class PersonalIdentity {
+import java.io.Serializable;
+
+public class PersonalIdentity implements Serializable {
 
     private String id;
     private IdTypeEnum idType;

@@ -2,7 +2,9 @@ package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.AddressTypeEnum;
 
-public class Adress {
+import java.io.Serializable;
+
+public class Adress implements Serializable {
 
     private AddressTypeEnum adressType;
     private String street;

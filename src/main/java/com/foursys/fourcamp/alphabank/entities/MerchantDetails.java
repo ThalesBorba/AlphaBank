@@ -1,8 +1,9 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class MerchantDetails {
+public class MerchantDetails implements Serializable {
 
     @Size(min = 1, max = 350)
     private String merchantName;

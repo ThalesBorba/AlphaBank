@@ -4,13 +4,15 @@ import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Date;
 
-public class DirectDebitDetailedInfo {
+public class DirectDebitDetailedInfo implements Serializable {
 
     private String directDebitId;
     private String name;
-    //todo relacionamento
+    @NotEmpty(message = "Campo obrigatório")
     private String accountId;
     private String productType;
     private String productName;

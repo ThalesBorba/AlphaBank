@@ -6,12 +6,16 @@ import com.foursys.fourcamp.alphabank.enums.LanguageEnum;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Beneficiary {
+public class Beneficiary implements Serializable {
 
+    @NotEmpty(message = "Campo obrigatório")
     private String customerNumber;
+    @NotEmpty(message = "Campo obrigatório")
     private CustomerTypeEnum customerType;
     private String companyName;
     private String companyTitle;

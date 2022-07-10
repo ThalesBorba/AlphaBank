@@ -4,27 +4,36 @@ import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements Serializable {
 
+    @Id
     @Size(min = 1, max = 40)
     private String transactionId;
+    @NotEmpty(message = "Campo obrigatório")
     @Size(min = 1, max = 40)
     private String accountId;
     private ProductIdentifierEnum productIdentifier;
+    @NotEmpty(message = "Campo obrigatório")
     private Amount amount;
+    @NotEmpty(message = "Campo obrigatório")
     private CreditDebitIndicatorEnum creditDebitIndicator;
-    @NotBlank
     @Column(unique = true)
     private String OriginatorAccount;
-    @NotBlank
+    @NotEmpty(message = "Campo obrigatório")
+    @Column(unique = true)
+    private String endToEndIdentification;
+    @NotEmpty(message = "Campo obrigatório")
     @Column(unique = true)
     private String InstructionIdentification;
+    @NotEmpty(message = "Campo obrigatório")
     @Temporal(TemporalType.TIMESTAMP)
     private Date bookingDateTime;
     @Temporal(TemporalType.TIMESTAMP)
