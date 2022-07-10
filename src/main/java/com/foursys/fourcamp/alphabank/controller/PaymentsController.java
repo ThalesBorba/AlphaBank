@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/payments/transfers")
 public class PaymentsController {
 
     @Autowired
@@ -17,74 +17,85 @@ public class PaymentsController {
         this.paymentService = paymentService;
     }
 /*
-    @PostMapping("/payments/transfers/domestic")
+    @PostMapping("/domestic")
     public ResponseEntity<Object> createTransferIntent(@RequestBody @Valid class, @PathVariable String xIdempotencyKey,
             String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
             String xAbLang, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(method));
     }
 
-    @GetMapping("/payments/transfers/domestic/{transfer-request-id}")
+    @GetMapping("/domestic/{transfer-request-id}")
     public ResponseEntity<Object> returnTransferRequest(@PathVariable String tranferRequestId, String xAbBankId, String
             xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String
             ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @DeleteMapping("payments/transfers/domestic/{transfer-request-id}")
+    @DeleteMapping("/domestic/{transfer-request-id}")
     public ResponseEntity<Object> deleteTransferRequest(@PathVariable String tranferRequestId, String xAbBankId, String
             xAbLang, String authorization, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(method));
     }
 
-    @PostMapping("/payments/transfers/domestic/submissions")
+    @PostMapping("/domestic/submissions")
     public ResponseEntity<Object> createTransferSubmission(@RequestBody @Valid class, @PathVariable String xAbBankId,
             String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization, String
                                                                    ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(method));
     }
 
-    @GetMapping("/payments/transfers/domestic/submissions/{transfer-submission-id}")
-    public ResponseEntity<Object> returnTransferSubmission(@PathVariable String tranferSubmissionId, String xAbBankId, String
-            xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization, String
-                                                         ocpApimSubscriptionKey){
+    @GetMapping("/domestic/submissions/{transfer-submission-id}")
+    public ResponseEntity<Object> returnTransferSubmission(@PathVariable String tranferSubmissionId, String xAbBankId,
+    String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @PostMapping("payments/transfers/internacional")
+    @PostMapping("/internacional")
     public ResponseEntity<Object> createInternationalTransferIntent(@RequestBody @Valid class, @PathVariable String
            xIdempotencyKey, String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId,
            String authorization, String xAbLang, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(method));
     }
 
-    @GetMapping("payments/transfers/internacional/{transfer-request-id}")
+    @GetMapping("/internacional/{transfer-request-id}")
     public ResponseEntity<Object> returnInternationalTransferRequest(@PathVariable String tranferRequestId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String
             authorization, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @DeleteMapping("payments/transfers/internacional/{transfer-request-id}")
+    @DeleteMapping("/internacional/{transfer-request-id}")
     public ResponseEntity<Object> deleteInternationalTransferRequest(@PathVariable String tranferRequestId, String
             xAbBankId, String xAbLang, String authorization, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(method));
     }
 
-    @PostMapping("payments/transfers/internacional/submissions")
+    @PostMapping("/internacional/submissions")
     public ResponseEntity<Object> createInternationalTransferSubmission(@RequestBody @Valid class, @PathVariable
     String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
                                                                     String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(method));
     }
 
-    @GetMapping("payments/transfers/internacional/submissions/{transfer-submission-id}")
+    @GetMapping("/internacional/submissions/{transfer-submission-id}")
     public ResponseEntity<Object> returnInternationalTransferSubmission(@PathVariable String tranferSubmissionId,
             String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String
             authorization, String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @GetMapping("payments/transfers/history/{account-id}")
+    @GetMapping("/history/{account-id}")
     public ResponseEntity<Object> returnTransfersByAccount(@PathVariable String accountId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
                                                                         String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @GetMapping("payments/transfers/history")
+    @GetMapping("/history")
     public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String fromDate, String toDate, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
                                                            String ocpApimSubscriptionKey){
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
     */
 }
