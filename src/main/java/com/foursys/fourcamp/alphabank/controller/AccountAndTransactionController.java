@@ -75,6 +75,15 @@ public class AccountAndTransactionController {
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllDirectDebitByAccount(accountId)));
     }
+
+    @GetMapping("/accounts/{account-id}/transactions")
+    public ResponseEntity<Object> returnAccountTransactions(@PathVariable String accountId, String fromDate, String
+            toDate, String xAbLocator, String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang,
+            String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
+                returnAllTransactionsByAccount(accountId)));
+    }
+
 /*
 
     @GetMapping("/account/details/cards")
@@ -124,12 +133,7 @@ public class AccountAndTransactionController {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    @GetMapping("/accounts/{account-id}/transactions")
-    public ResponseEntity<Object> returnAccountTransactions(@PathVariable String accountId, String fromDate, String
-            toDate, String xAbLocator, String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang,
-            String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
+
 
     */
 

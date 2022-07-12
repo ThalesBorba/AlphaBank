@@ -4,10 +4,7 @@ import com.foursys.fourcamp.alphabank.dtos.response.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
-import com.foursys.fourcamp.alphabank.repositories.AccountRepository;
-import com.foursys.fourcamp.alphabank.repositories.BeneficiariesRepository;
-import com.foursys.fourcamp.alphabank.repositories.DirectDebitDetailedInfoRepository;
-import com.foursys.fourcamp.alphabank.repositories.StandingOrderRepository;
+import com.foursys.fourcamp.alphabank.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +23,8 @@ public class AccountAndTransactionService {
     private BeneficiariesRepository beneficiariesRepository;
     @Autowired
     private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
+    @Autowired
+    private TransactionsRepository transactionsRepository;
 
     private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
             INSTANCE;
@@ -56,4 +55,12 @@ public class AccountAndTransactionService {
         return ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto).toList();
 
     }
+
+    public List<Transaction> returnAllTransactionsByAccount(String accountId) {
+        List<Transaction> transactionsToFilter = transactionsRepository.findAll();
+        Predicate<Transaction> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
+        return transactionsToFilter.stream().filter(belongsToThisAccount).toList();
+    }
+
+
 }

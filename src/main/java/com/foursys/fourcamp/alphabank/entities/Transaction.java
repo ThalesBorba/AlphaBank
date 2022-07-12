@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
+@Getter
 public class Transaction implements Serializable {
 
     @Id
