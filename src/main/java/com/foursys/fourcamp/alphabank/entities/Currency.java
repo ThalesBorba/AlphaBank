@@ -1,9 +1,10 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 
 import javax.persistence.*;
-
+@Getter
 @Entity
 public class Currency {
     @JsonIgnore

@@ -5,17 +5,22 @@ import com.foursys.fourcamp.alphabank.repositories.CurrencyRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class OpenDataService {
 
     @Autowired
     private CurrencyRateRepository currencyRateRepository;
 
-    public CurrencyRateDto returnBankCurrencyRates(String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey) {
-        //verificações
-        return currencyRateRepository.findById(1L).orElseThrow();
+    @Autowired
+    public OpenDataService(CurrencyRateRepository currencyRateRepository) {
+        this.currencyRateRepository = currencyRateRepository;
     }
 
+    public CurrencyRateDto returnBankCurrencyRates(String xAbBankId, String xAbLang, String
+            authorization, String ocpApimSubscriptionKey) {
+        return currencyRateRepository.findById(1L).orElseThrow(() -> new NoSuchElementException());
+    }
 
 }
