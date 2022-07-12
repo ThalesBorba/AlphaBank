@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
+
 @RestController
 @RequestMapping
 public class AccountAndTransactionController {
@@ -30,13 +33,16 @@ public class AccountAndTransactionController {
             ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
 
+
     }
 
     @Transactional
     @DeleteMapping("/account-requests/{account-request-id}")
-    public ResponseEntity<Object> deleteAccountRequest(@PathVariable String accountRequestId, String xAbBankId, String
+    public ResponseEntity<?> deleteAccountRequest(@PathVariable String accountRequestId, String xAbBankId, String
             xAbLang, String authorization, String ocpApimSubscriptionKey) {
+
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(method));
+        return new ResponseEntity(accountAndTransactionService.
     }
 
     @GetMapping("/accounts/details")
