@@ -1,6 +1,7 @@
 package com.foursys.fourcamp.alphabank.repository;
 
+import com.foursys.fourcamp.alphabank.entities.BranchList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BranchList extends JpaRepository <BranchList, Long> {
+public interface BranchListRepository extends JpaRepository <BranchList, Long> {
 }
