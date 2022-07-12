@@ -1,6 +1,7 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import lombok.Getter;
 
 import javax.persistence.Id;
 import javax.persistence.Temporal;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
+@Getter
 public class StandingOrderDetailedInfo implements Serializable {
 
     @Id

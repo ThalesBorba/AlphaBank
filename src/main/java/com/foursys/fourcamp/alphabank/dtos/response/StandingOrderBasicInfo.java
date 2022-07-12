@@ -1,4 +1,7 @@
-package com.foursys.fourcamp.alphabank.entities;
+package com.foursys.fourcamp.alphabank.dtos.response;
+
+import com.foursys.fourcamp.alphabank.entities.Amount;
+import com.foursys.fourcamp.alphabank.entities.CreditorAccount;
 
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;

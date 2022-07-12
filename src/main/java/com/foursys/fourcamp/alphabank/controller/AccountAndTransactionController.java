@@ -77,13 +77,14 @@ public class AccountAndTransactionController {
             xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
-
+*/
     @GetMapping("/accounts/{account-id}/standing-orders")
     public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllStandingOrdersByAccount(accountId)));
     }
-
+/*
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
     public ResponseEntity<Object> returnStandingOrder(@PathVariable String accountId, String standingOrderId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
