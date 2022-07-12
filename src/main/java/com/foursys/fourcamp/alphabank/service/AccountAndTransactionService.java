@@ -1,10 +1,12 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dtos.response.StandingOrderBasicInfo;
-import com.foursys.fourcamp.alphabank.entities.Account;
-import com.foursys.fourcamp.alphabank.entities.StandingOrderDetailedInfo;
+import com.foursys.fourcamp.alphabank.entities.*;
+import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.repositories.AccountRepository;
+import com.foursys.fourcamp.alphabank.repositories.BeneficiariesRepository;
+import com.foursys.fourcamp.alphabank.repositories.DirectDebitDetailedInfoRepository;
 import com.foursys.fourcamp.alphabank.repositories.StandingOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,14 @@ public class AccountAndTransactionService {
     private AccountRepository accountRepository;
     @Autowired
     private StandingOrderRepository standingOrderRepository;
+    @Autowired
+    private BeneficiariesRepository beneficiariesRepository;
+    @Autowired
+    private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
 
     private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
             INSTANCE;
+    private final DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
 
     public List<Account> returnAllAccountByUserId(Long userId) {
         return accountRepository.findByUserId(userId);
@@ -32,7 +39,21 @@ public class AccountAndTransactionService {
         List<StandingOrderDetailedInfo> ordersToFilter = standingOrderRepository.findAll();
         Predicate<StandingOrderDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
         Function<StandingOrderDetailedInfo, StandingOrderBasicInfo> convertToDto = standingOrderDetailedInfoMapper::toDTO;
-        return (List<StandingOrderBasicInfo>) ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto);
+        return ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto).toList();
+
+    }
+
+    public List<Beneficiary> returnAllBeneficiariesByAccount(String accountId) {
+        List<Beneficiary> beneficiariesToFilter = beneficiariesRepository.findAll();
+        Predicate<Beneficiary> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
+        return beneficiariesToFilter.stream().filter(belongsToThisAccount).toList();
+    }
+
+    public List<DirectDebitBasicInfo> returnAllDirectDebitByAccount (String accountId) {
+        List<DirectDebitDetailedInfo> ordersToFilter = directDebitDetailedInfoRepository.findAll();
+        Predicate<DirectDebitDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
+        Function<DirectDebitDetailedInfo, DirectDebitBasicInfo> convertToDto = directDebitDetailedInfoMapper::toDTO;
+        return ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto).toList();
 
     }
 }

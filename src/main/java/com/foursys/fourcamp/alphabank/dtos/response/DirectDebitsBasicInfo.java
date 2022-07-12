@@ -1,4 +1,6 @@
-package com.foursys.fourcamp.alphabank.entities;
+package com.foursys.fourcamp.alphabank.dtos.response;
+
+import com.foursys.fourcamp.alphabank.entities.DirectDebitBasicInfo;
 
 import java.io.Serializable;
 import java.util.List;

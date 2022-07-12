@@ -52,7 +52,31 @@ public class AccountAndTransactionController {
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                .returnAllAccountByUserId(userId)));
     }
+
+    @GetMapping("/accounts/{account-id}/standing-orders")
+    public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
+            xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllStandingOrdersByAccount(accountId)));
+    }
+
+    @GetMapping("/accounts/{account-id}/beneficiaries")
+    public ResponseEntity<Object> returnAccountBeneficiaries(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
+                                                                     ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
+                returnAllBeneficiariesByAccount(accountId)));
+    }
+
+    @GetMapping("/accounts/{account-id}/direct-debits")
+    public ResponseEntity<Object> returnAllDirectDebits(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
+                                                                ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllDirectDebitByAccount(accountId)));
+    }
 /*
+
     @GetMapping("/account/details/cards")
     public ResponseEntity<Object> returnAllCards(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
@@ -77,25 +101,12 @@ public class AccountAndTransactionController {
             xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
-*/
-    @GetMapping("/accounts/{account-id}/standing-orders")
-    public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
-            xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
-                .returnAllStandingOrdersByAccount(accountId)));
-    }
-/*
+
+
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
     public ResponseEntity<Object> returnStandingOrder(@PathVariable String accountId, String standingOrderId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
             authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
-
-    @GetMapping("/accounts/{account-id}/direct-debits")
-    public ResponseEntity<Object> returnAllDirectDebits(@PathVariable String accountId, String xAbBankId, String
-            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
-            ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
@@ -110,13 +121,6 @@ public class AccountAndTransactionController {
     public ResponseEntity<Object> returnAccountBalances(@PathVariable String accountId, String xAbBankId, String
             xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
             ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
-
-    @GetMapping("/accounts/{account-id}/beneficiaries")
-    public ResponseEntity<Object> returnAccountBeneficiaries(@PathVariable String accountId, String xAbBankId, String
-            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
-                                                                ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
