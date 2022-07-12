@@ -1,7 +1,12 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -118,7 +123,13 @@ public class AccountAndTransactionController {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
-    */
 
+    @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
+    public ResponseEntity<Object> returnStandingOrder(@PathVariable String accountId,@PathVariable String standingOrderId, String
+            xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
+                                                              authorization, String ocpApimSubscriptionKey) {
+        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body());
+    }
+*/
 
 }
