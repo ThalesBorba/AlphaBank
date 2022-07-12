@@ -1,9 +1,16 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
@@ -16,6 +23,9 @@ public class AccountAndTransactionController {
     public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
         this.accountAndTransactionService = accountAndTransactionService;
     }
+    @Autowired
+    private ModelMapper mapper;
+
 /*
     @PostMapping("/account-requests")
     public ResponseEntity<Object> createAccountRequest(@RequestBody @Valid class, @PathVariable String xAbBankId, String
@@ -55,12 +65,6 @@ public class AccountAndTransactionController {
     public ResponseEntity<Object> returnAllDepositAccounts(@PathVariable String xAbBankId, String xAbPsuLastLogged,
             String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String
                                                                        ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
-
-    @GetMapping("/accounts/balances")
-    public ResponseEntity<Object> returnBalances(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
-            xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
@@ -120,5 +124,8 @@ public class AccountAndTransactionController {
 
     */
 
-
+    @GetMapping(value = "/accounts/balances")
+    public ResponseEntity<List<BalancesResponseDTO>> findAllBalancesResponse(){
+        return ResponseEntity.ok().body(accountAndTransactionService.findAllBalancesResponse().stream().map(x -> mapper.map(x, BalancesResponseDTO.class)).collect(Collectors.toList()));
+    }
 }

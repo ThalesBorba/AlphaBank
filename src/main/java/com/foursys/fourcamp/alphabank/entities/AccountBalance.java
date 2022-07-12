@@ -9,5 +9,5 @@ public class AccountBalance implements Serializable {
     @NotEmpty(message = "Campo obrigatório")
     private String accountId;
     @NotEmpty(message = "Campo obrigatório")
-    private List<Balance> balances;
+    private List<BalancesResponse> balances;
 }
