@@ -13,13 +13,7 @@ public class OpenDataService {
     @Autowired
     private CurrencyRateRepository currencyRateRepository;
 
-    @Autowired
-    public OpenDataService(CurrencyRateRepository currencyRateRepository) {
-        this.currencyRateRepository = currencyRateRepository;
-    }
-
-    public CurrencyRateDto returnBankCurrencyRates(String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey) {
+    public CurrencyRateDto returnBankCurrencyRates() {
         return currencyRateRepository.findById(1L).orElseThrow(() -> new NoSuchElementException());
     }
 

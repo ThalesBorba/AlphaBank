@@ -1,12 +1,19 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import javax.validation.constraints.NotNull;
+import lombok.Getter;
+
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+@Getter
+@Table(name = "tb_account")
 public class Account implements Serializable {
 
-    @NotNull
+    @NotEmpty(message = "Campo obrigatório")
+    private Long userID;
+    @NotEmpty(message = "Campo obrigatório")
     private AccountProfile accountProfile;
-    @NotNull
+    @NotEmpty(message = "Campo obrigatório")
     private Servicer servicer;
 }

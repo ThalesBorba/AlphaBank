@@ -1,7 +1,12 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,13 +43,16 @@ public class AccountAndTransactionController {
             xAbLang, String authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(method));
     }
-
+*/
     @GetMapping("/accounts/details")
     public ResponseEntity<Object> returnAllAccounts(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+        //metodo para autorizar ou não
+        Long userId = 1L; //todo resgatar id do usuário logado
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+               .returnAllAccountByUserId(userId)));
     }
-
+/*
     @GetMapping("/account/details/cards")
     public ResponseEntity<Object> returnAllCards(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {

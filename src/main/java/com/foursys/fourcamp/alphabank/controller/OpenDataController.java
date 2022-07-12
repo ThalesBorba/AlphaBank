@@ -43,8 +43,9 @@ public class OpenDataController {
     @GetMapping("/rates")
     public ResponseEntity<Object> returnBankCurrencyRates(@PathVariable String xAbBankId, String xAbLang, String
             authorization, String ocpApimSubscriptionKey){
+        //metodo para autorizar ou não
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.
-                returnBankCurrencyRates(xAbBankId, xAbLang, authorization, ocpApimSubscriptionKey)));
+                returnBankCurrencyRates()));
     }
 
 
