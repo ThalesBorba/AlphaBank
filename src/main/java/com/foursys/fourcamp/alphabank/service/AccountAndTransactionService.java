@@ -3,7 +3,6 @@ package com.foursys.fourcamp.alphabank.service;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +31,13 @@ public class AccountAndTransactionService {
         Optional<AccountRequest> account = accountRequestRepository.findById(id);
         return account.orElseThrow(() -> new NoSuchElementException());
     }
+
+    public void DeleteAccountRequest(Long id) {
+        if (accountRequestRepository.findById(id).isEmpty()) {
+            throw new NoSuchElementException("não existe uma requisição para ser deletada");
+        }
+        accountRequestRepository.deleteById(id);
+    }
 }
+
+

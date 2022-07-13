@@ -4,19 +4,14 @@ import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -25,24 +20,36 @@ public class AccountAndTransactionController {
 
     @Autowired
     private final AccountAndTransactionService accountAndTransactionService;
-    
+
     @Autowired
-	private ModelMapper modelMapper;
-    
+    private ModelMapper modelMapper;
+
     @Autowired
     public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
         this.accountAndTransactionService = accountAndTransactionService;
     }
-    
+
     @PostMapping("/account-requests")
     public ResponseEntity<Object> createAccountRequest(@RequestBody @Valid AccountRequestDTO accountRequestDTO, @PathVariable String xAbBankId, String
             xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String
-            ocpApimSubscriptionKey) {
-    	
+                                                               ocpApimSubscriptionKey) {
+
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(accountAndTransactionService.createAccountRequest(accountRequestDTO)));
     }
+    @Transactional
+    @DeleteMapping("/account-requests/{account-request-id}")
+    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
+        try {
+            accountAndTransactionService.DeleteAccountRequest(accountRequestId);
+
+        }catch (Exception exception){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
-    
+
     
     
     
@@ -59,14 +66,8 @@ public class AccountAndTransactionController {
 
     }
 
-    @Transactional
-    @DeleteMapping("/account-requests/{account-request-id}")
-    public ResponseEntity<?> deleteAccountRequest(@PathVariable String accountRequestId, String xAbBankId, String
-            xAbLang, String authorization, String ocpApimSubscriptionKey) {
 
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(method));
-        return new ResponseEntity(accountAndTransactionService.
-    }
+
 
     @GetMapping("/accounts/details")
     public ResponseEntity<Object> returnAllAccounts(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
