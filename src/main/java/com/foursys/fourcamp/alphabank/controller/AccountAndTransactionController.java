@@ -1,9 +1,16 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
@@ -16,6 +23,9 @@ public class AccountAndTransactionController {
     public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
         this.accountAndTransactionService = accountAndTransactionService;
     }
+
+    @Autowired
+    private ModelMapper mapper;
 /*
     @PostMapping("/account-requests")
     public ResponseEntity<Object> createAccountRequest(@RequestBody @Valid class, @PathVariable String xAbBankId, String
@@ -120,5 +130,9 @@ public class AccountAndTransactionController {
 
     */
 
+    @GetMapping(value = "/details/deposit")
+    public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
+        return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
+    }
 
 }
