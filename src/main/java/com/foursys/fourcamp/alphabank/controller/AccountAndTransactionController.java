@@ -39,12 +39,8 @@ public class AccountAndTransactionController {
     @Transactional
     @DeleteMapping("/account-requests/{account-request-id}")
     public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
-        try {
-            accountAndTransactionService.DeleteAccountRequest(accountRequestId);
 
-        }catch (Exception exception){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+            accountAndTransactionService.DeleteAccountRequest(accountRequestId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
