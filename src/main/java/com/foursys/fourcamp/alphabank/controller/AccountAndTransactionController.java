@@ -84,13 +84,16 @@ public class AccountAndTransactionController {
                 returnAllTransactionsByAccount(accountId)));
     }
 
-/*
+
 
     @GetMapping("/account/details/cards")
-    public ResponseEntity<Object> returnAllCards(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
-            xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+    public ResponseEntity<Object> returnAllCards(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization,
+                                                 String ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllCardsByAccount(accountId)));
     }
+/*
 
     @GetMapping("/account/details/deposit")
     public ResponseEntity<Object> returnAllDepositAccounts(@PathVariable String xAbBankId, String xAbPsuLastLogged,

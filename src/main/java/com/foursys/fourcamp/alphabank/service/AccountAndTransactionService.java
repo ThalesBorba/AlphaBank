@@ -25,6 +25,8 @@ public class AccountAndTransactionService {
     private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
     @Autowired
     private TransactionsRepository transactionsRepository;
+    @Autowired
+    private CardRepository cardRepository;
 
     private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
             INSTANCE;
@@ -35,32 +37,32 @@ public class AccountAndTransactionService {
     }
 
     public List<StandingOrderBasicInfo> returnAllStandingOrdersByAccount (String accountId) {
-        List<StandingOrderDetailedInfo> ordersToFilter = standingOrderRepository.findAll();
         Predicate<StandingOrderDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
         Function<StandingOrderDetailedInfo, StandingOrderBasicInfo> convertToDto = standingOrderDetailedInfoMapper::toDTO;
-        return ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto).toList();
+        return standingOrderRepository.findAll().stream().filter(belongsToThisAccount).map(convertToDto).toList();
 
     }
 
     public List<Beneficiary> returnAllBeneficiariesByAccount(String accountId) {
-        List<Beneficiary> beneficiariesToFilter = beneficiariesRepository.findAll();
         Predicate<Beneficiary> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        return beneficiariesToFilter.stream().filter(belongsToThisAccount).toList();
+        return beneficiariesRepository.findAll().stream().filter(belongsToThisAccount).toList();
     }
 
     public List<DirectDebitBasicInfo> returnAllDirectDebitByAccount (String accountId) {
-        List<DirectDebitDetailedInfo> ordersToFilter = directDebitDetailedInfoRepository.findAll();
         Predicate<DirectDebitDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
         Function<DirectDebitDetailedInfo, DirectDebitBasicInfo> convertToDto = directDebitDetailedInfoMapper::toDTO;
-        return ordersToFilter.stream().filter(belongsToThisAccount).map(convertToDto).toList();
+        return directDebitDetailedInfoRepository.findAll().stream().filter(belongsToThisAccount).map(convertToDto).toList();
 
     }
 
     public List<Transaction> returnAllTransactionsByAccount(String accountId) {
-        List<Transaction> transactionsToFilter = transactionsRepository.findAll();
         Predicate<Transaction> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        return transactionsToFilter.stream().filter(belongsToThisAccount).toList();
+        return transactionsRepository.findAll().stream().filter(belongsToThisAccount).toList();
     }
 
+    public List<Card> returnAllCardsByAccount(String accountId) {
+        Predicate<Card> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
+        return cardRepository.findAll().stream().filter(belongsToThisAccount).toList();
+    }
 
 }
