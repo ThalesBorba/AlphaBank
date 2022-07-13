@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class AccountAndTransactionService {
 
     @Autowired
     AccountRepository accountRepository;
-
     @Autowired
     BalancesResponseRepository balancesResponseRepository;
 
@@ -25,7 +26,12 @@ public class AccountAndTransactionService {
         return balancesResponseRepository.findAll();
     }
 
-    public List<Account> findByUserId(Long id){
-        return accountRepository.findByUserId(id);
+    public Optional<Account> findByUserId(Long id){
+        if(accountRepository.findById(id).isEmpty()){
+            throw new NoSuchElementException("Essa conta não existe");
+        }
+        else {
+            return accountRepository.findById(id);
+        }
     }
 }
