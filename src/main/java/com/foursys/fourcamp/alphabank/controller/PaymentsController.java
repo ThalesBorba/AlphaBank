@@ -4,6 +4,7 @@ import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -98,7 +99,7 @@ public class PaymentsController {
     }
     */
     @GetMapping("/history")
-    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String accountId, Date fromDate, Date toDate, String
+    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String accountId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,@DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
                                                           String ocpApimSubscriptionKey){
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.returnTransfersByPeriod(accountId, fromDate, toDate)));
