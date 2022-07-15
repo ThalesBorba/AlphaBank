@@ -7,7 +7,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class DirectDebitDetailedInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
