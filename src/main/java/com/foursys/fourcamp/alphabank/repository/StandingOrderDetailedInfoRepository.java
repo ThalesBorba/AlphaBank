@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface StandingOrderDetailedInfoRepository extends JpaRepository<StandingOrderDetailedInfo,Long> {
+public interface StandingOrderDetailedInfoRepository extends JpaRepository<StandingOrderDetailedInfo,String> {
     @Query("select c from StandingOrderDetailedInfo c where c.id= :idStandingOrder and c.accountId= :accountId")
-    Optional<StandingOrderDetailedInfo> findByIdAndAccountId(@Param("idStandingOrder")Long idStandingOrder, @Param("accountId") String accountId);
+    Optional<StandingOrderDetailedInfo> findByIdAndAccountId(@Param("idStandingOrder")String idStandingOrder, @Param("accountId") String accountId);
 }

@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class Akps implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     private Long id;
 
     @NotEmpty(message = "Campo obrigatório")

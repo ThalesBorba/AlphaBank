@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StandingOrderDetailedDTO {
-    private Long standingOrderId;
+    private String standingOrderId;
+
     private String name;
     private String accountId;
     private Amount amount;

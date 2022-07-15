@@ -10,7 +10,8 @@ import java.util.Date;
 public class DirectDebitDetailedInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long directDebitId;
+    private String directDebitId;
+    
     private String name;
     @NotEmpty(message = "Campo obrigatório")
     private String accountId;
