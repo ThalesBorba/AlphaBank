@@ -8,11 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +39,14 @@ public class AccountAndTransactionController {
             xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllStandingOrdersByAccount(accountId)));
+    }
+
+    @Transactional
+    @DeleteMapping("/account-requests/{account-request-id}")
+    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
+        accountAndTransactionService.DeleteAccountRequest(accountRequestId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+
     }
 
     @GetMapping("/accounts/{account-id}/beneficiaries")
