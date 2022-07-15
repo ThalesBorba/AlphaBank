@@ -1,12 +1,13 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
-
+@Getter
 public class DirectDebitDetailedInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

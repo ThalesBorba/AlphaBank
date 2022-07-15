@@ -3,18 +3,23 @@ package com.foursys.fourcamp.alphabank.entities;
 import com.foursys.fourcamp.alphabank.enums.CustomerTypeEnum;
 import com.foursys.fourcamp.alphabank.enums.GenderEnum;
 import com.foursys.fourcamp.alphabank.enums.LanguageEnum;
+import lombok.Getter;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Entity
 public class Beneficiary implements Serializable {
 
+    @Id
     @NotEmpty(message = "Campo obrigatório")
     private String customerNumber;
+    @NotEmpty(message = "Campo obrigatório")
+    private String accountId;
     @NotEmpty(message = "Campo obrigatório")
     private CustomerTypeEnum customerType;
     private String companyName;
@@ -41,4 +46,5 @@ public class Beneficiary implements Serializable {
     private Date insuranceClearanceExpiryDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date TaxClearanceExpiryDate;
+
 }

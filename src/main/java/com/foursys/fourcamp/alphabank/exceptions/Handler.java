@@ -1,12 +1,16 @@
 package com.foursys.fourcamp.alphabank.exceptions;
 
+import com.foursys.fourcamp.alphabank.entities.ResponseModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.NoSuchElementException;
 
 public abstract class Handler {
 
 
     public static ResponseEntity<Object> exceptionHandler(ResponseEntity<Object> responseEntity) {
-        //try {
+        try {
             return responseEntity; /*
         } catch (SpecificException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseModel(HttpStatus.BAD_REQUEST,
@@ -21,10 +25,10 @@ public abstract class Handler {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         } catch (SpecificException e) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(new ResponseModel(HttpStatus.
-                    TOO_MANY_REQUESTS, HttpStatus.TOO_MANY_REQUESTS.value(), e.getMessage()));
-        } catch (SpecificException e) {
+                    TOO_MANY_REQUESTS, HttpStatus.TOO_MANY_REQUESTS.value(), e.getMessage()));*/
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseModel(HttpStatus.
                     INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
-        }*/
+        }
     }
 }

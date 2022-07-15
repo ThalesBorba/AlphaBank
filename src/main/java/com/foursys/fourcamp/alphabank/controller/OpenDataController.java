@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +50,9 @@ public class OpenDataController {
     @GetMapping("/rates")
     public ResponseEntity<Object> returnBankCurrencyRates(@PathVariable String xAbBankId, String xAbLang, String
             authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+        //metodo para autorizar ou não
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.
+                returnBankCurrencyRates()));
     }
 */
     @GetMapping("/akps")

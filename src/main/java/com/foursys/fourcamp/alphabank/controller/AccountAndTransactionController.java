@@ -1,16 +1,15 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
-import com.foursys.fourcamp.alphabank.service.*;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.web.bind.annotation.*;
-
-import com.foursys.fourcamp.alphabank.dto.*;
-import org.modelmapper.ModelMapper;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.foursys.fourcamp.alphabank.service.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.web.bind.annotation.*;
+import com.foursys.fourcamp.alphabank.dto.*;
+import org.modelmapper.ModelMapper;
+import lombok.AllArgsConstructor;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -26,6 +25,9 @@ public class AccountAndTransactionController {
     private final AccountAndTransactionService accountAndTransactionService;
     
     @Autowired
+    public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
+        this.accountAndTransactionService = accountAndTransactionService;
+
     private ModelMapper mapper;
     
 /*
@@ -53,6 +55,12 @@ public class AccountAndTransactionController {
     @GetMapping("/accounts/details")
     public ResponseEntity<Object> returnAllAccounts(@PathVariable String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
+
+        //metodo para autorizar ou não
+        Long userId = 1L; //todo resgatar id do usuário logado
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+               .returnAllAccountByUserId(userId)));
+
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
 
@@ -86,7 +94,40 @@ public class AccountAndTransactionController {
     @GetMapping("/accounts/{account-id}/standing-orders")
     public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
             xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllStandingOrdersByAccount(accountId)));
+    }
+
+    @GetMapping("/accounts/{account-id}/beneficiaries")
+    public ResponseEntity<Object> returnAccountBeneficiaries(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
+                                                                     ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
+                returnAllBeneficiariesByAccount(accountId)));
+    }
+
+    @GetMapping("/accounts/{account-id}/direct-debits")
+    public ResponseEntity<Object> returnAllDirectDebits(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String
+                                                                ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllDirectDebitByAccount(accountId)));
+    }
+
+    @GetMapping("/accounts/{account-id}/transactions")
+    public ResponseEntity<Object> returnAccountTransactions(@PathVariable String accountId, String fromDate, String
+            toDate, String xAbLocator, String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang,
+            String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
+                returnAllTransactionsByAccount(accountId)));
+    }
+
+    @GetMapping("/account/details/cards")
+    public ResponseEntity<Object> returnAllCards(@PathVariable String accountId, String xAbBankId, String
+            xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization,
+                                                 String ocpApimSubscriptionKey) {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
+                .returnAllCardsByAccount(accountId)));
     }
 
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
@@ -103,7 +144,6 @@ public class AccountAndTransactionController {
             String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
     }
-    
 
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
     public ResponseEntity<Object> returnStandingOrder(@PathVariable String accountId,@PathVariable String standingOrderId, String
@@ -154,5 +194,4 @@ public class AccountAndTransactionController {
     public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
         return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
     }
-
 }
