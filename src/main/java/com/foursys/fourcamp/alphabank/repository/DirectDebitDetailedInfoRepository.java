@@ -1,6 +1,8 @@
 package com.foursys.fourcamp.alphabank.repository;
 
 import com.foursys.fourcamp.alphabank.entities.DirectDebitDetailedInfo;
+import com.foursys.fourcamp.alphabank.entities.StandingOrderDetailedInfo;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -18,6 +18,7 @@ public class StandingOrderDetailedInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String standingOrderId;
+
     @NotEmpty(message = "Campo obrigatório")
     private String name;
     //todo relacionamento

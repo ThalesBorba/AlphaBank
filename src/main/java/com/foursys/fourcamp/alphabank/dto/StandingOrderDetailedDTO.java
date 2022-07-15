@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StandingOrderDetailedDTO {
     private String standingOrderId;
+
     private String name;
     private String accountId;
     private Amount amount;

@@ -17,7 +17,7 @@ import java.util.Date;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/payments/transfers")
-public class PaymentsController {
+public class    PaymentsController {
 
 
     private final PaymentService paymentService;

@@ -11,6 +11,7 @@ public class DirectDebitDetailedInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String directDebitId;
+    
     private String name;
     @NotEmpty(message = "Campo obrigatório")
     private String accountId;

@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PaymentService {
-
     private final PaymentRepository paymentRepository;
+    
     public List<TransferInfo> returnTransfersByPeriod(String accountId, Date fromDate, Date toDate) {
         if(returnTransfersByAccount(accountId).isEmpty()) {
             new NullPointerException("Código do cliente não encontrado");
@@ -25,5 +25,4 @@ public class PaymentService {
     public List<TransferInfo> returnTransfersByAccount (String accountId) {
         return paymentRepository.findAllByAccountId(accountId);
     }
-
 }
