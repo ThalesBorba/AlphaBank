@@ -1,29 +1,16 @@
 package com.foursys.fourcamp.alphabank.service;
 
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
-import com.foursys.fourcamp.alphabank.entities.DirectDebitDetailedInfo;
-import com.foursys.fourcamp.alphabank.entities.StandingOrderDetailedInfo;
-import com.foursys.fourcamp.alphabank.repository.DirectDebitDetailedInfoRepository;
-import com.foursys.fourcamp.alphabank.repository.StandingOrderDetailedInfoRepository;
-
-import com.foursys.fourcamp.alphabank.entities.Account;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
-import com.foursys.fourcamp.alphabank.entities.StandingOrderDetailedInfo;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.*;
+    
+import com.foursys.fourcamp.alphabank.dto.*;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-
-import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
-import com.foursys.fourcamp.alphabank.entities.AccountRequest;
-
-import com.foursys.fourcamp.alphabank.entities.DirectDebitDetailedInfo;
-
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +45,9 @@ public class AccountAndTransactionService {
     
     @Autowired
     BalancesResponseRepository balancesResponseRepository;
+
+    @Autowired
+    private ModelMapper mapper;
 
     public AccountRequest createAccountRequest(AccountRequestDTO accountRequest) {
         FindByID(accountRequest.getId());
@@ -100,7 +90,6 @@ public class AccountAndTransactionService {
     public List<BalancesResponse> findAllBalancesResponse() {
         return balancesResponseRepository.findAll();
     }
-
     public Optional<Account> findByUserId(Long id){
         if(accountRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("Essa conta não existe");
