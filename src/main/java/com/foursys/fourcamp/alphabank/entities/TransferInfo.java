@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TransferInfo implements Serializable {
+    @NotEmpty(message = "Campo obrigatório")
+    private String accountId;
 
     private Date dateSubmitted;
     private TransferScopeEnum transferScope;

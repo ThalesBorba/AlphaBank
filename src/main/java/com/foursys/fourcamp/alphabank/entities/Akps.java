@@ -3,6 +3,7 @@ package com.foursys.fourcamp.alphabank.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,18 +12,28 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-public class AccountsResponse implements Serializable {
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Akps implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     private Long id;
 
     @NotEmpty(message = "Campo obrigatório")
-    private AccountProfile accountProfile;
-    @NotEmpty(message = "Campo obrigatório")
-    private Servicer servicer;
+    private String name;
+
+    private String city;
+
+    private String andreess;
+    @Length(max = 6)
+    private String zipCode;
+
+    private Boolean isInBranch;
+
+    private Double lat;
+
+    private Double lon;
 }

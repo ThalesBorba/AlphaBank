@@ -1,28 +1,29 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 
-@Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class AccountsResponse implements Serializable {
+public class BranchList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotEmpty(message = "Campo obrigatório")
-    private AccountProfile accountProfile;
-    @NotEmpty(message = "Campo obrigatório")
-    private Servicer servicer;
+    private String name;
+    private String city;
+    private String region;
+    private String country;
+    private String adress;
+    private String zipCode;
+    private String phone;
+    private String fax;
+    private Integer lat;
+    private Integer lon;
 }

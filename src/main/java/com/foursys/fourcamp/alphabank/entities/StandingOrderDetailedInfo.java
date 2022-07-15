@@ -1,20 +1,26 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
-import lombok.Getter;
 
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
-@Getter
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StandingOrderDetailedInfo implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String standingOrderId;
+
     @NotEmpty(message = "Campo obrigatório")
     private String name;
     //todo relacionamento
