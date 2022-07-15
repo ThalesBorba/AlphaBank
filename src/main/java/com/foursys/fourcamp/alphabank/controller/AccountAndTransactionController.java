@@ -1,17 +1,12 @@
 package com.foursys.fourcamp.alphabank.controller;
 
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
+import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.modelmapper.ModelMapper;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.springframework.beans.factory.annotation.*;
 
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
@@ -38,15 +33,14 @@ public class AccountAndTransactionController {
 
     private final AccountAndTransactionService accountAndTransactionService;
 
-    private final AccountAndTransactionService accountAndTransactionService;
-
     @Autowired
     public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
         this.accountAndTransactionService = accountAndTransactionService;
     }
+    
     @Autowired
     private ModelMapper mapper;
-
+    
 /*
     @PostMapping("/account-requests")
     public ResponseEntity<Object> createAccountRequest(@RequestBody @Valid class, @PathVariable String xAbBankId, String
@@ -130,7 +124,6 @@ public class AccountAndTransactionController {
                                                               authorization, String ocpApimSubscriptionKey) {
         Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body());
     }
-*/
 
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
     public ResponseEntity<Object> returnStandingOrder(@PathVariable String accountId,@PathVariable String standingOrderId, String
@@ -151,5 +144,12 @@ public class AccountAndTransactionController {
     @GetMapping(value = "/accounts/balances")
     public ResponseEntity<List<BalancesResponseDTO>> findAllBalancesResponse(){
         return ResponseEntity.ok().body(accountAndTransactionService.findAllBalancesResponse().stream().map(x -> mapper.map(x, BalancesResponseDTO.class)).collect(Collectors.toList()));
+    } 
+*/
+
+    @GetMapping(value = "/details/deposit")
+    public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
+        return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
     }
+
 }
