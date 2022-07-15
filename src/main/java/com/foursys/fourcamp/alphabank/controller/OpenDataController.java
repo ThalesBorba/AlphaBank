@@ -21,25 +21,7 @@ public class OpenDataController {
     public OpenDataController(OpenDataService openDataService) {
         this.openDataService = openDataService;
     }
-/*
-    @GetMapping("/branches")
-    public ResponseEntity<Object> returnBankBranches(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
 
-    @GetMapping("/atm")
-    public ResponseEntity<Object> returnBankAtms(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
-
-    @GetMapping("/akps")
-    public ResponseEntity<Object> returnBankAkps(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
-*/
     @GetMapping("/rates")
     public ResponseEntity<Object> returnBankCurrencyRates(@PathVariable String xAbBankId, String xAbLang, String
             authorization, String ocpApimSubscriptionKey){
