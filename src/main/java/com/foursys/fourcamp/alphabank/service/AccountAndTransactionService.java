@@ -1,28 +1,24 @@
 package com.foursys.fourcamp.alphabank.service;
-    
-import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.repository.*;
-import org.springframework.beans.factory.annotation.*;
 
+import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
 import com.foursys.fourcamp.alphabank.dtos.response.StandingOrderBasicInfo;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
+import com.foursys.fourcamp.alphabank.repository.*;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import org.modelmapper.ModelMapper;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 @AllArgsConstructor
@@ -49,20 +45,24 @@ public class AccountAndTransactionService {
     @Autowired
     private BeneficiariesRepository beneficiariesRepository;
     @Autowired
-    private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
-    @Autowired
     private TransactionsRepository transactionsRepository;
     @Autowired
     private CardRepository cardRepository;
+    private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
+            INSTANCE;
+    private final DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
+
 
     public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
                                                                    authorization, String ocpApimSubscriptionKey) {
         StandingOrderDetailedInfo detailed = standingOrderDetailedInfoRepository.findByIdAndAccountId(standingOrderId, accountId)
-        
-    private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
-            INSTANCE;
-    private final DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ordem permanente não encontrado!"));
+        StandingOrderDetailedDTO detailedDTO = new StandingOrderDetailedDTO(detailed.getStandingOrderId(), detailed.getName()
+                , detailed.getAccountId(), detailed.getAmount(), detailed.getCreditorAccount());
+        return detailedDTO;
+
+    }
 
     public List<Account> returnAllAccountByUserId(Long userId) {
         return accountRepository.findByUserId(userId);
@@ -113,16 +113,6 @@ public class AccountAndTransactionService {
         Predicate<Card> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
         return cardRepository.findAll().stream().filter(belongsToThisAccount).toList();
     }
-    
-/* public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId, String
-            xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
-                                                                   authorization, String ocpApimSubscriptionKey) {
-        StandingOrderDetailedInfo detailed = standingOrderDetailedInfoRepository.findByIdAndAccountId(Long.valueOf(standingOrderId), accountId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ordem permanente não encontrado!"));
-        StandingOrderDetailedDTO detailedDTO = new StandingOrderDetailedDTO(detailed.getStandingOrderId(), detailed.getName()
-                , detailed.getAccountId(), detailed.getAmount(), detailed.getCreditorAccount());
-        return detailedDTO;
-    }
 
     public DirectDebitDetailedInfo findByIdDirectDebitsDetailed(String accountId, String directDebitId, String
             xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
@@ -132,12 +122,6 @@ public class AccountAndTransactionService {
         return detailed;
     }
 
-        DirectDebitDetailedInfo detailed = directDebitDetailedInfoRepository.findByIdAndAccountId(Long.valueOf(directDebitId), accountId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Débito direto não encontrado!"));
-        return detailed;
-    
-    } */
-
     public List<BalancesResponse> findAllBalancesResponse() {
         return balancesResponseRepository.findAll();
     }
@@ -146,7 +130,7 @@ public class AccountAndTransactionService {
         return accountsResponseRepository.findAll();
     }
     
-    public Optional<Account> findByUserId(Long id){
+    public Optional<Account> findByUserId(String id){
         if(accountRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("Essa conta não existe");
         }

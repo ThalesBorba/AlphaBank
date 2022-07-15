@@ -1,4 +1,4 @@
-package com.foursys.fourcamp.alphabank.repositories;
+package com.foursys.fourcamp.alphabank.repository;
 
 import com.foursys.fourcamp.alphabank.dtos.response.CurrencyRate;
 import org.springframework.data.jpa.repository.JpaRepository;
