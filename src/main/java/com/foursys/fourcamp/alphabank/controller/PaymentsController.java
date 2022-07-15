@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/payments/transfers")
-public class PaymentsController {
+public class    PaymentsController {
 
     @Autowired
     private final PaymentService paymentService;

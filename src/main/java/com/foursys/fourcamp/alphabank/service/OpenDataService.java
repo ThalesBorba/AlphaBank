@@ -11,7 +11,6 @@ public class OpenDataService {
     @Autowired
     private AkpsRepository akpsRepository;
 
-
     public List<Akps> listAllAkpsBank(String xAbBankId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
         return akpsRepository.findAll();
     }
