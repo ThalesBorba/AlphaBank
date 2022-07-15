@@ -40,6 +40,20 @@ public class AccountAndTransactionController {
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllStandingOrdersByAccount(accountId)));
     }
+    
+    @GetMapping("/account-requests/{account-request-id}")
+    public ResponseEntity<Object> returnAccountRequest(@PathVariable String accountRequestId, String xAbBankId, String
+           xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang, String authorization, String
+            ocpApimSubscriptionKey) {
+    	
+    	
+    	if(accountRequestId.matches("^(-?)(0|([1-9][0-9]*))")) {
+    		 return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.FindByID(Long.parseLong(accountRequestId))));
+    	} else {
+    		 return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));
+    	}
+    }
+    
 
     @Transactional
     @DeleteMapping("/account-requests/{account-request-id}")

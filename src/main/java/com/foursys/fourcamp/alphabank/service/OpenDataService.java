@@ -1,6 +1,6 @@
 package com.foursys.fourcamp.alphabank.service;
 
-import com.foursys.fourcamp.alphabank.dtos.response.CurrencyRate;
+import com.foursys.fourcamp.alphabank.dto.CurrencyRate;
 import com.foursys.fourcamp.alphabank.entities.Akps;
 import com.foursys.fourcamp.alphabank.entities.BankAtms;
 import com.foursys.fourcamp.alphabank.entities.BranchList;
