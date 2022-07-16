@@ -1,11 +1,13 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import com.foursys.fourcamp.alphabank.dtos.response.StandingOrderBasicInfo;
-
 import java.io.Serializable;
 import java.util.List;
 
+import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
+
 public class StandingOrdersBasicInfo implements Serializable {
 
-    List<StandingOrderBasicInfo> standingOrderBasicInfos;
+	private static final long serialVersionUID = 1L;
+	
+	List<StandingOrderBasicInfo> standingOrderBasicInfos;
 }

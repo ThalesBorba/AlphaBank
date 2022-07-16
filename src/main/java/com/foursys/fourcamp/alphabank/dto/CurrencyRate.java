@@ -1,4 +1,4 @@
-package com.foursys.fourcamp.alphabank.dtos.response;
+package com.foursys.fourcamp.alphabank.dto;
 
 import com.foursys.fourcamp.alphabank.entities.Currency;
 
