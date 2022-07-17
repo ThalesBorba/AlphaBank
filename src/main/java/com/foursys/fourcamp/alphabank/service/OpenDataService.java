@@ -19,13 +19,13 @@ import java.util.NoSuchElementException;
 public class OpenDataService {
     @Autowired
     private ModelMapper mapper;
-    @Autowired
+
     private CurrencyRateRepository currencyRateRepository;
-    @Autowired
+
     private BankAtmsRepository bankAtmsRepository;
-    @Autowired
+
     private AkpsRepository akpsRepository;
-    @Autowired
+
     private BranchListRepository branchListRepository;
 
     public CurrencyRate returnBankCurrencyRates() {

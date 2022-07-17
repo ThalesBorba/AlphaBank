@@ -4,10 +4,11 @@ import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public interface PaymentRepository extends JpaRepository<TransferInfo, String> {
     @Query("select c from Customer c where c.accountId = :accountId and c.date >= :fromDate and c.date<= :toDate")
     List<TransferInfo> findAllByAccountIdDate(@Param("accountId") String accountId,@Param("fromDate") Date fromDate,@Param("toDate") Date toDate);

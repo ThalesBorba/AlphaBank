@@ -4,7 +4,6 @@ import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,15 +14,20 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequestMapping("/")
 @RestController
-@AllArgsConstructor
 public class AccountAndTransactionController {
 
-
+    @Autowired
     private final AccountAndTransactionService accountAndTransactionService;
 
+    @Autowired
+    public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
+        this.accountAndTransactionService = accountAndTransactionService;
+    }
 
-    private final ModelMapper mapper;
+    @Autowired
+    private ModelMapper mapper;
 
 //    @GetMapping("/accounts/{accountId}/details")
 //    public ResponseEntity<Object> returnAccount(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
