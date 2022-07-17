@@ -32,11 +32,16 @@ public class StandingOrderDetailedInfo implements Serializable {
     private Date dateStart;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateStop;
+    @OneToOne
     private Amount amount;
     @NotEmpty(message = "Campo obrigatório")
+    @OneToOne
     private CreditorAccount creditorAccount;
     private String creditorReason;
+    @OneToOne
     private ExecutionPlan executionPlan;
+    @OneToOne
     private OrderExecution previousExecution;
+    @OneToOne
     private OrderExecution nextExecution;
 }

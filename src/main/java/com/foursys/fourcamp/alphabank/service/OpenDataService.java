@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 
 @Service
 public class OpenDataService {
-
+    @Autowired
     private ModelMapper mapper;
     @Autowired
     private CurrencyRateRepository currencyRateRepository;

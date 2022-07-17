@@ -20,7 +20,7 @@ public class OpenDataController {
 
     private final OpenDataService openDataService;
     
-    @Autowired
+
     public OpenDataController(OpenDataService openDataService) {
         this.openDataService = openDataService;
     }

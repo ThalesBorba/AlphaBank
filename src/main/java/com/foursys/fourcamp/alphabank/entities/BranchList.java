@@ -1,17 +1,21 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class BranchList {
+@Data
+@MappedSuperclass
+@Entity
+public class BranchList implements  Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +30,5 @@ public class BranchList {
     private String fax;
     private Integer lat;
     private Integer lon;
+
 }

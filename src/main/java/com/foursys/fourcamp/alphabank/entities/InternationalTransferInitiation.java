@@ -2,6 +2,8 @@ package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.BoPCodeEnum;
 
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -16,10 +18,13 @@ public class InternationalTransferInitiation implements Serializable {
     @Size(min = 1, max = 35)
     private String endToEndIdentification;
     @NotEmpty(message = "Campo obrigatório")
+    @OneToMany
     List<Amount> instructedAmmount;
     private String debtorAccount;
     @NotEmpty(message = "Campo obrigatório")
+    @OneToOne
     private CreditorAccount creditorAccount;
+    @OneToOne
     private RemittanceInformation remittanceInformation;
     private String debtorInformation;
     private String blockFunds;

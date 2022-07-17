@@ -2,6 +2,9 @@ package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.enums.BalanceTypeEnum;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -9,7 +12,10 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
 public class Balance implements Serializable {
 
     @Id
@@ -17,6 +23,8 @@ public class Balance implements Serializable {
     private Long id;
 
     @NotEmpty(message = "Campo obrigatório")
+    @OneToMany
+
     private List<Amount> amounts;
 
     private CreditDebitIndicatorEnum creditDebitIndicator;

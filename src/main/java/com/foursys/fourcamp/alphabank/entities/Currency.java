@@ -14,8 +14,11 @@ public class Currency {
     private Long id;
     private Integer isoCode;
     private String name;
+    @OneToOne
     private CurrencyValue bankNote;
+    @OneToOne
     private CurrencyValue foreignExchange;
+    @OneToOne
     private CurrencyValue ecb;
 
 }

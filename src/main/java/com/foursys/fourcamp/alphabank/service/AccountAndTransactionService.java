@@ -19,36 +19,41 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Service
-@AllArgsConstructor
 public class AccountAndTransactionService {
-    private final StandingOrderDetailedInfoRepository standingOrderDetailedInfoRepository;
-
-    private final DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
-    
     @Autowired
-    private AccountRequestRepository accountRequestRepository;
+    private StandingOrderDetailedInfoRepository standingOrderDetailedInfoRepository;
 
     @Autowired
-    AccountsResponseRepository accountsResponseRepository;
+    private  DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
+
+    @Autowired
+    private  AccountRequestRepository accountRequestRepository;
+    @Autowired
+    private  AccountsResponseRepository accountsResponseRepository;
+
+    @Autowired
+    private  ModelMapper modelMapper;
     
     @Autowired
-    private ModelMapper modelMapper;
-    
+     private   BalancesResponseRepository balancesResponseRepository;
     @Autowired
-    BalancesResponseRepository balancesResponseRepository;
+    private  AccountRepository accountRepository;
     @Autowired
-    private AccountRepository accountRepository;
+    private  StandingOrderRepository standingOrderRepository;
+
     @Autowired
-    private StandingOrderRepository standingOrderRepository;
+    private  BeneficiariesRepository beneficiariesRepository;
+
     @Autowired
-    private BeneficiariesRepository beneficiariesRepository;
+    private  TransactionsRepository transactionsRepository;
+
     @Autowired
-    private TransactionsRepository transactionsRepository;
-    @Autowired
-    private CardRepository cardRepository;
-    private final StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
+    private  CardRepository cardRepository;
+
+    private   StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
             INSTANCE;
-    private final DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
+
+    private   DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
 
 
     public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId, String
@@ -62,9 +67,9 @@ public class AccountAndTransactionService {
 
     }
 
-    public List<Account> returnAllAccountByUserId(Long userId) {
-        return accountRepository.findByUserId(userId);
-    }
+//    public List<Account> returnAllAccountByUserId(Long userId) {
+//        return accountRepository.findByUserId(userId);
+//    }
     
     public AccountRequest createAccountRequest(AccountRequestDTO accountRequest) {
         FindByID(accountRequest.getId());

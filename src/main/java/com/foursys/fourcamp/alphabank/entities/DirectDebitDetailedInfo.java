@@ -26,5 +26,7 @@ public class DirectDebitDetailedInfo implements Serializable {
     private StatusEnum status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+    @ManyToOne
+    @JoinColumn(name = "amount_id")
     private Amount amount;
 }

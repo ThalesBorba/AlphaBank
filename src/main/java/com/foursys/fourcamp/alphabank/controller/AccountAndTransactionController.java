@@ -4,6 +4,7 @@ import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,24 +16,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping
+@AllArgsConstructor
 public class AccountAndTransactionController {
 
-    @Autowired
-    private AccountAndTransactionService accountAndTransactionService;
-    
-    @Autowired
-    public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
-        this.accountAndTransactionService = accountAndTransactionService;
-    }
 
-    private ModelMapper mapper;
+    private final AccountAndTransactionService accountAndTransactionService;
 
-    @GetMapping("/accounts/{accountId}/details")
-    public ResponseEntity<Object> returnAccount(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
-            xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
-       return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findByUserId(accountId)));
-    }
+
+    private final ModelMapper mapper;
+
+//    @GetMapping("/accounts/{accountId}/details")
+//    public ResponseEntity<Object> returnAccount(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
+//            xAbPsuIp, String xAbLang, String xAbInteractionId, String authorization, String ocpApimSubscriptionKey) {
+//       return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findByUserId(accountId)));
+//    }
 
     @GetMapping("/accounts/{account-id}/standing-orders")
     public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId, String xAbBankId, String xAbPsuLastLogged, String
