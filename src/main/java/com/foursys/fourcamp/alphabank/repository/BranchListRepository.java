@@ -1,4 +1,4 @@
-package com.foursys.fourcamp.alphabank.dto.repository;
+package com.foursys.fourcamp.alphabank.repository;
 
 import com.foursys.fourcamp.alphabank.entities.BranchList;
 import org.springframework.data.jpa.repository.JpaRepository;

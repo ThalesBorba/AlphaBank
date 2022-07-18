@@ -75,8 +75,7 @@ public class AccountAndTransactionController {
 
     @GetMapping("/account/details/cards")
     public ResponseEntity<Object> returnAllCards(@PathVariable String accountId) {
-        return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
-                .returnAllCardsByAccount(accountId));
+        return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.returnAllCardsByAccount(accountId));
     }
 
     @GetMapping("/accounts/{account-id}/standing-orders/{standing-order-id}")
@@ -93,12 +92,14 @@ public class AccountAndTransactionController {
     
     @GetMapping(value = "/accounts/balances")
     public ResponseEntity<List<BalancesResponseDTO>> findAllBalancesResponse(){
-        return ResponseEntity.ok().body(accountAndTransactionService.findAllBalancesResponse().stream().map(x -> mapper.map(x, BalancesResponseDTO.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(accountAndTransactionService.findAllBalancesResponse().stream()
+                .map(x -> mapper.map(x, BalancesResponseDTO.class)).collect(Collectors.toList()));
     } 
 
 
     @GetMapping(value = "/details/deposit")
     public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
-        return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper
+                .map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
     }
 }

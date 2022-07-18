@@ -2,7 +2,7 @@ package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
-import com.foursys.fourcamp.alphabank.dto.repository.BalancesResponseRepository;
+import com.foursys.fourcamp.alphabank.repository.BalancesResponseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
