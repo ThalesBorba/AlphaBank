@@ -51,7 +51,8 @@ public class OpenDataController {
     //Tirei os parametros, irei ve como vou fazer
     @GetMapping(value = "/atms")
     public ResponseEntity<List<BankAtmsDTO>> returnBankAtms() {
-        return ResponseEntity.ok().body(openDataService.findAllAtms().stream().map(x -> mapper.map(x, BankAtmsDTO.class)).collect(Collectors.toCollection(ArrayList::new)));
+        return ResponseEntity.ok().body(openDataService.findAllAtms().stream().map(x -> mapper.map(x, BankAtmsDTO.class))
+                .collect(Collectors.toCollection(ArrayList::new)));
     }
 
 }
