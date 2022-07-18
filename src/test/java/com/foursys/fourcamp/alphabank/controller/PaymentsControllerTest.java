@@ -1,6 +1,8 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
@@ -37,6 +39,12 @@ class PaymentsControllerTest {
     @Mock
     private ModelMapper modelMapper;
 
+    private InternationalTransferSubmission internationalTransferSubmission;
+
+    private InternationalTransferSubmissionDTO internationalTransferSubmissionDTO;
+
+    private Optional<InternationalTransferSubmission> optionalInternational;
+
     private PaymentSetupRequest paymentSetupRequest;
     private PaymentSetupRequestDTO paymentSetupRequestDTO;
     private Optional<PaymentSetupRequest> optional;
@@ -58,6 +66,20 @@ class PaymentsControllerTest {
     }
 
     @Test
+    void whenFindByIdThenReturnInternationalSubSucess() {
+        when(paymentService.getInternationalTransferSub(anyLong())).thenReturn(internationalTransferSubmission);
+        when(modelMapper.map(any(), any())).thenReturn(internationalTransferSubmissionDTO);
+
+        ResponseEntity<InternationalTransferSubmissionDTO> response = paymentsController.returnInternationalTransferSub(ID);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(InternationalTransferSubmissionDTO.class, response.getBody().getClass());
+
+        assertEquals(ID, response.getBody().getTransferRequestId());
+    }
+
+    @Test
     void whenCreateThenReturnCreated() {
         when(paymentService.createDomesticPaymentSetupRequest(any())).thenReturn(paymentSetupRequest);
 
@@ -68,6 +90,17 @@ class PaymentsControllerTest {
         assertNotNull(response.getHeaders().get("Location"));
     }
 
+    @Test
+    void whenCreateInternationalSubThenReturnCreated() {
+        when(paymentService.createInternationalTransferSub(any())).thenReturn(internationalTransferSubmission);
+
+        ResponseEntity<InternationalTransferSubmissionDTO> response = paymentsController.createInternationalTransferSub(internationalTransferSubmissionDTO);
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getHeaders().get("Location"));
+
+    }
 
     @BeforeEach
     void setUp() {
@@ -82,5 +115,12 @@ class PaymentsControllerTest {
         paymentSetupRequestDTO = new PaymentSetupRequestDTO(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
 
         optional = Optional.of(new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>()));
+
+        internationalTransferSubmission = new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>());
+
+        internationalTransferSubmissionDTO = new InternationalTransferSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+
+        optionalInternational = Optional.of(new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+
     }
 }

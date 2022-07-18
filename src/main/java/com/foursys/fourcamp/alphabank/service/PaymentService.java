@@ -1,9 +1,12 @@
 package com.foursys.fourcamp.alphabank.service;
 
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
 import org.modelmapper.ModelMapper;
@@ -21,6 +24,9 @@ public class PaymentService {
     private TransferInfoRepository transferInfoRepository;
     @Autowired
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
+
+    @Autowired
+    private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -42,5 +48,15 @@ public class PaymentService {
     public List<TransferInfo> returnPaymentsByTimePeriod(LocalDate fromDate, LocalDate toDate) {
         return transferInfoRepository.findAll().stream().filter(tranfer -> tranfer.getDateSubmitted().equals(Period
                 .between(fromDate, toDate))).toList();
+    }
+
+    public InternationalTransferSubmission createInternationalTransferSub(InternationalTransferSubmissionDTO obj) {
+        return internationalTransferSubmissionRepository.save(modelMapper.map(obj, InternationalTransferSubmission.class));
+    }
+
+    public InternationalTransferSubmission getInternationalTransferSub(Long id) {
+        Optional<InternationalTransferSubmission> obj = internationalTransferSubmissionRepository.findById(id);
+
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 }
