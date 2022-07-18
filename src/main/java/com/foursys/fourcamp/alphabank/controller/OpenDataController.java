@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class OpenDataController {
     //Tirei os parametros, irei ve como vou fazer
     @GetMapping(value = "/atms")
     public ResponseEntity<List<BankAtmsDTO>> returnBankAtms() {
-        return ResponseEntity.ok().body(openDataService.findAllAtms().stream().map(x -> mapper.map(x, BankAtmsDTO.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(openDataService.findAllAtms().stream().map(x -> mapper.map(x, BankAtmsDTO.class)).collect(Collectors.toCollection(ArrayList::new)));
     }
 
 }
