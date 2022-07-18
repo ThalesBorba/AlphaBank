@@ -2,7 +2,7 @@ package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
 import com.foursys.fourcamp.alphabank.entities.BankAtms;
-import com.foursys.fourcamp.alphabank.repository.BankAtmsRepository;
+import com.foursys.fourcamp.alphabank.dto.repository.BankAtmsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

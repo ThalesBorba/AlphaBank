@@ -1,4 +1,4 @@
-package com.foursys.fourcamp.alphabank.repository;
+package com.foursys.fourcamp.alphabank.dto.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

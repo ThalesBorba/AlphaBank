@@ -1,14 +1,18 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/payments/transfers")
@@ -33,7 +37,7 @@ public class PaymentsController {
     }
 
     /*
-     * 
+     *
      * @GetMapping("/domestic/{transfer-request-id}")
      * public ResponseEntity<Object> returnTransferRequest(@PathVariable String
      * tranferRequestId, String xAbBankId, String
@@ -120,23 +124,17 @@ public class PaymentsController {
      * authorization, String ocpApimSubscriptionKey){
      * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
      * }
-     * 
-     * @GetMapping("/history/{account-id}")
-     * public ResponseEntity<Object> returnTransfersByAccount(@PathVariable String
-     * accountId, String
-     * xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId,
-     * String authorization,
-     * String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
      */
-//    @GetMapping("/history")
-//    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String accountId,
-//            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
-//            String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
-//            String ocpApimSubscriptionKey) {
-//        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK)
-//                .body(paymentService.returnTransfersByPeriod(accountId, fromDate, toDate)));
-//    }
+
+    @GetMapping("/history/{account-id}")
+    public ResponseEntity<Object> returnTransfersByAccount(@PathVariable String accountId){
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.
+                returnTransfersByAccount(accountId)));
+    }
+    @GetMapping("/history")
+    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
+           LocalDate fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnPaymentsByTimePeriod(fromDate, toDate));
+    }
 
 }

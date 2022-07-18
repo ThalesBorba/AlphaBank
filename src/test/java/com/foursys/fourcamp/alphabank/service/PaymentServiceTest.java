@@ -4,7 +4,7 @@ import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
-import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
+import com.foursys.fourcamp.alphabank.dto.repository.PaymentSetupRequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

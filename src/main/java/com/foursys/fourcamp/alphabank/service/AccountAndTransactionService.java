@@ -3,10 +3,10 @@ package com.foursys.fourcamp.alphabank.service;
 import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
+import com.foursys.fourcamp.alphabank.dto.repository.*;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
-import com.foursys.fourcamp.alphabank.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 @Service
 public class AccountAndTransactionService {
@@ -76,49 +73,41 @@ public class AccountAndTransactionService {
 //    }
     
     public AccountRequest createAccountRequest(AccountRequestDTO accountRequest) {
-        FindByID(accountRequest.getId());
-
+        findById(accountRequest.getId());
         return accountRequestRepository.save(modelMapper.map(accountRequest, AccountRequest.class));
     }
 
-    public AccountRequest FindByID(Long id) {
-
-        Optional<AccountRequest> account = accountRequestRepository.findById(id);
-        return account.orElseThrow(() -> new NoSuchElementException());
+    public AccountRequest findById(Long id) {
+        return accountRequestRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public void DeleteAccountRequest(Long id) {
-        if (accountRequestRepository.findById(id).isEmpty()) {
-            throw new NoSuchElementException("não existe uma requisição para ser deletada");
-        }
+    public void deleteAccountRequest(Long id) {
+        findById(id);
         accountRequestRepository.deleteById(id);
     }
 
     public List<StandingOrderBasicInfo> returnAllStandingOrdersByAccount (String accountId) {
-        Predicate<StandingOrderDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        Function<StandingOrderDetailedInfo, StandingOrderBasicInfo> convertToDto = standingOrderDetailedInfoMapper::toDTO;
-        return standingOrderRepository.findAll().stream().filter(belongsToThisAccount).map(convertToDto).toList();
+        return standingOrderRepository.findAll().stream().filter(standingOrder -> standingOrder.getAccountId()
+                .equals(accountId)).map(standingOrderDetailedInfoMapper::toDTO).toList();
     }
 
     public List<Beneficiary> returnAllBeneficiariesByAccount(String accountId) {
-        Predicate<Beneficiary> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        return beneficiariesRepository.findAll().stream().filter(belongsToThisAccount).toList();
+        return beneficiariesRepository.findAll().stream().filter(beneficiary -> beneficiary.getAccountId()
+                .equals(accountId)).toList();
     }
 
     public List<DirectDebitBasicInfo> returnAllDirectDebitByAccount (String accountId) {
-        Predicate<DirectDebitDetailedInfo> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        Function<DirectDebitDetailedInfo, DirectDebitBasicInfo> convertToDto = directDebitDetailedInfoMapper::toDTO;
-        return directDebitDetailedInfoRepository.findAll().stream().filter(belongsToThisAccount).map(convertToDto).toList();
+        return directDebitDetailedInfoRepository.findAll().stream().filter(directDebit -> directDebit.getAccountId()
+                .equals(accountId)).map(directDebitDetailedInfoMapper::toDTO).toList();
     }
 
     public List<Transaction> returnAllTransactionsByAccount(String accountId) {
-        Predicate<Transaction> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        return transactionsRepository.findAll().stream().filter(belongsToThisAccount).toList();
+        return transactionsRepository.findAll().stream().filter(transaction -> transaction.getAccountId().equals(accountId))
+                .toList();
     }
 
     public List<Card> returnAllCardsByAccount(String accountId) {
-        Predicate<Card> belongsToThisAccount = a -> a.getAccountId().equals(accountId);
-        return cardRepository.findAll().stream().filter(belongsToThisAccount).toList();
+        return cardRepository.findAll().stream().filter(card -> card.getAccountId().equals(accountId)).toList();
     }
 
     public DirectDebitDetailedInfo findByIdDirectDebitsDetailed(String accountId, String directDebitId) {
@@ -133,14 +122,9 @@ public class AccountAndTransactionService {
     public List<AccountsResponse> findAllAtms() {
         return accountsResponseRepository.findAll();
     }
-    
-    public Optional<Account> findByUserId(String id){
-        if(accountRepository.findById(id).isEmpty()){
-            throw new NoSuchElementException("Essa conta não existe");
-        }
-        else {
-            return accountRepository.findById(id);
-        }
+
+    public Account findByUserId(String id){
+        return accountRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Essa conta não existe"));
     }
 
 }
