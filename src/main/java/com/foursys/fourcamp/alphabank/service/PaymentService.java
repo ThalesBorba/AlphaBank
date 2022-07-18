@@ -37,6 +37,8 @@ public class PaymentService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
     }
 
+
+
     public List<TransferInfo> returnPaymentsByTimePeriod(LocalDate fromDate, LocalDate toDate) {
         return transferInfoRepository.findAll().stream().filter(tranfer -> tranfer.getDateSubmitted().equals(Period
                 .between(fromDate, toDate))).toList();
