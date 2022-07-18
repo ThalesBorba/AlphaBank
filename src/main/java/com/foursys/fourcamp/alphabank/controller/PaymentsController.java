@@ -3,6 +3,7 @@ package com.foursys.fourcamp.alphabank.controller;
 import java.net.URI;
 import java.util.Date;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import lombok.AllArgsConstructor;
 public class PaymentsController {
 
     private final PaymentService paymentService;
+    private ModelMapper modelMapper;
 
     @PostMapping("/domestic")
     public ResponseEntity<PaymentSetupRequestDTO> createTransferIntent(@RequestBody PaymentSetupRequestDTO objDto) {
@@ -33,6 +35,12 @@ public class PaymentsController {
                 .buildAndExpand(paymentService.createDomesticPaymentSetupRequest(objDto).getTransferRequestId())
                 .toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/domestic/{transfer-request-id}")
+    public ResponseEntity<PaymentSetupRequestDTO> returnTransferRequest(@PathVariable Long Id) {
+        return ResponseEntity.ok()
+                .body(modelMapper.map(paymentService.getDomesticPaymentSetupRequest(Id), PaymentSetupRequestDTO.class));
     }
 
     /*

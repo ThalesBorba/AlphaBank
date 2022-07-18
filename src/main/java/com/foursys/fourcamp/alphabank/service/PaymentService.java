@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
+import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.PaymentRepository;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
 
@@ -30,6 +32,14 @@ public class PaymentService {
     }
 
     public PaymentSetupRequest createDomesticPaymentSetupRequest(PaymentSetupRequestDTO obj) {
+        getDomesticPaymentSetupRequest(obj.getTransferRequestId());
+
         return paymentSetupRequestRepository.save(modelMapper.map(obj, PaymentSetupRequest.class));
+    }
+
+    public PaymentSetupRequest getDomesticPaymentSetupRequest(Long Id) {
+        Optional<PaymentSetupRequest> obj = paymentSetupRequestRepository.findById(Id);
+
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
     }
 }
