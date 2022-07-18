@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentSetupRequestDTO {
+  public PaymentSetupRequestDTO(Long id, StatusEnum statusenum2, String domestictransferinitiation2, String risk2) {
+  }
+
   private Long transferRequestId;
   private StatusEnum statusEnum;
   private DomesticTransferInitiation domesticTransferInitiation;

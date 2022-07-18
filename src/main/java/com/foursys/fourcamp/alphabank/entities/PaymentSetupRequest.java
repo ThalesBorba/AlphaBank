@@ -27,4 +27,7 @@ public class PaymentSetupRequest implements Serializable {
   private DomesticTransferInitiation domesticTransferInitiation;
   @OneToOne
   private Risk risk;
+
+  public PaymentSetupRequest(Long id, StatusEnum statusenum2, String domestictransferinitiation2, String risk2) {
+  }
 }
