@@ -52,9 +52,7 @@ public class AccountAndTransactionService {
     private   DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
 
 
-    public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId, String
-            xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
-                                                                   authorization, String ocpApimSubscriptionKey) {
+    public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId) {
         StandingOrderDetailedInfo detailed = standingOrderDetailedInfoRepository.findByIdAndAccountId(standingOrderId, accountId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ordem permanente não encontrado!"));
         return new StandingOrderDetailedDTO(detailed.getStandingOrderId(), detailed.getName()
@@ -112,9 +110,7 @@ public class AccountAndTransactionService {
         return cardRepository.findAll().stream().filter(belongsToThisAccount).toList();
     }
 
-    public DirectDebitDetailedInfo findByIdDirectDebitsDetailed(String accountId, String directDebitId, String
-            xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbLang, String xAbInteractionId, String
-                                                                        authorization, String ocpApimSubscriptionKey) {
+    public DirectDebitDetailedInfo findByIdDirectDebitsDetailed(String accountId, String directDebitId) {
         return directDebitDetailedInfoRepository.findByIdAndAccountId(directDebitId, accountId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Débito direto não encontrado!"));
     }

@@ -40,7 +40,7 @@ public class OpenDataService {
         return bankAtmsRepository.findAll();
     }
 
-    public List<Akps> listAllAkpsBank(String xAbBankId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
+    public List<Akps> listAllAkpsBank() {
         return akpsRepository.findAll();
     }
 }
