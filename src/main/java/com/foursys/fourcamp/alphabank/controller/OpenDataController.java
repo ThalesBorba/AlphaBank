@@ -18,12 +18,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/open-data")
 public class OpenDataController {
 
-    private final OpenDataService openDataService;
-    
-
-    public OpenDataController(OpenDataService openDataService) {
-        this.openDataService = openDataService;
-    }
+    @Autowired
+    private OpenDataService openDataService;
     
     @Autowired
     private ModelMapper mapper;

@@ -8,6 +8,7 @@ import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.repository.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,35 +22,45 @@ import java.util.function.Predicate;
 @Service
 public class AccountAndTransactionService {
 
+    @Autowired
     private StandingOrderDetailedInfoRepository standingOrderDetailedInfoRepository;
 
-    private  DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
+    @Autowired
+    private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
 
 
-    private  AccountRequestRepository accountRequestRepository;
+    @Autowired
+    private AccountRequestRepository accountRequestRepository;
 
-    private  AccountsResponseRepository accountsResponseRepository;
+    @Autowired
+    private AccountsResponseRepository accountsResponseRepository;
 
-    private  ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    private   BalancesResponseRepository balancesResponseRepository;
+    @Autowired
+    private BalancesResponseRepository balancesResponseRepository;
 
-    private  AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    private  StandingOrderRepository standingOrderRepository;
+    @Autowired
+    private StandingOrderRepository standingOrderRepository;
 
-    private  BeneficiariesRepository beneficiariesRepository;
+    @Autowired
+    private BeneficiariesRepository beneficiariesRepository;
 
 
-    private  TransactionsRepository transactionsRepository;
+    @Autowired
+    private TransactionsRepository transactionsRepository;
+    @Autowired
+    private CardRepository cardRepository;
 
 
-    private  CardRepository cardRepository;
-
-    private   StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
+    private StandingOrderDetailedInfoMapper standingOrderDetailedInfoMapper = StandingOrderDetailedInfoMapper.
             INSTANCE;
 
-    private   DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
+    private DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper = DirectDebitDetailedInfoMapper.INSTANCE;
 
 
     public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId) {

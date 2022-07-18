@@ -1,25 +1,22 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Date;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/payments/transfers")
 public class PaymentsController {
 
-    private final PaymentService paymentService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping("/domestic")
@@ -133,13 +130,13 @@ public class PaymentsController {
      * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
      * }
      */
-    @GetMapping("/history")
-    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String accountId,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
-            String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
-            String ocpApimSubscriptionKey) {
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK)
-                .body(paymentService.returnTransfersByPeriod(accountId, fromDate, toDate)));
-    }
+//    @GetMapping("/history")
+//    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable String accountId,
+//            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+//            String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String authorization,
+//            String ocpApimSubscriptionKey) {
+//        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK)
+//                .body(paymentService.returnTransfersByPeriod(accountId, fromDate, toDate)));
+//    }
 
 }

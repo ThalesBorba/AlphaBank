@@ -19,12 +19,7 @@ import java.util.stream.Collectors;
 public class AccountAndTransactionController {
 
     @Autowired
-    private final AccountAndTransactionService accountAndTransactionService;
-
-    @Autowired
-    public AccountAndTransactionController(AccountAndTransactionService accountAndTransactionService) {
-        this.accountAndTransactionService = accountAndTransactionService;
-    }
+    private AccountAndTransactionService accountAndTransactionService;
 
     @Autowired
     private ModelMapper mapper;
