@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentService {
@@ -31,7 +33,7 @@ public class PaymentService {
 
     public List<TransferInfo> returnTransfersByAccount(String accountId) {
         return transferInfoRepository.findAll().stream().filter(transfer -> transfer.getAccountId().equals(accountId))
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public PaymentSetupRequest createDomesticPaymentSetupRequest(PaymentSetupRequestDTO obj) {

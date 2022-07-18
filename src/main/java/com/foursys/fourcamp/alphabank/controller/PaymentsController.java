@@ -1,7 +1,8 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
+import com.foursys.fourcamp.alphabank.entities.TransferInfo;
+import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/payments/transfers")
@@ -117,9 +119,8 @@ public class PaymentsController {
      */
 
     @GetMapping("/history/{account-id}")
-    public ResponseEntity<Object> returnTransfersByAccount(@PathVariable String accountId){
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.
-                returnTransfersByAccount(accountId)));
+    public ResponseEntity<List<TransferInfo>> returnTransfersByAccount(@PathVariable String accountId){
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnTransfersByAccount(accountId));
     }
     @GetMapping("/history")
     public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -128,7 +129,7 @@ public class PaymentsController {
     }
 
     @GetMapping("/internacional/{transfer-request-id}")
-    public ResponseEntity<Object> returnInternationalTransferRequest(@PathVariable String tranferRequestId){
+    public ResponseEntity<TransferRequest> returnInternationalTransferRequest(@PathVariable String tranferRequestId){
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnInternationalTransferRequest(tranferRequestId));
     }
 }
