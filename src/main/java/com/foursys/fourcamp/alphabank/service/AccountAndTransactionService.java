@@ -3,7 +3,6 @@ package com.foursys.fourcamp.alphabank.service;
 import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
-import com.foursys.fourcamp.alphabank.dto.repository.*;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
