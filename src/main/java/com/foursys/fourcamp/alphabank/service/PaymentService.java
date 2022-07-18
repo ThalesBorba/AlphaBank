@@ -6,7 +6,7 @@ import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
-import com.foursys.fourcamp.alphabank.repository.TranferRequestRepository;
+import com.foursys.fourcamp.alphabank.repository.TransferRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PaymentService {
     @Autowired
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
     @Autowired
-    private TranferRequestRepository tranferRequestRepository;
+    private TransferRequestRepository transferRequestRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -50,6 +50,6 @@ public class PaymentService {
     }
 
     public TransferRequest returnInternationalTransferRequest(String transferRequestId) {
-        return tranferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
+        return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
     }
 }
