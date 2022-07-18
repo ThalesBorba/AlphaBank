@@ -37,6 +37,6 @@ public class PaymentService {
     public PaymentSetupRequest getDomesticPaymentSetupRequest(Long Id) {
         Optional<PaymentSetupRequest> obj = paymentSetupRequestRepository.findById(Id);
 
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 }

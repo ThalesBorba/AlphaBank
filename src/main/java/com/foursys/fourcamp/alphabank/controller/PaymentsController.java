@@ -1,25 +1,18 @@
 package com.foursys.fourcamp.alphabank.controller;
 
-import java.net.URI;
-import java.util.Date;
-
+import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.exceptions.Handler;
+import com.foursys.fourcamp.alphabank.service.PaymentService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
-import com.foursys.fourcamp.alphabank.service.PaymentService;
-
-import lombok.AllArgsConstructor;
+import java.net.URI;
+import java.util.Date;
 
 @RestController
 @AllArgsConstructor
@@ -32,8 +25,7 @@ public class PaymentsController {
     @PostMapping("/domestic")
     public ResponseEntity<PaymentSetupRequestDTO> createTransferIntent(@RequestBody PaymentSetupRequestDTO objDto) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(paymentService.createDomesticPaymentSetupRequest(objDto).getTransferRequestId())
-                .toUri();
+                .buildAndExpand(paymentService.createDomesticPaymentSetupRequest(objDto).getTransferRequestId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
