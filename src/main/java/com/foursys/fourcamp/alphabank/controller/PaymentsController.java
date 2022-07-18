@@ -84,16 +84,6 @@ public class PaymentsController {
      * method));
      * }
      * 
-     * @GetMapping("/internacional/{transfer-request-id}")
-     * public ResponseEntity<Object>
-     * returnInternationalTransferRequest(@PathVariable String tranferRequestId,
-     * String
-     * xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId,
-     * String xAbLang, String
-     * authorization, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
-     * 
      * @DeleteMapping("/internacional/{transfer-request-id}")
      * public ResponseEntity<Object>
      * deleteInternationalTransferRequest(@PathVariable String tranferRequestId,
@@ -137,4 +127,8 @@ public class PaymentsController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnPaymentsByTimePeriod(fromDate, toDate));
     }
 
+    @GetMapping("/internacional/{transfer-request-id}")
+    public ResponseEntity<Object> returnInternationalTransferRequest(@PathVariable String tranferRequestId){
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnInternationalTransferRequest(tranferRequestId));
+    }
 }
