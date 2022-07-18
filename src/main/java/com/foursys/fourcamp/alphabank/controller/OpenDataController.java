@@ -30,22 +30,20 @@ public class OpenDataController {
     private ModelMapper mapper;
 
     @GetMapping("/branches")
-    public ResponseEntity<Object> returnBankBranches(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
+    public ResponseEntity<Object> returnBankBranches(){
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.findAllBranch()));
     }
     
     @GetMapping("/rates")
-    public ResponseEntity<Object> returnBankCurrencyRates(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
+    public ResponseEntity<Object> returnBankCurrencyRates(){
         //metodo para autorizar ou não
         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.
                 returnBankCurrencyRates()));
     }
 
     @GetMapping("/akps")
-    public ResponseEntity<Object> listAllAkpsBank(String xAbBankId, String xAbLang, String authorization, String ocpApimSubscriptionKey) {
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.listAllAkpsBank(xAbBankId, xAbLang, authorization, ocpApimSubscriptionKey)));
+    public ResponseEntity<Object> listAllAkpsBank() {
+        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.listAllAkpsBank()));
     }
 
     //Tirei os parametros, irei ve como vou fazer
