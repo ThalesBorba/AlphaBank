@@ -1,8 +1,6 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.entities.AccountRequest;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
@@ -17,7 +15,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Date;
 import java.util.ArrayList;
