@@ -29,12 +29,12 @@ public class DeliveryAddress implements Serializable {
     @Size(min = 1, max = 16)
     private String postCode;
     @Size(min = 1, max = 35)
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     private String townName;
     //items max 2
     @ElementCollection
     private List<String> countrySubDivision=new ArrayList<>();
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     @Pattern(regexp = "^[A-Z]{2,2}$")
     private String country;
 }

@@ -1,6 +1,8 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.Risk;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;
@@ -54,25 +56,25 @@ public class PaymentsController {
      * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(
      * method));
      * }
-     * 
-     * @PostMapping("/domestic/submissions")
-     * public ResponseEntity<Object> createTransferSubmission(@RequestBody @Valid
-     * class, @PathVariable String xAbBankId,
-     * String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String
-     * authorization, String
-     * ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(
-     * method));
-     * }
-     * 
-     * @GetMapping("/domestic/submissions/{transfer-submission-id}")
-     * public ResponseEntity<Object> returnTransferSubmission(@PathVariable String
-     * tranferSubmissionId, String xAbBankId,
-     * String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String
-     * authorization, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
-     * 
+     */
+      @PostMapping("/domestic/submissions")
+      public ResponseEntity<PaymentDomesticSubmissionDTO> createTransferSubmission(@RequestBody PaymentDomesticSubmissionDTO obj){
+          URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                  .buildAndExpand(paymentService.createPaymentDomesticSubmission(obj).getTransferRequestId()).toUri();
+          return ResponseEntity.created(uri).build();
+      }
+
+      @GetMapping("/domestic/submissions/{transfer-submission-id}")
+      public ResponseEntity<Object> returnTransferSubmission(@PathVariable("transfer-submission-id") Long id){
+      return ResponseEntity.ok().body(paymentService.getPaymentDomesticSubmission(id));
+      }
+
+      @PostMapping("/risk")
+      public ResponseEntity<Object> createRisk(@RequestBody Risk obj){
+         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.createRisk(obj)));
+      }
+
+      /*
      * @PostMapping("/internacional")
      * public ResponseEntity<Object>
      * createInternationalTransferIntent(@RequestBody @Valid class, @PathVariable

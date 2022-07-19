@@ -26,20 +26,20 @@ import lombok.NoArgsConstructor;
 public class DomesticTransferInitiation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     private TranferTypeEnum transferType;
     private OurShareEnum ourShare;
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     @Size(min = 1, max = 35)
     private String instructionIdentification;
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     @Size(min = 1, max = 35)
     private String endToEndIdentification;
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     @OneToMany
     private List<Amount> instructedAmount;
     private String debtorAccount;
-    @NotEmpty(message = "Campo obrigatório")
+    //@NotEmpty(message = "Campo obrigatório")
     @OneToMany
     private List<CreditorAccount> creditorAccounts;
     private String debtorInformation;
