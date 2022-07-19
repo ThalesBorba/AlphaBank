@@ -1,10 +1,12 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
-import com.foursys.fourcamp.alphabank.entities.Card;
+import com.foursys.fourcamp.alphabank.entities.*;
+import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 import com.foursys.fourcamp.alphabank.repository.BalancesResponseRepository;
 import com.foursys.fourcamp.alphabank.repository.CardRepository;
+import com.foursys.fourcamp.alphabank.repository.TransactionsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +42,18 @@ class AccountAndTransactionServiceTest {
     private CardRepository cardRepository;
 
     @Mock
+    private TransactionsRepository transactionsRepository;
+
+    @Mock
     private ModelMapper mapper;
+
+    public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
+
+    public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
+
+    public static final Amount AMOUNT = new Amount();
+
+    public static final MerchantDetails MERCHANT_DETAILS = new MerchantDetails();
 
     private BalancesResponseDTO balancesResponseDTO;
 
@@ -49,7 +61,7 @@ class AccountAndTransactionServiceTest {
 
     private Card card;
 
-    private Optional<Card> cardOptional;
+    private Transaction transaction;
 
 
     @BeforeEach
@@ -57,6 +69,7 @@ class AccountAndTransactionServiceTest {
         MockitoAnnotations.openMocks(this);
         startBalances();
         startCard();
+        startTransaction();
     }
 
     @Test
@@ -70,8 +83,6 @@ class AccountAndTransactionServiceTest {
         assertEquals(BalancesResponse.class, response.get(INDEX).getClass());
         assertEquals(ArrayList.class, response.getClass());
         assertEquals(ID, response.get(INDEX).getId());
-
-
     }
 
     @Test
@@ -86,8 +97,30 @@ class AccountAndTransactionServiceTest {
         assertEquals(ArrayList.class, response.getClass());
         assertEquals(ID, response.get(INDEX).getId());
         assertEquals(STRING_ID, response.get(INDEX).getAccountId());
+    }
 
+    @Test
+    void whenFindAccountThenReturnAListOfTransactions() {
+        when(transactionsRepository.findAll()).thenReturn(List.of(transaction));
 
+        ArrayList<Transaction> response = new ArrayList<>(accountAndTransactionService.returnAllTransactionsByAccount(STRING_ID));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Transaction.class, response.get(INDEX).getClass());
+        assertEquals(ArrayList.class, response.getClass());
+        assertEquals(STRING_ID, response.get(INDEX).getTransactionId());
+        assertEquals(STRING_ID, response.get(INDEX).getAccountId());
+        assertEquals(PRODUCT_IDENTIFIER_ENUM, response.get(INDEX).getProductIdentifier());
+        assertEquals(AMOUNT, response.get(INDEX).getAmount());
+        assertEquals(CREDIT_DEBIT_INDICATOR_ENUM, response.get(INDEX).getCreditDebitIndicator());
+        assertEquals(STRING_ID, response.get(INDEX).getOriginatorAccount());
+        assertEquals(STRING_ID, response.get(INDEX).getEndToEndIdentification());
+        assertEquals(STRING_ID, response.get(INDEX).getInstructionIdentification());
+        assertEquals(DATE, response.get(INDEX).getBookingDateTime());
+        assertEquals(DATE, response.get(INDEX).getValueDateTime());
+        assertEquals("A", response.get(INDEX).getTransactionInformation());
+        assertEquals(MERCHANT_DETAILS, response.get(INDEX).getMerchantDetails());
     }
 
     private void startBalances() {
@@ -98,6 +131,12 @@ class AccountAndTransactionServiceTest {
 
     private void startCard() {
         card = new Card(ID, "4567456745674567", "Jose", "1234", DATE, "VISA", 123, false, "1");
-        cardOptional = Optional.of(new Card(ID, "4567456745674567", "Jose", "1234", DATE, "VISA", 123, false, "1"));
     }
+
+    private void startTransaction() {
+        transaction = new Transaction(STRING_ID, STRING_ID, PRODUCT_IDENTIFIER_ENUM, AMOUNT, CREDIT_DEBIT_INDICATOR_ENUM,
+               "1", "1", "1", DATE, DATE, "A", MERCHANT_DETAILS);
+    }
+
+
 }

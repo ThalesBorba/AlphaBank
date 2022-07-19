@@ -1,8 +1,9 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
-import com.foursys.fourcamp.alphabank.entities.Card;
+import com.foursys.fourcamp.alphabank.entities.*;
+import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
+import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,6 +35,14 @@ class AccountAndTransactionControllerTest {
     private BalancesResponse balancesResponse = new BalancesResponse();
     private BalancesResponseDTO balancesResponseDTO = new BalancesResponseDTO();
 
+    public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
+
+    public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
+
+    public static final Amount AMOUNT = new Amount();
+
+    public static final MerchantDetails MERCHANT_DETAILS = new MerchantDetails();
+
     @InjectMocks
     private AccountAndTransactionController accountAndTransactionController;
 
@@ -46,14 +54,14 @@ class AccountAndTransactionControllerTest {
 
     private Card card;
 
-    private Optional<Card> cardOptional;
-
+    private Transaction transaction;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         startBalances();
         startCard();
+        startTransaction();
     }
 
     @Test
@@ -92,6 +100,25 @@ class AccountAndTransactionControllerTest {
 
     }
 
+    @Test
+    void whenFindAllThenReturnListOfTransactions() {
+        when(accountAndTransactionService.returnAllTransactionsByAccount(STRING_ID)).thenReturn(
+                new ArrayList<>(List.of(transaction)));
+
+        ResponseEntity<List<Transaction>> response = accountAndTransactionController.returnAccountTransactions(STRING_ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(Transaction.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getTransactionId());
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
+
+    }
+
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
         balancesResponseDTO = new BalancesResponseDTO(ID, new ArrayList<>());
@@ -99,6 +126,10 @@ class AccountAndTransactionControllerTest {
 
     private void startCard() {
         card = new Card(ID, "4567456745674567", "Jose", "1234", DATE, "VISA", 123, false, "1");
-        cardOptional = Optional.of(new Card(ID, "4567456745674567", "Jose", "1234", DATE, "VISA", 123, false, "1"));
+    }
+
+    private void startTransaction() {
+        transaction = new Transaction(STRING_ID, STRING_ID, PRODUCT_IDENTIFIER_ENUM, AMOUNT, CREDIT_DEBIT_INDICATOR_ENUM,
+                "1", "1", "1", DATE, DATE, "A", MERCHANT_DETAILS);
     }
 }
