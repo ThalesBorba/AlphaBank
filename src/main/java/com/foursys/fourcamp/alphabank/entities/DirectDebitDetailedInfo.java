@@ -7,7 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +24,6 @@ public class DirectDebitDetailedInfo implements Serializable {
     private String productType;
     private String productName;
     private StatusEnum status;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @ManyToOne
     @JoinColumn(name = "amount_id")

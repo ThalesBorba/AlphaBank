@@ -5,7 +5,6 @@ import com.foursys.fourcamp.alphabank.enums.GenderEnum;
 import com.foursys.fourcamp.alphabank.enums.LanguageEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -31,14 +30,12 @@ public class Beneficiary implements Serializable {
     private String lastName;
     private String firstName;
     private String fatherName;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date birthDate;
     private LanguageEnum language;
     private String nationality;
     private GenderEnum gender;
     @OneToOne
     private TaxInformation taxInformation;
-    //Identity é uma classe que já existe
     @OneToOne
     private PersonalIdentity personalIdentity;
     @OneToMany
@@ -46,13 +43,9 @@ public class Beneficiary implements Serializable {
     @OneToMany
     private List<Adress> adresses;
     private String bussinessActivity;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date corpExpirationDate;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date legalEntityExpiryDate;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date insuranceClearanceExpiryDate;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date TaxClearanceExpiryDate;
 
 }

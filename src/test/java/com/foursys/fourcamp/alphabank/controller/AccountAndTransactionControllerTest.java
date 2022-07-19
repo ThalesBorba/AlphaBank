@@ -1,11 +1,10 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.entities.AccountRequest;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
+import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,6 +38,8 @@ class AccountAndTransactionControllerTest {
     private BalancesResponse balancesResponse = new BalancesResponse();
     private BalancesResponseDTO balancesResponseDTO = new BalancesResponseDTO();
 
+    private DirectDebitBasicInfo directDebitBasicInfo;
+
     public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
 
     public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
@@ -46,6 +47,10 @@ class AccountAndTransactionControllerTest {
     public static final Amount AMOUNT = new Amount();
 
     public static final MerchantDetails MERCHANT_DETAILS = new MerchantDetails();
+
+    public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
+
+    private Optional<DirectDebitBasicInfo> optionalDirectDebitBasicInfo;
 
     @InjectMocks
     private AccountAndTransactionController accountAndTransactionController;
@@ -66,6 +71,7 @@ class AccountAndTransactionControllerTest {
         startBalances();
         startCard();
         startTransaction();
+        startDirectDebit();
     }
 
     @Test
@@ -139,6 +145,24 @@ class AccountAndTransactionControllerTest {
 
     }
 
+    @Test
+    void whenFindAllThenReturnListOfDirectDebitsBasicInfo() {
+        when(accountAndTransactionService.returnAllDirectDebitByAccount(STRING_ID)).thenReturn(new ArrayList<>(List.of(directDebitBasicInfo)));
+
+        ResponseEntity<List<DirectDebitBasicInfo>> response = accountAndTransactionController.returnAllDirectDebits(STRING_ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(DirectDebitBasicInfo.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getDirectDebitId());
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
+
+    }
+
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
         balancesResponseDTO = new BalancesResponseDTO(ID, new ArrayList<>());
@@ -151,5 +175,10 @@ class AccountAndTransactionControllerTest {
     private void startTransaction() {
         transaction = new Transaction(STRING_ID, STRING_ID, PRODUCT_IDENTIFIER_ENUM, AMOUNT, CREDIT_DEBIT_INDICATOR_ENUM,
                 "1", "1", "1", DATE, DATE, "A", MERCHANT_DETAILS);
+    }
+
+    private void startDirectDebit() {
+        directDebitBasicInfo = new DirectDebitBasicInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM);
+        optionalDirectDebitBasicInfo = Optional.of(new DirectDebitBasicInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM));
     }
 }

@@ -26,11 +26,8 @@ public class StandingOrderDetailedInfo implements Serializable {
     //todo relacionamento
     private String accountId;
     private StatusEnum status;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date dateStart;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date dateStop;
     @OneToOne
     private Amount amount;

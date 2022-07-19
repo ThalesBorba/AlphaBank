@@ -1,16 +1,13 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.entities.AccountRequest;
-import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
-import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
-import com.foursys.fourcamp.alphabank.repository.AccountRequestRepository;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
-import com.foursys.fourcamp.alphabank.repository.BalancesResponseRepository;
-import com.foursys.fourcamp.alphabank.repository.CardRepository;
-import com.foursys.fourcamp.alphabank.repository.TransactionsRepository;
+import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
+import com.foursys.fourcamp.alphabank.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,8 +24,9 @@ import java.util.Optional;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class AccountAndTransactionServiceTest {
@@ -49,6 +47,9 @@ class AccountAndTransactionServiceTest {
     private CardRepository cardRepository;
 
     @Mock
+    private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
+
+    @Mock
     private TransactionsRepository transactionsRepository;
 
     @Mock
@@ -56,7 +57,9 @@ class AccountAndTransactionServiceTest {
 
     @Mock
     private AccountRequestRepository accountRequestRepository;
-    
+
+    public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
+
     public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
 
     public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
@@ -67,7 +70,13 @@ class AccountAndTransactionServiceTest {
 
     private BalancesResponseDTO balancesResponseDTO;
 
+    private DirectDebitDetailedInfo directDebitDetailedInfo;
+
+    private DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper;
+
     private BalancesResponse balancesResponse;
+
+    private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
     private Card card;
 
@@ -132,6 +141,23 @@ class AccountAndTransactionServiceTest {
         assertEquals("A", response.get(INDEX).getTransactionInformation());
         assertEquals(MERCHANT_DETAILS, response.get(INDEX).getMerchantDetails());
     }
+
+    @Test
+    void whenFindAllThenReturnAnListOfDirectDebitsBasicInfo() {
+        when(directDebitDetailedInfoRepository.findAll()).thenReturn(new ArrayList<>(List.of(directDebitDetailedInfo)));
+
+        List<DirectDebitBasicInfo> response = new ArrayList<>(accountAndTransactionService.returnAllDirectDebitByAccount(STRING_ID));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(DirectDebitBasicInfo.class, response.get(INDEX).getClass());
+        assertEquals(ArrayList.class, response.getClass());
+        assertEquals(STRING_ID, response.get(INDEX).getDirectDebitId());
+        assertEquals(STRING_ID, response.get(INDEX).getAccountId());
+        assertEquals("C", response.get(INDEX).getProductName());
+        assertEquals(STATUS_ENUM, response.get(INDEX).getStatus());
+    }
+
     @Test
     void devedeletarrequisicaodeumaconta(){
 
@@ -162,5 +188,11 @@ class AccountAndTransactionServiceTest {
                "1", "1", "1", DATE, DATE, "A", MERCHANT_DETAILS);
     }
 
+    private void startDirectDebit() {
+        directDebitDetailedInfo = new DirectDebitDetailedInfo(STRING_ID, "A", STRING_ID, "B",
+                "C", STATUS_ENUM, DATE, AMOUNT);
+        optionalDirectDebitDetailedInfo = Optional.of(new DirectDebitDetailedInfo(STRING_ID, "A", STRING_ID,
+                "B", "C", STATUS_ENUM, DATE, AMOUNT));
+    }
 
 }
