@@ -3,6 +3,7 @@ package com.foursys.fourcamp.alphabank.controller;
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.entities.Card;
+import com.foursys.fourcamp.alphabank.entities.DirectDebitBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.Transaction;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
@@ -64,7 +65,7 @@ public class AccountAndTransactionController {
     }
 
     @GetMapping("/accounts/{account-id}/direct-debits")
-    public ResponseEntity<Object> returnAllDirectDebits(@PathVariable String accountId) {
+    public ResponseEntity<List<DirectDebitBasicInfo>> returnAllDirectDebits(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllDirectDebitByAccount(accountId));
     }
