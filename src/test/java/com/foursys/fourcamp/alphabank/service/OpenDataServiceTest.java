@@ -1,14 +1,12 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
-import com.foursys.fourcamp.alphabank.entities.Akps;
-import com.foursys.fourcamp.alphabank.entities.BankAtms;
-import com.foursys.fourcamp.alphabank.entities.BranchList;
-import com.foursys.fourcamp.alphabank.entities.CurrencyRate;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.repository.AkpsRepository;
 import com.foursys.fourcamp.alphabank.repository.BankAtmsRepository;
 import com.foursys.fourcamp.alphabank.repository.BranchListRepository;
 import com.foursys.fourcamp.alphabank.repository.CurrencyRateRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,10 +15,13 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -38,15 +39,15 @@ class OpenDataServiceTest {
     public static final String SETTLEMENTTYPE = "Seinao";
     public static final Long ID = 1L;
     public static final  Boolean ISINBRANCH = true;
-
+    public static final Date DATE = new Date();
     public static final String COUNTRY = "Brasil";
     public static final String PHONE = "449999911445";
     public static final String FAX = "123456877";
-
+    public static final Currency CURRENCY = new Currency();
     public static final int INDEX = 0;
 
     @InjectMocks
-    private OpenDataService service;
+    private OpenDataService openDataService;
 
     @Mock
     private BankAtmsRepository bankAtmsRepository;
@@ -62,6 +63,8 @@ class OpenDataServiceTest {
 
     @Mock
     private ModelMapper mapper;
+
+    private Optional<CurrencyRate> optionalCurrencyRate;
 
     private BankAtms bankAtms;
 
@@ -79,6 +82,7 @@ class OpenDataServiceTest {
         startAtms();
         startAkps();
         startBranch();
+        startCurrencyRate();
     }
 
     @Test
@@ -141,6 +145,20 @@ class OpenDataServiceTest {
         assertEquals(LON, response.get(INDEX).getLon());
     }
 
+    @Test
+    void whenFindByIdThenReturnAnCurrencyRateInstance() {
+        when(currencyRateRepository.findById(anyLong())).thenReturn(optionalCurrencyRate);
+
+        CurrencyRate response = openDataService.returnBankCurrencyRates();
+
+        Assertions.assertNotNull(response);
+        assertEquals(CurrencyRate.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(DATE, response.getExchangeRatesDate());
+        assertEquals(DATE, response.getEcbrRatesDate());
+        assertEquals(CURRENCY, response.getCurrencies());
+    }
+
     private void startAtms() {
         bankAtms = new BankAtms(ID, NAME, CITY, REGION, ADDRESS, ZIPCODE, ACCESS, LAT, LON, SETTLEMENTTYPE);
         bankAtmsDTO = new BankAtmsDTO(ID, NAME, CITY, REGION, ADDRESS, ZIPCODE, ACCESS, LAT, LON, SETTLEMENTTYPE);
@@ -152,6 +170,11 @@ class OpenDataServiceTest {
 
     private void startBranch(){
         branchList = new BranchList(ID, NAME, CITY, REGION, COUNTRY, ADDRESS, ZIPCODE, PHONE, FAX, LAT, LON);
+    }
+
+    private void startCurrencyRate() {
+        currencyRate = new CurrencyRate(ID, DATE, DATE, CURRENCY);
+        optionalCurrencyRate = Optional.of(new CurrencyRate(ID, DATE, DATE, CURRENCY));
     }
 
 
