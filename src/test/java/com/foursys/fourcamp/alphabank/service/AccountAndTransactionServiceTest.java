@@ -89,6 +89,7 @@ class AccountAndTransactionServiceTest {
         startBalances();
         startCard();
         startTransaction();
+        startDirectDebit();
     }
 
     @Test
@@ -144,7 +145,7 @@ class AccountAndTransactionServiceTest {
 
     @Test
     void whenFindAllThenReturnAnListOfDirectDebitsBasicInfo() {
-        when(directDebitDetailedInfoRepository.findAll()).thenReturn(new ArrayList<>(List.of(directDebitDetailedInfo)));
+        when(directDebitDetailedInfoRepository.findAll()).thenReturn(List.of(directDebitDetailedInfo));
 
         List<DirectDebitBasicInfo> response = new ArrayList<>(accountAndTransactionService.returnAllDirectDebitByAccount(STRING_ID));
 
@@ -168,8 +169,6 @@ class AccountAndTransactionServiceTest {
         verify(accountRequestRepository,times(1)).findById(eq(1L));
         verify(accountRequestRepository,times(1)).deleteById(eq(1L));
         assertThrows(ObjectNotFoundException.class,()->accountAndTransactionService.deleteAccountRequest(2L));
-
-
 
     }
 
