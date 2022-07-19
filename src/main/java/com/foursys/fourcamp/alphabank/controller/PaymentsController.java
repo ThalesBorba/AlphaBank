@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -136,8 +136,8 @@ public class PaymentsController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnTransfersByAccount(accountId));
     }
     @GetMapping("/history")
-    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
-           LocalDate fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+    public ResponseEntity<List<TransferInfo>> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
+        Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnPaymentsByTimePeriod(fromDate, toDate));
     }
 
