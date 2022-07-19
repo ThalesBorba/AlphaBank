@@ -3,9 +3,7 @@ package com.foursys.fourcamp.alphabank.controller;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
-import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
-import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,9 +51,23 @@ class AccountAndTransactionControllerTest {
 
     public static final CreditorAccount CREDITOR_ACCOUNT = new CreditorAccount();
 
+    public static final CustomerTypeEnum CUSTOMER_TYPE_ENUM = CustomerTypeEnum.INDIVIDUAL;
+
+    public static final LanguageEnum LANGUAGE_ENUM = LanguageEnum.EL;
+
+    public static final GenderEnum GENDER_ENUM = GenderEnum.MALE;
+    public static final TaxInformation TAX_INFORMATION = new TaxInformation();
+    public static final PersonalIdentity PERSONAL_IDENTITY = new PersonalIdentity();
+    public static final List<Contact> CONTACTS = new ArrayList<>();
+    public static final List<Adress> ADRESSES = new ArrayList<>();
+
     public static final ExecutionPlan EXECUTION_PLAN = new ExecutionPlan();
 
     public static final OrderExecution ORDER_EXECUTION = new OrderExecution();
+
+    private Optional<Beneficiary> optionalBeneficiary;
+
+    private Beneficiary beneficiary;
 
     private StandingOrderBasicInfo standingOrderBasicInfo;
 
@@ -72,6 +84,7 @@ class AccountAndTransactionControllerTest {
     @Mock
     private AccountAndTransactionService accountAndTransactionService;
 
+
     private Card card;
 
     private Transaction transaction;
@@ -84,6 +97,7 @@ class AccountAndTransactionControllerTest {
         startTransaction();
         startDirectDebit();
         startStandingOrder();
+        startBeneficiaries();
     }
 
     @Test
@@ -193,6 +207,24 @@ class AccountAndTransactionControllerTest {
 
     }
 
+    @Test
+    void whenFindAllThenReturnListOfBeneficiaries() {
+        when(accountAndTransactionService.returnAllBeneficiariesByAccount(STRING_ID)).thenReturn(new ArrayList<>(List.of(beneficiary)));
+
+        ResponseEntity<List<Beneficiary>> response = accountAndTransactionController.returnAccountBeneficiaries(STRING_ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(Beneficiary.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getCustomerNumber());
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
+
+    }
+
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
         balancesResponseDTO = new BalancesResponseDTO(ID, new ArrayList<>());
@@ -215,5 +247,11 @@ class AccountAndTransactionControllerTest {
     private void startStandingOrder() {
         standingOrderBasicInfo = new StandingOrderBasicInfo(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT);
         optionalStandingOrderBasicInfo = Optional.of(new StandingOrderBasicInfo(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT));
+    }
+
+    private void startBeneficiaries() {
+        beneficiary = new Beneficiary(STRING_ID, STRING_ID, CUSTOMER_TYPE_ENUM, "A", "B", "C", "D", "E", DATE, LANGUAGE_ENUM,
+                "F", GENDER_ENUM, TAX_INFORMATION, PERSONAL_IDENTITY, CONTACTS, ADRESSES, "G", DATE, DATE, DATE, DATE);
+        optionalBeneficiary = Optional.of(beneficiary);
     }
 }

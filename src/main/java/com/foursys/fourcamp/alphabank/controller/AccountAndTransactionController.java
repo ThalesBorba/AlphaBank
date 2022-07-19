@@ -3,10 +3,7 @@ package com.foursys.fourcamp.alphabank.controller;
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
-import com.foursys.fourcamp.alphabank.entities.AccountRequest;
-import com.foursys.fourcamp.alphabank.entities.Card;
-import com.foursys.fourcamp.alphabank.entities.DirectDebitBasicInfo;
-import com.foursys.fourcamp.alphabank.entities.Transaction;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.modelmapper.ModelMapper;
@@ -61,7 +58,7 @@ public class AccountAndTransactionController {
     }
 
     @GetMapping("/accounts/{account-id}/beneficiaries")
-    public ResponseEntity<Object> returnAccountBeneficiaries(@PathVariable String accountId) {
+    public ResponseEntity<List<Beneficiary>> returnAccountBeneficiaries(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
                 returnAllBeneficiariesByAccount(accountId));
     }
