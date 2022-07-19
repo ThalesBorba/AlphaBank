@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.entities.Card;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.modelmapper.ModelMapper;
@@ -74,7 +75,7 @@ public class AccountAndTransactionController {
     }
 
     @GetMapping("/account/details/cards")
-    public ResponseEntity<Object> returnAllCards(@PathVariable String accountId) {
+    public ResponseEntity<List<Card>> returnAllCards(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.returnAllCardsByAccount(accountId));
     }
 
