@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.entities.AccountRequest;
 import com.foursys.fourcamp.alphabank.entities.Card;
 import com.foursys.fourcamp.alphabank.entities.DirectDebitBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.Transaction;
@@ -52,7 +53,7 @@ public class AccountAndTransactionController {
 
     @Transactional
     @DeleteMapping("/account-requests/{account-request-id}")
-    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
+    public ResponseEntity<AccountRequest> deleteAccountRequest(@PathVariable Long accountRequestId) {
         accountAndTransactionService.deleteAccountRequest(accountRequestId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 

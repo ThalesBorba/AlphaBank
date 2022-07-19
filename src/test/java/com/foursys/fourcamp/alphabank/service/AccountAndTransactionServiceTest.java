@@ -5,11 +5,9 @@ import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
-import com.foursys.fourcamp.alphabank.repository.BalancesResponseRepository;
-import com.foursys.fourcamp.alphabank.repository.CardRepository;
-import com.foursys.fourcamp.alphabank.repository.DirectDebitDetailedInfoRepository;
-import com.foursys.fourcamp.alphabank.repository.TransactionsRepository;
+import com.foursys.fourcamp.alphabank.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +23,10 @@ import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class AccountAndTransactionServiceTest {
@@ -46,13 +47,16 @@ class AccountAndTransactionServiceTest {
     private CardRepository cardRepository;
 
     @Mock
-    private TransactionsRepository transactionsRepository;
-
-    @Mock
     private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
 
     @Mock
+    private TransactionsRepository transactionsRepository;
+
+    @Mock
     private ModelMapper mapper;
+
+    @Mock
+    private AccountRequestRepository accountRequestRepository;
 
     public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
 
@@ -66,17 +70,17 @@ class AccountAndTransactionServiceTest {
 
     private BalancesResponseDTO balancesResponseDTO;
 
-    private BalancesResponse balancesResponse;
-
     private DirectDebitDetailedInfo directDebitDetailedInfo;
 
     private DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper;
 
+    private BalancesResponse balancesResponse;
+
+    private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
+
     private Card card;
 
     private Transaction transaction;
-
-    private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
 
     @BeforeEach
@@ -85,7 +89,6 @@ class AccountAndTransactionServiceTest {
         startBalances();
         startCard();
         startTransaction();
-        startDirectDebit();
     }
 
     @Test
@@ -155,6 +158,21 @@ class AccountAndTransactionServiceTest {
         assertEquals(STATUS_ENUM, response.get(INDEX).getStatus());
     }
 
+    @Test
+    void devedeletarrequisicaodeumaconta(){
+
+        doNothing().when(accountRequestRepository).deleteById(eq(1L));
+        when(accountRequestRepository.findById(eq(1L))).thenReturn(Optional.of(new AccountRequest()));
+
+        accountAndTransactionService.deleteAccountRequest(1L);
+        verify(accountRequestRepository,times(1)).findById(eq(1L));
+        verify(accountRequestRepository,times(1)).deleteById(eq(1L));
+        assertThrows(ObjectNotFoundException.class,()->accountAndTransactionService.deleteAccountRequest(2L));
+
+
+
+    }
+
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
         balancesResponseDTO = new BalancesResponseDTO(ID, new ArrayList<>());
@@ -176,6 +194,5 @@ class AccountAndTransactionServiceTest {
         optionalDirectDebitDetailedInfo = Optional.of(new DirectDebitDetailedInfo(STRING_ID, "A", STRING_ID,
                 "B", "C", STATUS_ENUM, DATE, AMOUNT));
     }
-
 
 }
