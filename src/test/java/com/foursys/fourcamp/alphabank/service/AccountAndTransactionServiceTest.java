@@ -1,6 +1,10 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.entities.AccountRequest;
+import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
+import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.AccountRequestRepository;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
@@ -18,10 +22,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class AccountAndTransactionServiceTest {
@@ -47,6 +54,9 @@ class AccountAndTransactionServiceTest {
     @Mock
     private ModelMapper mapper;
 
+    @Mock
+    private AccountRequestRepository accountRequestRepository;
+    
     public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
 
     public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
@@ -121,6 +131,20 @@ class AccountAndTransactionServiceTest {
         assertEquals(DATE, response.get(INDEX).getValueDateTime());
         assertEquals("A", response.get(INDEX).getTransactionInformation());
         assertEquals(MERCHANT_DETAILS, response.get(INDEX).getMerchantDetails());
+    }
+    @Test
+    void devedeletarrequisicaodeumaconta(){
+
+        doNothing().when(accountRequestRepository).deleteById(eq(1L));
+        when(accountRequestRepository.findById(eq(1L))).thenReturn(Optional.of(new AccountRequest()));
+
+        accountAndTransactionService.deleteAccountRequest(1L);
+        verify(accountRequestRepository,times(1)).findById(eq(1L));
+        verify(accountRequestRepository,times(1)).deleteById(eq(1L));
+        assertThrows(ObjectNotFoundException.class,()->accountAndTransactionService.deleteAccountRequest(2L));
+
+
+
     }
 
     private void startBalances() {
