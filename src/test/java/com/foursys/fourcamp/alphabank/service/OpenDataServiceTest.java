@@ -89,7 +89,7 @@ class OpenDataServiceTest {
     void whenFinAllThenReturnAnListOfAtms() {
         when(bankAtmsRepository.findAll()).thenReturn(List.of(bankAtms));
 
-        List<BankAtms> response = bankAtmsRepository.findAll();
+        List<BankAtms> response = openDataService.findAllAtms();
 
         assertNotNull(response);
         assertEquals(1, response.size());
@@ -111,7 +111,7 @@ class OpenDataServiceTest {
     @Test
     void whenFindAllThenReturnAnListOfAkps() {
         when(akpsRepository.findAll()).thenReturn(List.of(akps));
-        List<Akps> response = akpsRepository.findAll();
+        List<Akps> response = openDataService.listAllAkpsBank();
         assertNotNull(response);
         assertEquals(1, response.size());
         assertEquals(Akps.class, response.get(INDEX).getClass());
@@ -128,7 +128,7 @@ class OpenDataServiceTest {
     @Test
     void whenFindAllThenReturnAnListOfBranchs() {
         when(branchListRepository.findAll()).thenReturn(List.of(branchList));
-        List<BranchList> response = branchListRepository.findAll();
+        List<BranchList> response = openDataService.findAllBranch();
         assertNotNull(response);
         assertEquals(1, response.size());
         assertEquals(BranchList.class, response.get(INDEX).getClass());
