@@ -3,9 +3,7 @@ package com.foursys.fourcamp.alphabank.service;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
-import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
-import com.foursys.fourcamp.alphabank.enums.StatusEnum;
+import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +50,9 @@ class AccountAndTransactionServiceTest {
     private TransactionsRepository transactionsRepository;
 
     @Mock
+    private BeneficiariesRepository beneficiariesRepository;
+
+    @Mock
     private ModelMapper mapper;
 
     @Mock
@@ -76,6 +77,16 @@ class AccountAndTransactionServiceTest {
 
     public static final OrderExecution ORDER_EXECUTION = new OrderExecution();
 
+    public static final CustomerTypeEnum CUSTOMER_TYPE_ENUM = CustomerTypeEnum.INDIVIDUAL;
+
+    public static final LanguageEnum LANGUAGE_ENUM = LanguageEnum.EL;
+
+    public static final GenderEnum GENDER_ENUM = GenderEnum.MALE;
+    public static final TaxInformation TAX_INFORMATION = new TaxInformation();
+    public static final PersonalIdentity PERSONAL_IDENTITY = new PersonalIdentity();
+    public static final List<Contact> CONTACTS = new ArrayList<>();
+    public static final List<Adress> ADRESSES = new ArrayList<>();
+
     private BalancesResponseDTO balancesResponseDTO;
 
     private DirectDebitDetailedInfo directDebitDetailedInfo;
@@ -84,9 +95,13 @@ class AccountAndTransactionServiceTest {
 
     private BalancesResponse balancesResponse;
 
+    private Beneficiary beneficiary;
+
     private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
     private Optional<StandingOrderDetailedInfo> optionalStandingOrderDetailedInfo;
+
+    private Optional<Beneficiary> optionalBeneficiary;
     private Card card;
 
     private Transaction transaction;
@@ -100,6 +115,7 @@ class AccountAndTransactionServiceTest {
         startTransaction();
         startDirectDebit();
         startStandingOrder();
+        startBeneficiaries();
     }
 
     @Test
@@ -187,6 +203,39 @@ class AccountAndTransactionServiceTest {
     }
 
     @Test
+    void whenFindAllThenReturnAnListOfBeneficiaries() {
+        when(beneficiariesRepository.findAll()).thenReturn(List.of(beneficiary));
+
+        List<Beneficiary> response = new ArrayList<>(accountAndTransactionService.returnAllBeneficiariesByAccount(STRING_ID));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Beneficiary.class, response.get(INDEX).getClass());
+        assertEquals(ArrayList.class, response.getClass());
+        assertEquals(STRING_ID, response.get(INDEX).getCustomerNumber());
+        assertEquals(STRING_ID, response.get(INDEX).getAccountId());
+        assertEquals(CUSTOMER_TYPE_ENUM, response.get(INDEX).getCustomerType());
+        assertEquals("A", response.get(INDEX).getCompanyName());
+        assertEquals("B", response.get(INDEX).getCompanyTitle());
+        assertEquals("C", response.get(INDEX).getLastName());
+        assertEquals("D", response.get(INDEX).getFirstName());
+        assertEquals("E", response.get(INDEX).getFatherName());
+        assertEquals(DATE, response.get(INDEX).getBirthDate());
+        assertEquals(LANGUAGE_ENUM, response.get(INDEX).getLanguage());
+        assertEquals("F", response.get(INDEX).getNationality());
+        assertEquals(GENDER_ENUM, response.get(INDEX).getGender());
+        assertEquals(TAX_INFORMATION, response.get(INDEX).getTaxInformation());
+        assertEquals(PERSONAL_IDENTITY, response.get(INDEX).getPersonalIdentity());
+        assertEquals(CONTACTS, response.get(INDEX).getContacts());
+        assertEquals(ADRESSES, response.get(INDEX).getAdresses());
+        assertEquals("G", response.get(INDEX).getBussinessActivity());
+        assertEquals(DATE, response.get(INDEX).getCorpExpirationDate());
+        assertEquals(DATE, response.get(INDEX).getLegalEntityExpiryDate());
+        assertEquals(DATE, response.get(INDEX).getInsuranceClearanceExpiryDate());
+        assertEquals(DATE, response.get(INDEX).getTaxClearanceExpiryDate());
+    }
+
+    @Test
     void devedeletarrequisicaodeumaconta(){
 
         doNothing().when(accountRequestRepository).deleteById(eq(1L));
@@ -226,6 +275,12 @@ class AccountAndTransactionServiceTest {
                 AMOUNT, CREDITOR_ACCOUNT, "B", EXECUTION_PLAN, ORDER_EXECUTION, ORDER_EXECUTION);
         optionalStandingOrderDetailedInfo = Optional.of(new StandingOrderDetailedInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM, DATE, DATE, DATE,
                 AMOUNT, CREDITOR_ACCOUNT, "B", EXECUTION_PLAN, ORDER_EXECUTION, ORDER_EXECUTION));
+    }
+
+    private void startBeneficiaries() {
+        beneficiary = new Beneficiary(STRING_ID, STRING_ID, CUSTOMER_TYPE_ENUM, "A", "B", "C", "D", "E", DATE, LANGUAGE_ENUM,
+                "F", GENDER_ENUM, TAX_INFORMATION, PERSONAL_IDENTITY, CONTACTS, ADRESSES, "G", DATE, DATE, DATE, DATE);
+        optionalBeneficiary = Optional.of(beneficiary);
     }
 
 }
