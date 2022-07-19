@@ -145,4 +145,18 @@ public class PaymentsController {
     public ResponseEntity<TransferRequest> returnInternationalTransferRequest(@PathVariable String tranferRequestId){
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnInternationalTransferRequest(tranferRequestId));
     }
+
+    @DeleteMapping("/internacional/{transfer-request-id}")
+    public ResponseEntity<Object> deleteTransferRequest(@PathVariable Long
+                                                                tranferRequestId){
+        paymentService.deleteInternationalTransferRequest(tranferRequestId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @DeleteMapping("/domestic/{transfer-request-id}")
+    public ResponseEntity<Object> deleteTransferDomesticRequest(@PathVariable Long
+                                                                        tranferRequestId){
+        paymentService.deleteDomesticTransferInitiation(tranferRequestId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

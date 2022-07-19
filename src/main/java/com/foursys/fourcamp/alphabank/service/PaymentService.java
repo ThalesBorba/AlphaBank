@@ -7,10 +7,7 @@ import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
-import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
-import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
-import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
-import com.foursys.fourcamp.alphabank.repository.TransferRequestRepository;
+import com.foursys.fourcamp.alphabank.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,12 @@ public class PaymentService {
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
     @Autowired
     private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
+
+    @Autowired
+    private InternarionalTrasferInitiationRepository internarionalTrasferInitiationRepository;
+
+    @Autowired
+    private DomesticTransferInitiationRepository domesticTransferInitiationRepository;
     @Autowired
     private TransferRequestRepository transferRequestRepository;
     @Autowired
@@ -63,6 +66,20 @@ public class PaymentService {
 
     public TransferRequest returnInternationalTransferRequest (String transferRequestId){
         return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
+    }
+
+    public void deleteInternationalTransferRequest(Long tranferRequestId) {
+        internarionalTrasferInitiationRepository.findById(tranferRequestId).map(transferexist -> {
+            internarionalTrasferInitiationRepository.deleteById(transferexist.getId());
+            return Void.TYPE;
+        }).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public void deleteDomesticTransferInitiation(Long tranferRequestId) {
+        domesticTransferInitiationRepository.findById(tranferRequestId).map(transferexist -> {
+            domesticTransferInitiationRepository.deleteById(transferexist.getId());
+            return Void.TYPE;
+        }).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 }
 
