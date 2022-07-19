@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.AccountRequest;
 import com.foursys.fourcamp.alphabank.entities.Card;
 import com.foursys.fourcamp.alphabank.entities.DirectDebitBasicInfo;
@@ -34,7 +35,7 @@ public class AccountAndTransactionController {
 //    }
 
     @GetMapping("/accounts/{account-id}/standing-orders")
-    public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId) {
+    public ResponseEntity<List<StandingOrderBasicInfo>> returnAllStandingOrders(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllStandingOrdersByAccount(accountId));
     }

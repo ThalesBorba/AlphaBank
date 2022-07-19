@@ -1,6 +1,7 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
@@ -50,6 +51,16 @@ class AccountAndTransactionControllerTest {
 
     public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
 
+    public static final CreditorAccount CREDITOR_ACCOUNT = new CreditorAccount();
+
+    public static final ExecutionPlan EXECUTION_PLAN = new ExecutionPlan();
+
+    public static final OrderExecution ORDER_EXECUTION = new OrderExecution();
+
+    private StandingOrderBasicInfo standingOrderBasicInfo;
+
+    private Optional<StandingOrderBasicInfo> optionalStandingOrderBasicInfo;
+
     private Optional<DirectDebitBasicInfo> optionalDirectDebitBasicInfo;
 
     @InjectMocks
@@ -72,6 +83,7 @@ class AccountAndTransactionControllerTest {
         startCard();
         startTransaction();
         startDirectDebit();
+        startStandingOrder();
     }
 
     @Test
@@ -122,6 +134,24 @@ class AccountAndTransactionControllerTest {
         assertEquals(Card.class, response.getBody().get(INDEX).getClass());
 
         assertEquals(ID, response.getBody().get(INDEX).getId());
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
+
+    }
+
+    @Test
+    void whenFindAllThenReturnListOfStandingOrders() {
+        when(accountAndTransactionService.returnAllStandingOrdersByAccount(STRING_ID)).thenReturn(new ArrayList<>(List.of(standingOrderBasicInfo)));
+
+        ResponseEntity<List<StandingOrderBasicInfo>> response = accountAndTransactionController.returnAllStandingOrders(STRING_ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(StandingOrderBasicInfo.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(STRING_ID, response.getBody().get(INDEX).getStandingOrderId());
         assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
 
     }
@@ -180,5 +210,10 @@ class AccountAndTransactionControllerTest {
     private void startDirectDebit() {
         directDebitBasicInfo = new DirectDebitBasicInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM);
         optionalDirectDebitBasicInfo = Optional.of(new DirectDebitBasicInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM));
+    }
+
+    private void startStandingOrder() {
+        standingOrderBasicInfo = new StandingOrderBasicInfo(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT);
+        optionalStandingOrderBasicInfo = Optional.of(new StandingOrderBasicInfo(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT));
     }
 }
