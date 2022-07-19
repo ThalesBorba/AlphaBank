@@ -1,6 +1,7 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.entities.AccountRequest;
 import com.foursys.fourcamp.alphabank.entities.BalancesResponse;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class AccountAndTransactionControllerTest {
@@ -60,6 +63,22 @@ class AccountAndTransactionControllerTest {
         assertEquals(ID, response.getBody().get(INDEX).getId());
 
     }
+//    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
+//        accountAndTransactionService.deleteAccountRequest(accountRequestId);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//
+//    }
+    @Test
+   void testarOResponseAccountRequestController(){
+        doNothing().when(accountAndTransactionService).deleteAccountRequest(anyLong());
+        ResponseEntity<AccountRequest> response=accountAndTransactionController.deleteAccountRequest(ID);
+        assertNotNull(response);
+        assertEquals(ResponseEntity.class,response.getClass());
+        assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
+        verify(accountAndTransactionService,times(1)).deleteAccountRequest(anyLong());
+
+    }
+
 
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
