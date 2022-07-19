@@ -29,7 +29,6 @@ public class PaymentService {
     private TransferInfoRepository transferInfoRepository;
     @Autowired
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
-
     @Autowired
     private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
     @Autowired
@@ -65,8 +64,11 @@ public class PaymentService {
         Optional<InternationalTransferSubmission> obj = internationalTransferSubmissionRepository.findById(id);
 
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
-
-    public TransferRequest returnInternationalTransferRequest(String transferRequestId) {
-        return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
     }
-}
+
+        public TransferRequest returnInternationalTransferRequest (String transferRequestId){
+            return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
+        }
+    }
+
+
