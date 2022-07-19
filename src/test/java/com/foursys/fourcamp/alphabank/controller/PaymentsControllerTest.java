@@ -95,7 +95,7 @@ class PaymentsControllerTest {
         assertEquals(InternationalTransferSubmissionDTO.class, response.getBody().getClass());
 
         assertEquals(ID, response.getBody().getTransferRequestId());
-
+    }
     void whenFindAllThenReturnListOfTransactionsByAccount() {
         when(paymentService.returnTransfersByAccount(STRING_ID)).thenReturn(List.of(transferInfo));
 

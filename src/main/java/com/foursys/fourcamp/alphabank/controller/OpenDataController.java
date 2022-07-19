@@ -2,6 +2,8 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
 
+import com.foursys.fourcamp.alphabank.entities.Akps;
+import com.foursys.fourcamp.alphabank.entities.BranchList;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.OpenDataService;
 import org.modelmapper.ModelMapper;
@@ -25,8 +27,8 @@ public class OpenDataController {
     private ModelMapper mapper;
 
     @GetMapping("/branches")
-    public ResponseEntity<Object> returnBankBranches(){
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.findAllBranch()));
+    public ResponseEntity<List<BranchList>> returnBankBranches(){
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.findAllBranch());
     }
     
     @GetMapping("/rates")
@@ -37,8 +39,8 @@ public class OpenDataController {
     }
 
     @GetMapping("/akps")
-    public ResponseEntity<Object> listAllAkpsBank() {
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.listAllAkpsBank()));
+    public ResponseEntity<List<Akps>> listAllAkpsBank() {
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.listAllAkpsBank());
     }
 
     //Tirei os parametros, irei ve como vou fazer
