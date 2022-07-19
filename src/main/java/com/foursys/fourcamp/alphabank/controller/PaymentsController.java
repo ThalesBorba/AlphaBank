@@ -1,5 +1,6 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.entities.TransferRequest;
@@ -32,11 +33,23 @@ public class PaymentsController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PostMapping("/international/submissions")
+    public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransferSub(@RequestBody InternationalTransferSubmissionDTO obj) {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(paymentService.createInternationalTransferSub(obj).getTransferRequestId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
     @GetMapping("/domestic/{transfer-request-id}")
     public ResponseEntity<PaymentSetupRequestDTO> returnTransferRequest(@PathVariable Long Id) {
         return ResponseEntity.ok()
                 .body(modelMapper.map(paymentService.getDomesticPaymentSetupRequest(Id), PaymentSetupRequestDTO.class));
     }
+    @GetMapping("/international/submissions/{transfer-submission-id}")
+        public ResponseEntity<InternationalTransferSubmissionDTO> returnInternationalTransferSub(@PathVariable Long id) {
+            return ResponseEntity.ok().body(modelMapper.map(paymentService.getInternationalTransferSub(id), InternationalTransferSubmissionDTO.class));
+        }
+
 
     /*
      *

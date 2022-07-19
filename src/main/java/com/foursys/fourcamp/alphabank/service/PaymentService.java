@@ -1,10 +1,13 @@
 package com.foursys.fourcamp.alphabank.service;
 
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
@@ -26,6 +29,9 @@ public class PaymentService {
     private TransferInfoRepository transferInfoRepository;
     @Autowired
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
+
+    @Autowired
+    private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
     @Autowired
     private TransferRequestRepository transferRequestRepository;
     @Autowired
@@ -50,6 +56,15 @@ public class PaymentService {
         return transferInfoRepository.findAll().stream().filter(tranfer -> tranfer.getDateSubmitted().equals(Period
                 .between(fromDate, toDate))).toList();
     }
+
+    public InternationalTransferSubmission createInternationalTransferSub(InternationalTransferSubmissionDTO obj) {
+        return internationalTransferSubmissionRepository.save(modelMapper.map(obj, InternationalTransferSubmission.class));
+    }
+
+    public InternationalTransferSubmission getInternationalTransferSub(Long id) {
+        Optional<InternationalTransferSubmission> obj = internationalTransferSubmissionRepository.findById(id);
+
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 
     public TransferRequest returnInternationalTransferRequest(String transferRequestId) {
         return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);

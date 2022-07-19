@@ -1,11 +1,15 @@
 package com.foursys.fourcamp.alphabank.service;
 
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
+import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.OurShareEnum;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.enums.TransferScopeEnum;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferRequestRepository;
@@ -44,6 +48,10 @@ class PaymentServiceTest {
     private PaymentService paymentService;
     @Mock
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
+
+    @Mock
+    private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
+
     @Mock
     private TransferRequestRepository transferRequestRepository;
     @Mock
@@ -55,6 +63,12 @@ class PaymentServiceTest {
     private TransferRequest transferRequest;
     private TransferInfo transferInfo;
     private PaymentSetupRequestDTO paymentSetupRequestDTO;
+
+    private InternationalTransferSubmission internationalTransferSubmission;
+
+    private InternationalTransferSubmissionDTO internationalTransferSubmissionDTO;
+
+    private Optional<InternationalTransferSubmission> optionalInternational;
     private Optional<PaymentSetupRequest> optional;
     private Optional<TransferRequest> optionalTransferRequest;
     private Optional<TransferInfo> optionalTransferInfo;
@@ -80,6 +94,16 @@ class PaymentServiceTest {
     }
 
     @Test
+    void whenFindByIdThenReturnInternationalSubmissionInstance() {
+        when(internationalTransferSubmissionRepository.findById(anyLong())).thenReturn(optionalInternational);
+
+        InternationalTransferSubmission response = paymentService.getInternationalTransferSub(ID);
+
+        assertNotNull(response);
+        assertEquals(InternationalTransferSubmission.class, response.getClass());
+        assertEquals(ID, response.getTransferRequestId());
+    }
+
     void whenFindByIdThenReturnAnTransferRequestInstance() {
         when(transferRequestRepository.findById(anyString())).thenReturn(optionalTransferRequest);
 
@@ -107,9 +131,11 @@ class PaymentServiceTest {
     @Test
     void whenFindByIdThenReturnAnObjectNotFoundException() {
         when(paymentSetupRequestRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
+        when(internationalTransferSubmissionRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
 
         try {
             paymentService.getDomesticPaymentSetupRequest(ID);
+            paymentService.getInternationalTransferSub(ID);
         } catch (Exception ex) {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
@@ -129,12 +155,31 @@ class PaymentServiceTest {
 
     }
 
+    @Test
+    void whenCreateInternationalSubThenReturnSucess() {
+        when(internationalTransferSubmissionRepository.save(any())).thenReturn(internationalTransferSubmission);
+
+        InternationalTransferSubmission response = paymentService.createInternationalTransferSub(internationalTransferSubmissionDTO);
+
+        assertNotNull(response);
+        assertEquals(InternationalTransferSubmission.class, response.getClass());
+        assertEquals(ID, response.getTransferRequestId());
+
+    }
+
     private void startPaymentSetup() {
         paymentSetupRequest = new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
 
         paymentSetupRequestDTO = new PaymentSetupRequestDTO(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
 
         optional = Optional.of(new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>()));
+
+        internationalTransferSubmission = new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>());
+
+        internationalTransferSubmissionDTO = new InternationalTransferSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+
+        optionalInternational = Optional.of(new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+
     }
 
     private void startInternationalTransferRequestSetup() {
