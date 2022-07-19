@@ -1,12 +1,12 @@
 package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
-import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class AccountAndTransactionServiceTest {
@@ -56,6 +55,9 @@ class AccountAndTransactionServiceTest {
     private ModelMapper mapper;
 
     @Mock
+    private StandingOrderRepository standingOrderRepository;
+
+    @Mock
     private AccountRequestRepository accountRequestRepository;
 
     public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
@@ -68,16 +70,23 @@ class AccountAndTransactionServiceTest {
 
     public static final MerchantDetails MERCHANT_DETAILS = new MerchantDetails();
 
+    public static final CreditorAccount CREDITOR_ACCOUNT = new CreditorAccount();
+
+    public static final ExecutionPlan EXECUTION_PLAN = new ExecutionPlan();
+
+    public static final OrderExecution ORDER_EXECUTION = new OrderExecution();
+
     private BalancesResponseDTO balancesResponseDTO;
 
     private DirectDebitDetailedInfo directDebitDetailedInfo;
 
-    private DirectDebitDetailedInfoMapper directDebitDetailedInfoMapper;
+    private StandingOrderDetailedInfo standingOrderDetailedInfo;
 
     private BalancesResponse balancesResponse;
 
     private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
+    private Optional<StandingOrderDetailedInfo> optionalStandingOrderDetailedInfo;
     private Card card;
 
     private Transaction transaction;
@@ -90,6 +99,7 @@ class AccountAndTransactionServiceTest {
         startCard();
         startTransaction();
         startDirectDebit();
+        startStandingOrder();
     }
 
     @Test
@@ -160,6 +170,23 @@ class AccountAndTransactionServiceTest {
     }
 
     @Test
+    void whenFindAllThenReturnAnListOfStandingOrderBasicInfo() {
+        when(standingOrderRepository.findAll()).thenReturn(List.of(standingOrderDetailedInfo));
+
+        List<StandingOrderBasicInfo> response = new ArrayList<>(accountAndTransactionService.returnAllStandingOrdersByAccount(STRING_ID));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(StandingOrderBasicInfo.class, response.get(INDEX).getClass());
+        assertEquals(ArrayList.class, response.getClass());
+        assertEquals(STRING_ID, response.get(INDEX).getStandingOrderId());
+        assertEquals("A", response.get(INDEX).getName());
+        assertEquals(STRING_ID, response.get(INDEX).getAccountId());
+        assertEquals(AMOUNT, response.get(INDEX).getAmount());
+        assertEquals(CREDITOR_ACCOUNT, response.get(INDEX).getCreditorAccount());
+    }
+
+    @Test
     void devedeletarrequisicaodeumaconta(){
 
         doNothing().when(accountRequestRepository).deleteById(eq(1L));
@@ -192,6 +219,13 @@ class AccountAndTransactionServiceTest {
                 "C", STATUS_ENUM, DATE, AMOUNT);
         optionalDirectDebitDetailedInfo = Optional.of(new DirectDebitDetailedInfo(STRING_ID, "A", STRING_ID,
                 "B", "C", STATUS_ENUM, DATE, AMOUNT));
+    }
+
+    private void startStandingOrder() {
+        standingOrderDetailedInfo = new StandingOrderDetailedInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM, DATE, DATE, DATE,
+                AMOUNT, CREDITOR_ACCOUNT, "B", EXECUTION_PLAN, ORDER_EXECUTION, ORDER_EXECUTION);
+        optionalStandingOrderDetailedInfo = Optional.of(new StandingOrderDetailedInfo(STRING_ID, "A", STRING_ID, STATUS_ENUM, DATE, DATE, DATE,
+                AMOUNT, CREDITOR_ACCOUNT, "B", EXECUTION_PLAN, ORDER_EXECUTION, ORDER_EXECUTION));
     }
 
 }
