@@ -1,14 +1,16 @@
 package com.foursys.fourcamp.alphabank.entities;
 
 import com.foursys.fourcamp.alphabank.util.GenerateCardNumber;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 
-@Inheritance(strategy = InheritanceType.JOINED)
-@Setter
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_card")
 public class Card {
@@ -19,7 +21,7 @@ public class Card {
     private String number = generateNumber("VISA");
     private String customerCardName;
     private String password;
-    private String expireDate;
+    private Date expireDate;
     private String label;
     private Integer cvv;
     private boolean isActive = false;

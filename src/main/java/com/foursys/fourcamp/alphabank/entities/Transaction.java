@@ -4,14 +4,13 @@ import com.foursys.fourcamp.alphabank.enums.CreditDebitIndicatorEnum;
 import com.foursys.fourcamp.alphabank.enums.ProductIdentifierEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
@@ -41,9 +40,7 @@ public class Transaction implements Serializable {
     @Column(unique = true)
     private String InstructionIdentification;
     @NotEmpty(message = "Campo obrigatório")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date bookingDateTime;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date valueDateTime;
     @Size(min = 1, max = 500)
     private String transactionInformation;
