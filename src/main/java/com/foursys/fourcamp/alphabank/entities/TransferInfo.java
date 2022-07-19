@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class TransferInfo implements Serializable {
 
     @NotEmpty(message = "Campo obrigatório")
     private String accountId;
-    private LocalDate dateSubmitted;
+    private Date dateSubmitted;
     private TransferScopeEnum transferScope;
     private OurShareEnum ourShare;
     @Size(min = 1, max = 35)

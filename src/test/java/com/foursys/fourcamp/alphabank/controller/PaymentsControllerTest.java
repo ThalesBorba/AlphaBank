@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ class PaymentsControllerTest {
     public static final Long ID = 1L;
     public static final String STRING_ID = "1";
     public static final int INDEX = 0;
+    public static final Date DATE = Date.valueOf("2022-07-19");
     private static final TransferScopeEnum transferScopeEnum = TransferScopeEnum.INTERNATIONAL;
     private static final OurShareEnum ourShareEnum = OurShareEnum.OUR;
     private static final LocalDate localDate = LocalDate.now();
@@ -95,7 +97,9 @@ class PaymentsControllerTest {
         assertEquals(InternationalTransferSubmissionDTO.class, response.getBody().getClass());
 
         assertEquals(ID, response.getBody().getTransferRequestId());
+    }
 
+    @Test
     void whenFindAllThenReturnListOfTransactionsByAccount() {
         when(paymentService.returnTransfersByAccount(STRING_ID)).thenReturn(List.of(transferInfo));
 
@@ -108,6 +112,22 @@ class PaymentsControllerTest {
         assertEquals(TransferInfo.class, response.getBody().get(INDEX).getClass());
 
         assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
+    }
+
+    @Test
+    void whenFindAllThenReturnListOfTransactionsByDate() {
+        when(paymentService.returnPaymentsByTimePeriod(Date.valueOf("2022-07-10"), Date.valueOf("2022-07-25")))
+                .thenReturn(List.of(transferInfo));
+
+        ResponseEntity<List<TransferInfo>> response = paymentsController.returnTransfersByPeriod(
+                Date.valueOf("2022-07-10"), Date.valueOf("2022-07-25"));
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(TransferInfo.class, response.getBody().get(INDEX).getClass());
+        assertEquals(DATE, response.getBody().get(INDEX).getDateSubmitted());
     }
 
     @Test
@@ -161,17 +181,11 @@ class PaymentsControllerTest {
 
     private void startPaymentSetup() {
         paymentSetupRequest = new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
-
         paymentSetupRequestDTO = new PaymentSetupRequestDTO(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
-
         optional = Optional.of(new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>()));
-
         internationalTransferSubmission = new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>());
-
         internationalTransferSubmissionDTO = new InternationalTransferSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
-
         optionalInternational = Optional.of(new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>()));
-
     }
 
     private void startInternationalTransferRequestSetup() {
@@ -181,10 +195,12 @@ class PaymentsControllerTest {
                 transferInitiation, risk));
     }
 
+
+
     private void startTransfersListByAccount() {
-        transferInfo = new TransferInfo(ID, "1", LocalDate.now(), transferScopeEnum, ourShareEnum, "A", "B", amount,
+        transferInfo = new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
                 "C", creditorAccount, "D", remittanceInformation);
-        optionalTransferInfo = Optional.of(new TransferInfo(ID, "1", LocalDate.now(), transferScopeEnum, ourShareEnum, "A", "B", amount,
+        optionalTransferInfo = Optional.of(new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
                 "C", creditorAccount, "D", remittanceInformation));
 
     }
