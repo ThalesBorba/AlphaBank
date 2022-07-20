@@ -2,11 +2,9 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.entities.Risk;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
-import com.foursys.fourcamp.alphabank.entities.TransferInfo;
-import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,13 +148,13 @@ public class PaymentsController {
     }
 
     @DeleteMapping("/internacional/{transfer-request-id}")
-    public ResponseEntity<Object> deleteTransferRequest(@PathVariable Long
+    public ResponseEntity<InternationalTransferInitiation> deleteTransferRequest(@PathVariable Long
                                                                 tranferRequestId){
         paymentService.deleteInternationalTransferRequest(tranferRequestId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     @DeleteMapping("/domestic/{transfer-request-id}")
-    public ResponseEntity<Object> deleteTransferDomesticRequest(@PathVariable Long
+    public ResponseEntity<DomesticTransferInitiation> deleteTransferDomesticRequest(@PathVariable Long
                                                                         tranferRequestId){
         paymentService.deleteDomesticTransferInitiation(tranferRequestId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

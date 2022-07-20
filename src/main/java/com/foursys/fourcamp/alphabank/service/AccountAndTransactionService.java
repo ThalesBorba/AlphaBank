@@ -22,9 +22,6 @@ import java.util.NoSuchElementException;
 public class AccountAndTransactionService {
 
     @Autowired
-    private StandingOrderDetailedInfoRepository standingOrderDetailedInfoRepository;
-
-    @Autowired
     private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
 
 
@@ -63,8 +60,7 @@ public class AccountAndTransactionService {
 
 
     public StandingOrderDetailedDTO findByIdOrderDetailed(String accountId, String standingOrderId) {
-        StandingOrderDetailedInfo detailed = standingOrderDetailedInfoRepository.findByIdAndAccountId(standingOrderId, accountId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ordem permanente não encontrado!"));
+        StandingOrderDetailedInfo detailed = standingOrderRepository.findByIdAndAccountId(standingOrderId, accountId);
         return new StandingOrderDetailedDTO(detailed.getStandingOrderId(), detailed.getName()
                 , detailed.getAccountId(), detailed.getAmount(), detailed.getCreditorAccount());
 

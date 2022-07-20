@@ -5,10 +5,9 @@ import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.enums.OurShareEnum;
-import com.foursys.fourcamp.alphabank.enums.StatusEnum;
-import com.foursys.fourcamp.alphabank.enums.TransferScopeEnum;
+import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,7 +27,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 @SpringBootTest
 class PaymentsControllerTest {
 
@@ -45,10 +45,31 @@ class PaymentsControllerTest {
     private static final CreditorAccount creditorAccount = new CreditorAccount();
     private static final RemittanceInformation remittanceInformation = new RemittanceInformation();
     private static final InternationalTransferInitiation transferInitiation = new InternationalTransferInitiation();
+
+    public static final String instructionIdentification = "bbbbb";
+
+    public static final String endToEndIdentification = "aaaaa";
+
+    public static final String debtorAccount = "cccc";
+
+    public static final String debtorInformation = "dddd";
+
+    public static final String blockFunds = "eeee";
+
+    private static final BoPCodeEnum BO_P_CODE_ENUM = BoPCodeEnum.DEPOSITS;
+
+    private static final String creditorAddress = "rrrr";
+
+    private static final String debtorPhone = "tttt";
+
+    private static final String countryIsoCode = "uuuu";
     private Optional<TransferRequest> optionalTransferRequest;
     private Optional<TransferInfo> optionalTransferInfo;
 
     public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
+
+    private static final TranferTypeEnum TRANFER_TYPE_ENUM = TranferTypeEnum.IRIS;
+    private static final OurShareEnum OUR_SHARE_ENUM = OurShareEnum.OUR;
 
     @InjectMocks
     private PaymentsController paymentsController;
@@ -56,6 +77,10 @@ class PaymentsControllerTest {
     private PaymentService paymentService;
     @Mock
     private ModelMapper modelMapper;
+
+    private InternationalTransferInitiation internationalTransferInitiation;
+
+    private DomesticTransferInitiation domesticTransferInitiation;
 
     private InternationalTransferSubmission internationalTransferSubmission;
 
@@ -170,12 +195,36 @@ class PaymentsControllerTest {
 
     }
 
+    @Test
+    void whenDeleteInternationalInitThenReturnSucess() {
+        doNothing().when(paymentService).deleteInternationalTransferRequest(anyLong());
+        ResponseEntity<InternationalTransferInitiation> response =paymentsController.deleteTransferRequest(ID);
+
+        assertNotNull(response);
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(paymentService,times(1)).deleteInternationalTransferRequest(anyLong());
+    }
+
+    @Test
+    void whenDeleteDomesticInitThenReturnSucess() {
+        doNothing().when(paymentService).deleteDomesticTransferInitiation(anyLong());
+        ResponseEntity<DomesticTransferInitiation> response = paymentsController.deleteTransferDomesticRequest(ID);
+
+        assertNotNull(response);
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(paymentService, times(1)).deleteDomesticTransferInitiation(anyLong());
+    }
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         startPaymentSetup();
         startInternationalTransferRequestSetup();
         startTransfersListByAccount();
+        startInternationalInitiation();
+        startDomesticInitiation();
     }
 
 
@@ -204,4 +253,16 @@ class PaymentsControllerTest {
                 "C", creditorAccount, "D", remittanceInformation));
 
     }
+
+    private void startInternationalInitiation() {
+        internationalTransferInitiation = new InternationalTransferInitiation(ID, instructionIdentification, endToEndIdentification,
+                new ArrayList<>(), debtorAccount, debtorInformation, blockFunds, BO_P_CODE_ENUM, creditorAddress,
+                debtorPhone, countryIsoCode);
+
+    }
+    private void startDomesticInitiation() {
+        domesticTransferInitiation = new DomesticTransferInitiation(ID, TRANFER_TYPE_ENUM, OUR_SHARE_ENUM, instructionIdentification,
+                endToEndIdentification, new ArrayList<>(), debtorAccount, new ArrayList<>(), debtorInformation);
+    }
+
 }
