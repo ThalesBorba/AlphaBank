@@ -2,6 +2,8 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.modelmapper.ModelMapper;
@@ -30,7 +32,7 @@ public class AccountAndTransactionController {
 //    }
 
     @GetMapping("/accounts/{account-id}/standing-orders")
-    public ResponseEntity<Object> returnAllStandingOrders(@PathVariable String accountId) {
+    public ResponseEntity<List<StandingOrderBasicInfo>> returnAllStandingOrders(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllStandingOrdersByAccount(accountId));
     }
@@ -49,32 +51,32 @@ public class AccountAndTransactionController {
 
     @Transactional
     @DeleteMapping("/account-requests/{account-request-id}")
-    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
+    public ResponseEntity<AccountRequest> deleteAccountRequest(@PathVariable Long accountRequestId) {
         accountAndTransactionService.deleteAccountRequest(accountRequestId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
     }
 
     @GetMapping("/accounts/{account-id}/beneficiaries")
-    public ResponseEntity<Object> returnAccountBeneficiaries(@PathVariable String accountId) {
+    public ResponseEntity<List<Beneficiary>> returnAccountBeneficiaries(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
                 returnAllBeneficiariesByAccount(accountId));
     }
 
     @GetMapping("/accounts/{account-id}/direct-debits")
-    public ResponseEntity<Object> returnAllDirectDebits(@PathVariable String accountId) {
+    public ResponseEntity<List<DirectDebitBasicInfo>> returnAllDirectDebits(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllDirectDebitByAccount(accountId));
     }
 
     @GetMapping("/accounts/{account-id}/transactions")
-    public ResponseEntity<Object> returnAccountTransactions(@PathVariable String accountId) {
+    public ResponseEntity<List<Transaction>> returnAccountTransactions(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.
                 returnAllTransactionsByAccount(accountId));
     }
 
     @GetMapping("/account/details/cards")
-    public ResponseEntity<Object> returnAllCards(@PathVariable String accountId) {
+    public ResponseEntity<List<Card>> returnAllCards(@PathVariable String accountId) {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.returnAllCardsByAccount(accountId));
     }
 

@@ -4,6 +4,9 @@ import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.Risk;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
+import com.foursys.fourcamp.alphabank.entities.TransferInfo;
+import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/payments/transfers")
@@ -32,11 +36,23 @@ public class PaymentsController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PostMapping("/international/submissions")
+    public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransferSub(@RequestBody InternationalTransferSubmissionDTO obj) {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(paymentService.createInternationalTransferSub(obj).getTransferRequestId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
     @GetMapping("/domestic/{transfer-request-id}")
     public ResponseEntity<PaymentSetupRequestDTO> returnTransferRequest(@PathVariable Long Id) {
         return ResponseEntity.ok()
                 .body(modelMapper.map(paymentService.getDomesticPaymentSetupRequest(Id), PaymentSetupRequestDTO.class));
     }
+    @GetMapping("/international/submissions/{transfer-submission-id}")
+        public ResponseEntity<InternationalTransferSubmissionDTO> returnInternationalTransferSub(@PathVariable Long id) {
+            return ResponseEntity.ok().body(modelMapper.map(paymentService.getInternationalTransferSub(id), InternationalTransferSubmissionDTO.class));
+        }
+
 
     /*
      *
@@ -86,16 +102,6 @@ public class PaymentsController {
      * method));
      * }
      * 
-     * @GetMapping("/internacional/{transfer-request-id}")
-     * public ResponseEntity<Object>
-     * returnInternationalTransferRequest(@PathVariable String tranferRequestId,
-     * String
-     * xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId,
-     * String xAbLang, String
-     * authorization, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
-     * 
      * @DeleteMapping("/internacional/{transfer-request-id}")
      * public ResponseEntity<Object>
      * deleteInternationalTransferRequest(@PathVariable String tranferRequestId,
@@ -129,14 +135,31 @@ public class PaymentsController {
      */
 
     @GetMapping("/history/{account-id}")
-    public ResponseEntity<Object> returnTransfersByAccount(@PathVariable String accountId){
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.
-                returnTransfersByAccount(accountId)));
+    public ResponseEntity<List<TransferInfo>> returnTransfersByAccount(@PathVariable String accountId){
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnTransfersByAccount(accountId));
     }
     @GetMapping("/history")
-    public ResponseEntity<Object> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
-           LocalDate fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+    public ResponseEntity<List<TransferInfo>> returnTransfersByPeriod(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")
+        Date fromDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnPaymentsByTimePeriod(fromDate, toDate));
+    }
+
+    @GetMapping("/internacional/{transfer-request-id}")
+    public ResponseEntity<TransferRequest> returnInternationalTransferRequest(@PathVariable String tranferRequestId){
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnInternationalTransferRequest(tranferRequestId));
+    }
+
+    @DeleteMapping("/internacional/{transfer-request-id}")
+    public ResponseEntity<Object> deleteTransferRequest(@PathVariable Long
+                                                                tranferRequestId){
+        paymentService.deleteInternationalTransferRequest(tranferRequestId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @DeleteMapping("/domestic/{transfer-request-id}")
+    public ResponseEntity<Object> deleteTransferDomesticRequest(@PathVariable Long
+                                                                        tranferRequestId){
+        paymentService.deleteDomesticTransferInitiation(tranferRequestId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

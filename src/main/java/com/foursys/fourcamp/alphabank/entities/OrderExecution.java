@@ -17,7 +17,6 @@ public class OrderExecution implements Serializable {
     private Long id;
 
     private String status;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date executionDate;
     @OneToOne
     private Amount amount;

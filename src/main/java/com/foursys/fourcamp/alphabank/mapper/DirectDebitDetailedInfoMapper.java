@@ -10,6 +10,8 @@ public interface DirectDebitDetailedInfoMapper {
 
     DirectDebitDetailedInfoMapper INSTANCE = Mappers.getMapper(DirectDebitDetailedInfoMapper.class);
 
-    DirectDebitBasicInfo toDTO(DirectDebitDetailedInfo directDebitDetailedInfo);
+    default DirectDebitBasicInfo toDTO(DirectDebitDetailedInfo d) {
+        return new DirectDebitBasicInfo(d.getAccountId(), d.getProductName(), d.getDirectDebitId(), d.getStatus());
+    }
 
 }

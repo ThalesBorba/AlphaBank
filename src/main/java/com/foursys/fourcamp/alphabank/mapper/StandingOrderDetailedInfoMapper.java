@@ -10,6 +10,9 @@ public interface StandingOrderDetailedInfoMapper {
 
     StandingOrderDetailedInfoMapper INSTANCE = Mappers.getMapper(StandingOrderDetailedInfoMapper.class);
 
-    StandingOrderBasicInfo toDTO(StandingOrderDetailedInfo standingOrderDetailedInfo);
+    default StandingOrderBasicInfo toDTO(StandingOrderDetailedInfo s) {
+        return new StandingOrderBasicInfo(s.getStandingOrderId(), s.getName(),
+                s.getAccountId(), s.getAmount(), s.getCreditorAccount());
+    }
 
 }

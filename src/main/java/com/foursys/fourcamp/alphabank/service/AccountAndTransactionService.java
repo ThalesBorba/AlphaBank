@@ -5,6 +5,7 @@ import com.foursys.fourcamp.alphabank.dto.AccountRequestDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
+import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.mapper.DirectDebitDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.mapper.StandingOrderDetailedInfoMapper;
 import com.foursys.fourcamp.alphabank.repository.*;
@@ -79,7 +80,7 @@ public class AccountAndTransactionService {
     }
 
     public AccountRequest findById(Long id) {
-        return accountRequestRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return accountRequestRepository.findById(id).orElseThrow(()->new ObjectNotFoundException("id da conta não encotrada"));
     }
 
     public void deleteAccountRequest(Long id) {

@@ -18,11 +18,11 @@ import java.util.List;
 public class DeliveryAddress implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //itens max 2
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ElementCollection
+    @Size(max = 2)
     private List<String> addressLine=new ArrayList<>();
     @Size(min = 1, max = 16)
     private String buildingNumber;
@@ -31,7 +31,7 @@ public class DeliveryAddress implements Serializable {
     @Size(min = 1, max = 35)
     //@NotEmpty(message = "Campo obrigatório")
     private String townName;
-    //items max 2
+    @Size(max = 2)
     @ElementCollection
     private List<String> countrySubDivision=new ArrayList<>();
     //@NotEmpty(message = "Campo obrigatório")
