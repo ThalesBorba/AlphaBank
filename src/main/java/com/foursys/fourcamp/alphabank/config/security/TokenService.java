@@ -44,4 +44,6 @@ public class TokenService {
         Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return Long.parseLong(claims.getSubject());
     }
+
+
 }
