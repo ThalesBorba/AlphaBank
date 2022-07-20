@@ -7,7 +7,6 @@ import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -111,6 +109,8 @@ class AccountAndTransactionServiceTest {
 
     private Optional<StandingOrderDetailedDTO> optionalStandingOrderDetailedDTO;
     private Card card;
+
+    private static final AccountProfile ACCOUNT_PROFILE = new AccountProfile();
 
     private Transaction transaction;
 

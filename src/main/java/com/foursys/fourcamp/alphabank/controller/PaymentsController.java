@@ -50,26 +50,6 @@ public class PaymentsController {
             return ResponseEntity.ok().body(modelMapper.map(paymentService.getInternationalTransferSub(id), InternationalTransferSubmissionDTO.class));
         }
 
-
-    /*
-     *
-     * @GetMapping("/domestic/{transfer-request-id}")
-     * public ResponseEntity<Object> returnTransferRequest(@PathVariable String
-     * tranferRequestId, String xAbBankId, String
-     * xAbPsuLastLogged, String xAbPsuIp, String xAbInteractionId, String xAbLang,
-     * String authorization, String
-     * ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
-     * 
-     * @DeleteMapping("/domestic/{transfer-request-id}")
-     * public ResponseEntity<Object> deleteTransferRequest(@PathVariable String
-     * tranferRequestId, String xAbBankId, String
-     * xAbLang, String authorization, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-     * method));
-     * }
-     */
       @PostMapping("/domestic/submissions")
       public ResponseEntity<PaymentDomesticSubmissionDTO> createTransferSubmission(@RequestBody PaymentDomesticSubmissionDTO obj){
           URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -93,37 +73,9 @@ public class PaymentsController {
      * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(
      * method));
      * }
+     *
      * 
-     * @DeleteMapping("/internacional/{transfer-request-id}")
-     * public ResponseEntity<Object>
-     * deleteInternationalTransferRequest(@PathVariable String tranferRequestId,
-     * String
-     * xAbBankId, String xAbLang, String authorization, String
-     * ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-     * method));
-     * }
-     * 
-     * @PostMapping("/internacional/submissions")
-     * public ResponseEntity<Object>
-     * createInternationalTransferSubmission(@RequestBody @Valid
-     * class, @PathVariable
-     * String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String
-     * xAbInteractionId, String authorization,
-     * String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(
-     * method));
-     * }
-     * 
-     * @GetMapping("/internacional/submissions/{transfer-submission-id}")
-     * public ResponseEntity<Object>
-     * returnInternationalTransferSubmission(@PathVariable String
-     * tranferSubmissionId,
-     * String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp, String
-     * xAbInteractionId, String
-     * authorization, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-     * }
+
      */
 
     @GetMapping("/history/{account-id}")
