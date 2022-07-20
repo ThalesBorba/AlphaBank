@@ -1,9 +1,6 @@
 package com.foursys.fourcamp.alphabank.controller;
 
-import com.foursys.fourcamp.alphabank.dto.AccountsResponseDTO;
-import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
+import com.foursys.fourcamp.alphabank.dto.*;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.modelmapper.ModelMapper;
@@ -11,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,12 @@ public class AccountAndTransactionController {
 //    public ResponseEntity<Object> returnAccount(@PathVariable String accountId) {
 //       return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findByUserId(accountId));
 //    }
+
+    @PostMapping("/account-request")
+    public ResponseEntity<AccountRequest> create(@RequestBody AccountRequestDTO obj) {
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(accountAndTransactionService.createAccountRequest(obj).getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
 
     @GetMapping("/accounts/{account-id}/standing-orders")
     public ResponseEntity<List<StandingOrderBasicInfo>> returnAllStandingOrders(@PathVariable String accountId) {
