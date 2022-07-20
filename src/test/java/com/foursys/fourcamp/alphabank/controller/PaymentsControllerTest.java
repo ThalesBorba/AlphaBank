@@ -199,6 +199,18 @@ class PaymentsControllerTest {
     }
 
     @Test
+    void whenCreateInternationalSubDtoThenReturnCreated() {
+        when(paymentService.createInternationalTransferSub(any())).thenReturn(internationalTransferSubmission);
+
+        ResponseEntity<InternationalTransferSubmissionDTO> response = paymentsController.createInternationalTransfer(internationalTransferSubmissionDTO);
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getHeaders().get("Location"));
+
+    }
+
+    @Test
     void whenCreatePaymentSubmissionThenReturnCreate() {
         when(paymentService.createPaymentDomesticSubmission(any())).thenReturn(paymentDomesticSubmission);
 

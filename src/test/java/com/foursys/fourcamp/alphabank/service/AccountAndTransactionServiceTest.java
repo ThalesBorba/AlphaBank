@@ -1,13 +1,10 @@
 package com.foursys.fourcamp.alphabank.service;
 
-import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
+import com.foursys.fourcamp.alphabank.dto.*;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -35,6 +31,10 @@ class AccountAndTransactionServiceTest {
     public static final String STRING_ID = "1";
     public static final int INDEX = 0;
 
+    public static final ProductIdentifier PRODUCT_IDENTIFIER = new ProductIdentifier();
+
+    public static final Risk RISK = new Risk();
+
     public static final Date DATE = Date.valueOf("2022-07-19");
 
     @InjectMocks
@@ -44,8 +44,12 @@ class AccountAndTransactionServiceTest {
     private BalancesResponseRepository balancesResponseRepository;
 
     @Mock
+    private AccountRepository accountRepository;
+    @Mock
     private CardRepository cardRepository;
 
+    @Mock
+    private AccountsResponseRepository accountsResponseRepository;
     @Mock
     private DirectDebitDetailedInfoRepository directDebitDetailedInfoRepository;
 
@@ -66,6 +70,9 @@ class AccountAndTransactionServiceTest {
 
     public static final StatusEnum STATUS_ENUM = StatusEnum.PENDING;
 
+    public static final AccountProfile ACCOUNT_PROFILE = new AccountProfile();
+
+    public static final Servicer SERVICER = new Servicer();
     public static final ProductIdentifierEnum PRODUCT_IDENTIFIER_ENUM = ProductIdentifierEnum.ACCOUNT;
 
     public static final CreditDebitIndicatorEnum CREDIT_DEBIT_INDICATOR_ENUM = CreditDebitIndicatorEnum.CREDIT;
@@ -76,6 +83,7 @@ class AccountAndTransactionServiceTest {
 
     public static final CreditorAccount CREDITOR_ACCOUNT = new CreditorAccount();
 
+    public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
     public static final ExecutionPlan EXECUTION_PLAN = new ExecutionPlan();
 
     public static final OrderExecution ORDER_EXECUTION = new OrderExecution();
@@ -99,10 +107,18 @@ class AccountAndTransactionServiceTest {
 
     private BalancesResponse balancesResponse;
 
+    private AccountsResponse accountsResponse;
+    private AccountsResponseDTO accountsResponseDTO;
     private Beneficiary beneficiary;
 
     private StandingOrderDetailedDTO standingOrderDetailedDTO;
 
+    private AccountRequest accountRequest;
+
+    private Account account;
+    private AccountRequestDTO accountRequestDTO;
+
+    private Optional<Account> optionalAccount;
     private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
     private Optional<StandingOrderDetailedInfo> optionalStandingOrderDetailedInfo;
@@ -124,6 +140,22 @@ class AccountAndTransactionServiceTest {
         startDirectDebit();
         startStandingOrder();
         startBeneficiaries();
+        startAccountRequest();
+        startAccountResponse();
+        startAccount();
+    }
+
+    @Test
+    void whenCreateAccountRequestThenSucess() {
+        when(accountRequestRepository.save(any())).thenReturn(accountRequest);
+
+        AccountRequest response = accountAndTransactionService.createAccountRequest(accountRequestDTO);
+
+        assertNotNull(response);
+        assertEquals(AccountRequest.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(PRODUCT_IDENTIFIER, response.getProductIdentifier());
+        assertEquals(RISK, response.getRisk());
     }
 
     @Test
@@ -138,6 +170,23 @@ class AccountAndTransactionServiceTest {
         assertEquals(ArrayList.class, response.getClass());
         assertEquals(ID, response.get(INDEX).getId());
     }
+
+    @Test
+    void whenFindAllThenReturnAnListAccountResponse() {
+        when(accountsResponseRepository.findAll()).thenReturn(List.of(accountsResponse));
+
+        List<AccountsResponse> response = accountAndTransactionService.findAllAccountsResponse();
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(AccountsResponse.class, response.get(INDEX).getClass());
+
+        assertEquals(ID, response.get(INDEX).getId());
+        assertEquals(ACCOUNT_PROFILE, response.get(INDEX).getAccountProfile());
+        assertEquals(SERVICER, response.get(INDEX).getServicer());
+
+    }
+
 
     @Test
     void whenFindAccountThenReturnAListOfCards() {
@@ -191,6 +240,30 @@ class AccountAndTransactionServiceTest {
         assertEquals(STRING_ID, response.get(INDEX).getAccountId());
         assertEquals("C", response.get(INDEX).getProductName());
         assertEquals(STATUS_ENUM, response.get(INDEX).getStatus());
+    }
+    @Test
+    void whenFindByIdThenReturnAccount() {
+        when(accountRepository.findById(anyString())).thenReturn(optionalAccount);
+
+        Account response = accountAndTransactionService.findByUserId(STRING_ID);
+
+        assertNotNull(response);
+        assertEquals(Account.class, response.getClass());
+        assertEquals(ID, response.getUserID());
+        assertEquals(ACCOUNT_PROFILE, response.getAccountProfile());
+        assertEquals(SERVICER, response.getServicer());
+    }
+
+    @Test
+    void whenFindByIdThenReturnAnObjectNotFoundException() {
+        when(accountRepository.findById(anyString())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
+
+        try {
+            accountAndTransactionService.findByUserId(STRING_ID);
+        } catch(Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
+        }
     }
 
     @Test
@@ -305,6 +378,21 @@ class AccountAndTransactionServiceTest {
         beneficiary = new Beneficiary(STRING_ID, STRING_ID, CUSTOMER_TYPE_ENUM, "A", "B", "C", "D", "E", DATE, LANGUAGE_ENUM,
                 "F", GENDER_ENUM, TAX_INFORMATION, PERSONAL_IDENTITY, CONTACTS, ADRESSES, "G", DATE, DATE, DATE, DATE);
         optionalBeneficiary = Optional.of(beneficiary);
+    }
+
+    private void startAccountRequest(){
+        accountRequest = new AccountRequest(ID, PRODUCT_IDENTIFIER, RISK);
+        accountRequestDTO = new AccountRequestDTO(ID, PRODUCT_IDENTIFIER, RISK);
+    }
+
+    private void startAccountResponse() {
+        accountsResponse = new AccountsResponse(ID, ACCOUNT_PROFILE, SERVICER);
+        accountsResponseDTO = new AccountsResponseDTO(ID, ACCOUNT_PROFILE, SERVICER);
+    }
+
+    private void startAccount() {
+        account = new Account(ID, ACCOUNT_PROFILE, SERVICER);
+        optionalAccount = Optional.of(account);
     }
 
 

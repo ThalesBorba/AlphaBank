@@ -31,7 +31,7 @@ public class AccountAndTransactionController {
 //    }
 
     @PostMapping("/account-request")
-    public ResponseEntity<AccountRequest> create(@RequestBody AccountRequestDTO obj) {
+    public ResponseEntity<AccountRequestDTO> create(@RequestBody AccountRequestDTO obj) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(accountAndTransactionService.createAccountRequest(obj).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -41,12 +41,11 @@ public class AccountAndTransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService
                 .returnAllStandingOrdersByAccount(accountId));
     }
-    
-    @GetMapping("/account-requests/{account-request-id}")
-    public ResponseEntity<Object> returnAccountRequest(@PathVariable String accountRequestId) {
 
-    		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
+    @GetMapping("/account-requests/{id}")
+    public ResponseEntity<AccountRequestDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(mapper.map(accountAndTransactionService.findById(id), AccountRequestDTO.class));
     }
     
 
@@ -102,7 +101,8 @@ public class AccountAndTransactionController {
 
     @GetMapping(value = "/details/deposit")
     public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
-        return ResponseEntity.ok().body(accountAndTransactionService.findAllAtms().stream().map(x -> mapper
-                .map(x, AccountsResponseDTO.class)).collect(Collectors.toList()));
+        List<AccountsResponseDTO> listAccount = accountAndTransactionService.findAllAccountsResponse().stream()
+                .map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listAccount);
     }
 }

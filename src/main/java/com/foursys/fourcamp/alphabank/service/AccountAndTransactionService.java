@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class AccountAndTransactionService {
@@ -33,6 +33,7 @@ public class AccountAndTransactionService {
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @Autowired
     private BalancesResponseRepository balancesResponseRepository;
@@ -71,7 +72,6 @@ public class AccountAndTransactionService {
 //    }
     
     public AccountRequest createAccountRequest(AccountRequestDTO accountRequest) {
-        findById(accountRequest.getId());
         return accountRequestRepository.save(modelMapper.map(accountRequest, AccountRequest.class));
     }
 
@@ -117,12 +117,12 @@ public class AccountAndTransactionService {
         return balancesResponseRepository.findAll();
     }
     
-    public List<AccountsResponse> findAllAtms() {
+    public List<AccountsResponse> findAllAccountsResponse() {
         return accountsResponseRepository.findAll();
     }
 
     public Account findByUserId(String id){
-        return accountRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Essa conta não existe"));
+        Optional<Account> obj = accountRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
-
 }
