@@ -1,11 +1,8 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
-import com.foursys.fourcamp.alphabank.entities.Akps;
-import com.foursys.fourcamp.alphabank.entities.BankAtms;
-import com.foursys.fourcamp.alphabank.entities.BranchList;
+import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.service.OpenDataService;
-import org.hibernate.validator.internal.util.Contracts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +31,8 @@ class OpenDataControllerTest {
     public static final String ACCESS = "Acessado";
     public static final Integer LAT = 10;
     public static final Integer LON = 35;
+
+    public static final Date DATE = new Date();
     public static final String SETTLEMENTTYPE = "Seinao";
     public static final Long ID = 1L;
     public static final Integer INDEX = 0;
@@ -42,6 +42,7 @@ class OpenDataControllerTest {
     public static final String COUNTRY = "Brasil";
     public static final String PHONE = "449999911445";
     public static final String FAX = "123456877";
+    public static final Currency CURRENCY = new Currency();
     @InjectMocks
     private OpenDataController controller;
 
@@ -50,6 +51,8 @@ class OpenDataControllerTest {
 
     @Mock
     private OpenDataService service;
+
+    private CurrencyRate currencyRate = new CurrencyRate();
 
     private Akps akps = new Akps();
     private BankAtms bankAtms = new BankAtms();
@@ -64,6 +67,7 @@ class OpenDataControllerTest {
         startAtms();
         startAkps();
         startBranch();
+        startCurrencyRate();
     }
 
     @Test
@@ -130,6 +134,22 @@ class OpenDataControllerTest {
         assertEquals(LON, response.getBody().get(INDEX).getLon());
     }
 
+    @Test
+    void whenFindByIdThenReturnAnCurrencyRateInstance() {
+        when(service.returnBankCurrencyRates()).thenReturn(currencyRate);
+
+        ResponseEntity<CurrencyRate> response = controller.returnBankCurrencyRates();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ID, response.getBody().getId());
+        assertEquals(DATE, response.getBody().getExchangeRatesDate());
+        assertEquals(DATE, response.getBody().getEcbrRatesDate());
+        assertEquals(CURRENCY, response.getBody().getCurrencies());
+    }
+
     private void startAtms() {
         bankAtms = new BankAtms(ID, NAME, CITY, REGION, ADDRESS, ZIPCODE, ACCESS, LAT, LON, SETTLEMENTTYPE);
         bankAtmsDTO = new BankAtmsDTO(ID, NAME, CITY, REGION, ADDRESS, ZIPCODE, ACCESS, LAT, LON, SETTLEMENTTYPE);
@@ -141,5 +161,10 @@ class OpenDataControllerTest {
     private void startBranch(){
         branchList = new BranchList(ID, NAME, CITY, REGION, COUNTRY, ADDRESS, ZIPCODE, PHONE, FAX, LAT, LON);
     }
+
+    private void startCurrencyRate() {
+        currencyRate = new CurrencyRate(ID, DATE, DATE, CURRENCY);
+    }
+
 
 }

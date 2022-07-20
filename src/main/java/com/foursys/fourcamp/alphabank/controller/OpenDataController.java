@@ -1,17 +1,17 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
-
 import com.foursys.fourcamp.alphabank.entities.Akps;
 import com.foursys.fourcamp.alphabank.entities.BranchList;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
+import com.foursys.fourcamp.alphabank.entities.CurrencyRate;
 import com.foursys.fourcamp.alphabank.service.OpenDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +32,9 @@ public class OpenDataController {
     }
     
     @GetMapping("/rates")
-    public ResponseEntity<Object> returnBankCurrencyRates(){
-        //metodo para autorizar ou não
-        return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(openDataService.
-                returnBankCurrencyRates()));
+    public ResponseEntity<CurrencyRate> returnBankCurrencyRates(){
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.
+                returnBankCurrencyRates());
     }
 
     @GetMapping("/akps")

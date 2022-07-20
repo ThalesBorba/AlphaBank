@@ -2,10 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.entities.PaymentDomesticSubmission;
-import com.foursys.fourcamp.alphabank.entities.Risk;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
 import org.modelmapper.ModelMapper;

@@ -3,12 +3,9 @@ package com.foursys.fourcamp.alphabank.controller;
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
-import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
-import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.service.PaymentService;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -202,7 +199,7 @@ class PaymentsControllerTest {
     }
 
     @Test
-    void whenCreatePaymentSubmissionThenReturnCreate(){
+    void whenCreatePaymentSubmissionThenReturnCreate() {
         when(paymentService.createPaymentDomesticSubmission(any())).thenReturn(paymentDomesticSubmission);
 
         ResponseEntity<PaymentDomesticSubmissionDTO> response = paymentsController.createTransferSubmission(paymentDomesticSubmissionDTO);
@@ -211,8 +208,9 @@ class PaymentsControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getHeaders().get("Location"));
     }
+
     @Test
-    void whenFindByIdPaymentSubmissionReturnSucess(){
+    void whenFindByIdPaymentSubmissionReturnSucess() {
         when(paymentService.getPaymentDomesticSubmission(anyLong())).thenReturn(paymentDomesticSubmission);
         when(modelMapper.map(any(), any())).thenReturn(paymentDomesticSubmissionDTO);
 
@@ -224,79 +222,80 @@ class PaymentsControllerTest {
         assertEquals(PaymentDomesticSubmissionDTO.class, response.getBody().getClass());
 
         assertEquals(ID, response.getBody().getTransferRequestId());
-
-    void whenDeleteInternationalInitThenReturnSucess() {
-        doNothing().when(paymentService).deleteInternationalTransferRequest(anyLong());
-        ResponseEntity<InternationalTransferInitiation> response =paymentsController.deleteTransferRequest(ID);
-
-        assertNotNull(response);
-        assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(paymentService,times(1)).deleteInternationalTransferRequest(anyLong());
     }
+        @Test
+        void whenDeleteInternationalInitThenReturnSucess () {
+            doNothing().when(paymentService).deleteInternationalTransferRequest(anyLong());
+            ResponseEntity<InternationalTransferInitiation> response = paymentsController.deleteTransferRequest(ID);
 
-    @Test
-    void whenDeleteDomesticInitThenReturnSucess() {
-        doNothing().when(paymentService).deleteDomesticTransferInitiation(anyLong());
-        ResponseEntity<DomesticTransferInitiation> response = paymentsController.deleteTransferDomesticRequest(ID);
+            assertNotNull(response);
+            assertEquals(ResponseEntity.class, response.getClass());
+            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+            verify(paymentService, times(1)).deleteInternationalTransferRequest(anyLong());
+        }
 
-        assertNotNull(response);
-        assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(paymentService, times(1)).deleteDomesticTransferInitiation(anyLong());
-    }
+        @Test
+        void whenDeleteDomesticInitThenReturnSucess () {
+            doNothing().when(paymentService).deleteDomesticTransferInitiation(anyLong());
+            ResponseEntity<DomesticTransferInitiation> response = paymentsController.deleteTransferDomesticRequest(ID);
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        startPaymentSetup();
-        startInternationalTransferRequestSetup();
-        startTransfersListByAccount();
-        startPaymentDomesticSubmissionSetup();
-        startInternationalInitiation();
-        startDomesticInitiation();
-    }
+            assertNotNull(response);
+            assertEquals(ResponseEntity.class, response.getClass());
+            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+            verify(paymentService, times(1)).deleteDomesticTransferInitiation(anyLong());
+        }
+
+        @BeforeEach
+        void setUp () {
+            MockitoAnnotations.openMocks(this);
+            startPaymentSetup();
+            startInternationalTransferRequestSetup();
+            startTransfersListByAccount();
+            startPaymentDomesticSubmissionSetup();
+            startInternationalInitiation();
+            startDomesticInitiation();
+        }
 
 
-    private void startPaymentSetup() {
-        paymentSetupRequest = new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
-        paymentSetupRequestDTO = new PaymentSetupRequestDTO(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
-        optional = Optional.of(new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>()));
-        internationalTransferSubmission = new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>());
-        internationalTransferSubmissionDTO = new InternationalTransferSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
-        optionalInternational = Optional.of(new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>()));
-    }
+        private void startPaymentSetup () {
+            paymentSetupRequest = new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
+            paymentSetupRequestDTO = new PaymentSetupRequestDTO(ID, statusEnum, new ArrayList<>(), new ArrayList<>());
+            optional = Optional.of(new PaymentSetupRequest(ID, statusEnum, new ArrayList<>(), new ArrayList<>()));
+            internationalTransferSubmission = new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>());
+            internationalTransferSubmissionDTO = new InternationalTransferSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+            optionalInternational = Optional.of(new InternationalTransferSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+        }
 
-    private void startInternationalTransferRequestSetup() {
-        transferRequest = new TransferRequest(STRING_ID, statusEnum, LocalDate.now(), transferInitiation,
-                risk);
-        optionalTransferRequest = Optional.of(new TransferRequest(STRING_ID, statusEnum, LocalDate.now(),
-                transferInitiation, risk));
-    }
+        private void startInternationalTransferRequestSetup () {
+            transferRequest = new TransferRequest(STRING_ID, statusEnum, LocalDate.now(), transferInitiation,
+                    risk);
+            optionalTransferRequest = Optional.of(new TransferRequest(STRING_ID, statusEnum, LocalDate.now(),
+                    transferInitiation, risk));
+        }
 
-    private void startTransfersListByAccount() {
-        transferInfo = new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
-                "C", creditorAccount, "D", remittanceInformation);
-        optionalTransferInfo = Optional.of(new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
-                "C", creditorAccount, "D", remittanceInformation));
+        private void startTransfersListByAccount () {
+            transferInfo = new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
+                    "C", creditorAccount, "D", remittanceInformation);
+            optionalTransferInfo = Optional.of(new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
+                    "C", creditorAccount, "D", remittanceInformation));
 
-    }
+        }
 
-    private void startPaymentDomesticSubmissionSetup(){
-        paymentDomesticSubmission = new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>());
-        paymentDomesticSubmissionDTO = new PaymentDomesticSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
-        option = Optional.of(new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+        private void startPaymentDomesticSubmissionSetup () {
+            paymentDomesticSubmission = new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>());
+            paymentDomesticSubmissionDTO = new PaymentDomesticSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+            option = Optional.of(new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+        }
+            private void startInternationalInitiation () {
+                internationalTransferInitiation = new InternationalTransferInitiation(ID, instructionIdentification, endToEndIdentification,
+                        new ArrayList<>(), debtorAccount, debtorInformation, blockFunds, BO_P_CODE_ENUM, creditorAddress,
+                        debtorPhone, countryIsoCode);
 
-    private void startInternationalInitiation() {
-        internationalTransferInitiation = new InternationalTransferInitiation(ID, instructionIdentification, endToEndIdentification,
-                new ArrayList<>(), debtorAccount, debtorInformation, blockFunds, BO_P_CODE_ENUM, creditorAddress,
-                debtorPhone, countryIsoCode);
+            }
+            private void startDomesticInitiation () {
+                domesticTransferInitiation = new DomesticTransferInitiation(ID, TRANFER_TYPE_ENUM, OUR_SHARE_ENUM, instructionIdentification,
+                        endToEndIdentification, new ArrayList<>(), debtorAccount, new ArrayList<>(), debtorInformation);
 
-    }
-    private void startDomesticInitiation() {
-        domesticTransferInitiation = new DomesticTransferInitiation(ID, TRANFER_TYPE_ENUM, OUR_SHARE_ENUM, instructionIdentification,
-                endToEndIdentification, new ArrayList<>(), debtorAccount, new ArrayList<>(), debtorInformation);
+            }
 
-    }
-
-}
+        }

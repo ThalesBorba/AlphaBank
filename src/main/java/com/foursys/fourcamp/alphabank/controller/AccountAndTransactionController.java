@@ -5,7 +5,6 @@ import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +39,9 @@ public class AccountAndTransactionController {
     
     @GetMapping("/account-requests/{account-request-id}")
     public ResponseEntity<Object> returnAccountRequest(@PathVariable String accountRequestId) {
-    	
-    	
-    	if(accountRequestId.matches("^(-?)(0|([1-9][0-9]*))")) {
-    		 return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findById(Long.parseLong(accountRequestId))));
-    	} else {
-    		 return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null));
-    	}
+
+    		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
     }
     
 
