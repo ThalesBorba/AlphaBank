@@ -1,12 +1,19 @@
 package com.foursys.fourcamp.alphabank.service;
 
-import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
+import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.PaymentDomesticSubmission;
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
+import com.foursys.fourcamp.alphabank.entities.Risk;
 import com.foursys.fourcamp.alphabank.entities.TransferInfo;
 import com.foursys.fourcamp.alphabank.entities.TransferRequest;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.PaymentDomesticSubmissionRepository;
+import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
+import com.foursys.fourcamp.alphabank.repository.RiskRepository;
+import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
 import com.foursys.fourcamp.alphabank.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +29,11 @@ public class PaymentService {
     @Autowired
     private PaymentSetupRequestRepository paymentSetupRequestRepository;
     @Autowired
+    private PaymentDomesticSubmissionRepository paymentDomesticSubmissionRepository;
+
+    @Autowired
+    private RiskRepository riskRepository;
+
     private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
 
     @Autowired
@@ -31,6 +43,7 @@ public class PaymentService {
     private DomesticTransferInitiationRepository domesticTransferInitiationRepository;
     @Autowired
     private TransferRequestRepository transferRequestRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -80,6 +93,19 @@ public class PaymentService {
             domesticTransferInitiationRepository.deleteById(transferexist.getId());
             return Void.TYPE;
         }).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public PaymentDomesticSubmission createPaymentDomesticSubmission(PaymentDomesticSubmissionDTO obj){
+        return paymentDomesticSubmissionRepository.save(modelMapper.map(obj, PaymentDomesticSubmission.class));
+    }
+
+    public PaymentDomesticSubmission getPaymentDomesticSubmission(Long id){
+        Optional<PaymentDomesticSubmission> obj = paymentDomesticSubmissionRepository.findById(id);
+        return obj.get();
+    }
+
+    public Risk createRisk(Risk risk){
+        return riskRepository.save(risk);
     }
 }
 

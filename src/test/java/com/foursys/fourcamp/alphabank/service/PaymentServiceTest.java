@@ -1,12 +1,16 @@
 package com.foursys.fourcamp.alphabank.service;
 
-import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
+import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.PaymentDomesticSubmission;
+import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
+import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.OurShareEnum;
 import com.foursys.fourcamp.alphabank.enums.StatusEnum;
 import com.foursys.fourcamp.alphabank.enums.TransferScopeEnum;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
+import com.foursys.fourcamp.alphabank.repository.PaymentDomesticSubmissionRepository;
 import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
 import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
 import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
@@ -55,7 +59,6 @@ class PaymentServiceTest {
     private TransferInfoRepository transferInfoRepository;
     @Mock
     private ModelMapper modelMapper;
-
     private PaymentSetupRequest paymentSetupRequest;
     private TransferRequest transferRequest;
     private TransferInfo transferInfo;
@@ -69,6 +72,15 @@ class PaymentServiceTest {
     private Optional<PaymentSetupRequest> optional;
     private Optional<TransferRequest> optionalTransferRequest;
     private Optional<TransferInfo> optionalTransferInfo;
+
+    @Mock
+    private PaymentDomesticSubmissionRepository paymentDomesticSubmissionRepository;
+
+    private PaymentDomesticSubmission paymentDomesticSubmission;
+
+    private PaymentDomesticSubmissionDTO paymentDomesticSubmissionDTO;
+
+    private Optional<PaymentDomesticSubmission> option;
 
     @BeforeEach
     void setUp() {
@@ -199,6 +211,43 @@ class PaymentServiceTest {
         optionalTransferInfo = Optional.of(new TransferInfo(ID, "1", DATE, TRANSFER_SCOPE_ENUM, OUR_SHARE_ENUM, "A", "B", new Amount(),
                 "C", new CreditorAccount(), "D", new RemittanceInformation()));
 
+    }
+
+    @BeforeEach
+    void setUp2(){
+        MockitoAnnotations.openMocks(this);
+        startPaymentSubmission();
+    }
+
+    @Test
+    public void whenFindByIdReturnPaymentSubmissionRequest(){
+        when(paymentDomesticSubmissionRepository.findById(anyLong())).thenReturn(option);
+
+        PaymentDomesticSubmission response = paymentService.getPaymentDomesticSubmission(ID);
+
+        assertNotNull(response);
+        assertEquals(PaymentDomesticSubmission.class, response.getClass());
+        assertEquals(ID, response.getTransferRequestId());
+    }
+
+    @Test
+    public void whenFindByIdReturnObjectNotFound(){
+        when(paymentDomesticSubmissionRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
+
+        try {
+            paymentService.getPaymentDomesticSubmission(ID);
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
+        }
+    }
+
+    private void startPaymentSubmission() {
+        paymentDomesticSubmission = new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>());
+
+        paymentDomesticSubmissionDTO = new PaymentDomesticSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+
+        option = Optional.of(new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>()));
     }
 
 }

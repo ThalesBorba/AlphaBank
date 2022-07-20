@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class Amount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @NotEmpty(message = "Campo obrigatório")
     @Pattern(regexp = "^\\d{1,13}\\.\\d{1,5}$")
     private String amount;
