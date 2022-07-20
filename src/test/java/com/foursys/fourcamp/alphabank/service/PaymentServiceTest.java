@@ -6,15 +6,9 @@ import com.foursys.fourcamp.alphabank.entities.PaymentDomesticSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
-import com.foursys.fourcamp.alphabank.enums.OurShareEnum;
-import com.foursys.fourcamp.alphabank.enums.StatusEnum;
-import com.foursys.fourcamp.alphabank.enums.TransferScopeEnum;
+import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
-import com.foursys.fourcamp.alphabank.repository.PaymentDomesticSubmissionRepository;
-import com.foursys.fourcamp.alphabank.repository.InternationalTransferSubmissionRepository;
-import com.foursys.fourcamp.alphabank.repository.PaymentSetupRequestRepository;
-import com.foursys.fourcamp.alphabank.repository.TransferInfoRepository;
-import com.foursys.fourcamp.alphabank.repository.TransferRequestRepository;
+import com.foursys.fourcamp.alphabank.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,10 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PaymentServiceTest {
@@ -45,6 +38,28 @@ class PaymentServiceTest {
     public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
     public static final Date DATE = Date.valueOf("2022-07-19");
 
+    public static final String instructionIdentification = "bbbbb";
+
+    public static final String endToEndIdentification = "aaaaa";
+
+    public static final String debtorAccount = "cccc";
+
+    public static final String debtorInformation = "dddd";
+
+    public static final String blockFunds = "eeee";
+
+    private static final BoPCodeEnum BO_P_CODE_ENUM = BoPCodeEnum.DEPOSITS;
+
+    private static final String creditorAddress = "rrrr";
+
+    private static final String debtorPhone = "tttt";
+
+    private static final String countryIsoCode = "uuuu";
+
+    private static final TranferTypeEnum TRANFER_TYPE_ENUM = TranferTypeEnum.IRIS;
+
+
+
     @InjectMocks
     private PaymentService paymentService;
     @Mock
@@ -53,6 +68,14 @@ class PaymentServiceTest {
     @Mock
     private InternationalTransferSubmissionRepository internationalTransferSubmissionRepository;
 
+    @Mock
+    private InternarionalTrasferInitiationRepository internarionalTrasferInitiationRepository;
+
+    @Mock
+    private DomesticTransferInitiationRepository domesticTransferInitiationRepository;
+
+    private DomesticTransferInitiation domesticTransferInitiation;
+    private InternationalTransferInitiation internationalTransferInitiation;
     @Mock
     private TransferRequestRepository transferRequestRepository;
     @Mock
@@ -72,6 +95,10 @@ class PaymentServiceTest {
     private Optional<PaymentSetupRequest> optional;
     private Optional<TransferRequest> optionalTransferRequest;
     private Optional<TransferInfo> optionalTransferInfo;
+
+    private Optional<InternationalTransferInitiation> optionalTransferInit;
+
+    private Optional<DomesticTransferInitiation> optionalTransferInitDomestic;
 
     @Mock
     private PaymentDomesticSubmissionRepository paymentDomesticSubmissionRepository;
@@ -213,10 +240,32 @@ class PaymentServiceTest {
 
     }
 
+    @Test
+    void deleteInternationalWithSucess(){
+        doNothing().when(internarionalTrasferInitiationRepository).deleteById(eq(1L));
+        when(internarionalTrasferInitiationRepository.findById(eq(1L))).thenReturn(optionalTransferInit);
+
+        paymentService.deleteInternationalTransferRequest(1L);
+
+        verify(internarionalTrasferInitiationRepository,times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void deleteDomesticWithSucess() {
+        doNothing().when(domesticTransferInitiationRepository).deleteById(eq(1L));
+        when(domesticTransferInitiationRepository.findById(eq(1L))).thenReturn(optionalTransferInitDomestic);
+
+        paymentService.deleteDomesticTransferInitiation(1L);
+
+        verify(domesticTransferInitiationRepository, times(1)).deleteById(anyLong());
+    }
+
     @BeforeEach
     void setUp2(){
         MockitoAnnotations.openMocks(this);
         startPaymentSubmission();
+        startInternationalInitiation();
+        startDomesticInitiation();
     }
 
     @Test
@@ -258,5 +307,25 @@ class PaymentServiceTest {
 
         option = Optional.of(new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>()));
     }
+
+    private void startInternationalInitiation() {
+        internationalTransferInitiation = new InternationalTransferInitiation(ID, instructionIdentification, endToEndIdentification,
+                new ArrayList<>(), debtorAccount, debtorInformation, blockFunds, BO_P_CODE_ENUM, creditorAddress,
+                debtorPhone, countryIsoCode);
+
+        optionalTransferInit = Optional.of(new InternationalTransferInitiation(ID, instructionIdentification, endToEndIdentification,
+                new ArrayList<>(), debtorAccount, debtorInformation, blockFunds, BO_P_CODE_ENUM, creditorAddress,
+                debtorPhone, countryIsoCode));
+    }
+    private void startDomesticInitiation() {
+        domesticTransferInitiation = new DomesticTransferInitiation(ID, TRANFER_TYPE_ENUM, OUR_SHARE_ENUM, instructionIdentification,
+                endToEndIdentification, new ArrayList<>(), debtorAccount,new ArrayList<>(), debtorInformation);
+
+        optionalTransferInitDomestic = Optional.of(new DomesticTransferInitiation(ID, TRANFER_TYPE_ENUM, OUR_SHARE_ENUM, instructionIdentification,
+                endToEndIdentification, new ArrayList<>(), debtorAccount,new ArrayList<>(), debtorInformation));
+    }
+
+
+
 
 }

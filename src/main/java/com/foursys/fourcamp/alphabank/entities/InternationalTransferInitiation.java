@@ -46,4 +46,21 @@ public class InternationalTransferInitiation implements Serializable {
     @NotEmpty(message = "Campo obrigatório")
     private String countryIsoCode;
 
+    public InternationalTransferInitiation(Long id, String instructionIdentification,
+                                           String endToEndIdentification, List<Amount> instructedAmmount,
+                                           String debtorAccount, String debtorInformation, String blockFunds,
+                                           BoPCodeEnum boPCodeEnum, String creditorAddress, String debtorPhone,
+                                           String countryIsoCode) {
+        this.id = id;
+        this.instructionIdentification = instructionIdentification;
+        this.endToEndIdentification = endToEndIdentification;
+        this.instructedAmmount = instructedAmmount;
+        this.debtorAccount = debtorAccount;
+        this.debtorInformation = debtorInformation;
+        this.blockFunds = blockFunds;
+        this.boPCodeEnum = boPCodeEnum;
+        this.creditorAddress = creditorAddress;
+        this.debtorPhone = debtorPhone;
+        this.countryIsoCode = countryIsoCode;
+    }
 }

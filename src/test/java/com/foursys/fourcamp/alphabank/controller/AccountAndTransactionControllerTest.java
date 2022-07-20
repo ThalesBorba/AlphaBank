@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
@@ -71,9 +72,13 @@ class AccountAndTransactionControllerTest {
 
     private StandingOrderBasicInfo standingOrderBasicInfo;
 
+    private StandingOrderDetailedDTO standingOrderDetailedDTO;
+
     private Optional<StandingOrderBasicInfo> optionalStandingOrderBasicInfo;
 
     private Optional<DirectDebitBasicInfo> optionalDirectDebitBasicInfo;
+
+    private Optional<StandingOrderDetailedDTO> optionalStandingOrderDetailedInfoDTO;
 
     @InjectMocks
     private AccountAndTransactionController accountAndTransactionController;
@@ -98,6 +103,7 @@ class AccountAndTransactionControllerTest {
         startDirectDebit();
         startStandingOrder();
         startBeneficiaries();
+        startStandingOrderDetailedInfoDTO();
     }
 
     @Test
@@ -224,6 +230,24 @@ class AccountAndTransactionControllerTest {
         assertEquals(STRING_ID, response.getBody().get(INDEX).getAccountId());
 
     }
+    @Test
+    void whenFindByIdAccountAndOrderDetailedThenReturnSucess() {
+        when(accountAndTransactionService.findByIdOrderDetailed(STRING_ID,STRING_ID)).thenReturn(standingOrderDetailedDTO);
+
+        ResponseEntity<StandingOrderDetailedDTO> response = accountAndTransactionController.returnStandingOrder(STRING_ID,STRING_ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class,response.getClass());
+        assertEquals(StandingOrderDetailedDTO.class,response.getBody().getClass());
+        assertEquals(STRING_ID, response.getBody().getStandingOrderId());
+        assertEquals("A",response.getBody().getName());
+        assertEquals(STRING_ID, response.getBody().getAccountId());
+        assertEquals(AMOUNT, response.getBody().getAmount());
+        assertEquals(CREDITOR_ACCOUNT, response.getBody().getCreditorAccount());
+
+    }
+
 
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
@@ -253,5 +277,9 @@ class AccountAndTransactionControllerTest {
         beneficiary = new Beneficiary(STRING_ID, STRING_ID, CUSTOMER_TYPE_ENUM, "A", "B", "C", "D", "E", DATE, LANGUAGE_ENUM,
                 "F", GENDER_ENUM, TAX_INFORMATION, PERSONAL_IDENTITY, CONTACTS, ADRESSES, "G", DATE, DATE, DATE, DATE);
         optionalBeneficiary = Optional.of(beneficiary);
+    }
+
+    private void startStandingOrderDetailedInfoDTO() {
+        standingOrderDetailedDTO = new StandingOrderDetailedDTO(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT);
     }
 }
