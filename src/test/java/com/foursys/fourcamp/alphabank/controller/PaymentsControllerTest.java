@@ -1,6 +1,7 @@
 package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
+import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
 import com.foursys.fourcamp.alphabank.entities.InternationalTransferSubmission;
 import com.foursys.fourcamp.alphabank.entities.PaymentSetupRequest;
@@ -69,6 +70,11 @@ class PaymentsControllerTest {
     private PaymentSetupRequestDTO paymentSetupRequestDTO;
     private Optional<PaymentSetupRequest> optional;
 
+    private PaymentDomesticSubmission paymentDomesticSubmission;
+
+    private PaymentDomesticSubmissionDTO paymentDomesticSubmissionDTO;
+
+    private Optional<PaymentDomesticSubmission> option;
 
     @Test
     void whenFindByIdThenReturnSucess() {
@@ -170,12 +176,38 @@ class PaymentsControllerTest {
 
     }
 
+    @Test
+    void whenCreatePaymentSubmissionThenReturnCreate(){
+        when(paymentService.createPaymentDomesticSubmission(any())).thenReturn(paymentDomesticSubmission);
+
+        ResponseEntity<PaymentDomesticSubmissionDTO> response = paymentsController.createTransferSubmission(paymentDomesticSubmissionDTO);
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getHeaders().get("Location"));
+    }
+    @Test
+    void whenFindByIdPaymentSubmissionReturnSucess(){
+        when(paymentService.getPaymentDomesticSubmission(anyLong())).thenReturn(paymentDomesticSubmission);
+        when(modelMapper.map(any(), any())).thenReturn(paymentDomesticSubmissionDTO);
+
+        ResponseEntity<PaymentDomesticSubmissionDTO> response = paymentsController.returnTransferSubmission(ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(PaymentDomesticSubmissionDTO.class, response.getBody().getClass());
+
+        assertEquals(ID, response.getBody().getTransferRequestId());
+    }
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         startPaymentSetup();
         startInternationalTransferRequestSetup();
         startTransfersListByAccount();
+        startPaymentDomesticSubmissionSetup();
     }
 
 
@@ -195,8 +227,6 @@ class PaymentsControllerTest {
                 transferInitiation, risk));
     }
 
-
-
     private void startTransfersListByAccount() {
         transferInfo = new TransferInfo(ID, "1", DATE, transferScopeEnum, ourShareEnum, "A", "B", amount,
                 "C", creditorAccount, "D", remittanceInformation);
@@ -204,4 +234,11 @@ class PaymentsControllerTest {
                 "C", creditorAccount, "D", remittanceInformation));
 
     }
+
+    private void startPaymentDomesticSubmissionSetup(){
+        paymentDomesticSubmission = new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>());
+        paymentDomesticSubmissionDTO = new PaymentDomesticSubmissionDTO(ID, new ArrayList<>(), new ArrayList<>());
+        option = Optional.of(new PaymentDomesticSubmission(ID, new ArrayList<>(), new ArrayList<>()));
+    }
+
 }

@@ -64,7 +64,7 @@ public class PaymentService {
 
     public List<TransferInfo> returnPaymentsByTimePeriod(Date fromDate, Date toDate) {
         return transferInfoRepository.findAll().stream().filter(transfer -> transfer.getDateSubmitted().after(fromDate)
-        && transfer.getDateSubmitted().before(toDate)).toList();
+                && transfer.getDateSubmitted().before(toDate)).toList();
     }
 
     public InternationalTransferSubmission createInternationalTransferSub(InternationalTransferSubmissionDTO obj) {
@@ -77,7 +77,7 @@ public class PaymentService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 
-    public TransferRequest returnInternationalTransferRequest (String transferRequestId){
+    public TransferRequest returnInternationalTransferRequest(String transferRequestId) {
         return transferRequestRepository.findById(transferRequestId).orElseThrow(NoSuchElementException::new);
     }
 
@@ -95,17 +95,13 @@ public class PaymentService {
         }).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 
-    public PaymentDomesticSubmission createPaymentDomesticSubmission(PaymentDomesticSubmissionDTO obj){
+    public PaymentDomesticSubmission createPaymentDomesticSubmission(PaymentDomesticSubmissionDTO obj) {
         return paymentDomesticSubmissionRepository.save(modelMapper.map(obj, PaymentDomesticSubmission.class));
     }
 
-    public PaymentDomesticSubmission getPaymentDomesticSubmission(Long id){
+    public PaymentDomesticSubmission getPaymentDomesticSubmission(Long id) {
         Optional<PaymentDomesticSubmission> obj = paymentDomesticSubmissionRepository.findById(id);
         return obj.get();
-    }
-
-    public Risk createRisk(Risk risk){
-        return riskRepository.save(risk);
     }
 }
 

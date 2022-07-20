@@ -220,7 +220,7 @@ class PaymentServiceTest {
     }
 
     @Test
-    public void whenFindByIdReturnPaymentSubmissionRequest(){
+    void whenFindByIdReturnPaymentSubmissionRequest(){
         when(paymentDomesticSubmissionRepository.findById(anyLong())).thenReturn(option);
 
         PaymentDomesticSubmission response = paymentService.getPaymentDomesticSubmission(ID);
@@ -231,7 +231,7 @@ class PaymentServiceTest {
     }
 
     @Test
-    public void whenFindByIdReturnObjectNotFound(){
+    void whenFindByIdPaymentSubmissionReturnObjectNotFound(){
         when(paymentDomesticSubmissionRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
 
         try {
@@ -240,6 +240,15 @@ class PaymentServiceTest {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals(OBJETO_NAO_ENCONTRADO, ex.getMessage());
         }
+    }
+    @Test
+    void whenCreatePaymentDomesticSubmission(){
+        when(paymentDomesticSubmissionRepository.save(any())).thenReturn(paymentDomesticSubmission);
+
+        PaymentDomesticSubmission response = paymentService.createPaymentDomesticSubmission(paymentDomesticSubmissionDTO);
+        assertNotNull(response);
+        assertEquals(PaymentDomesticSubmission.class, response.getClass());
+        assertEquals(ID, response.getTransferRequestId());
     }
 
     private void startPaymentSubmission() {

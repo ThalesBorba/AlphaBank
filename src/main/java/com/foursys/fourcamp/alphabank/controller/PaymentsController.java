@@ -2,6 +2,7 @@ package com.foursys.fourcamp.alphabank.controller;
 
 import com.foursys.fourcamp.alphabank.dto.PaymentDomesticSubmissionDTO;
 import com.foursys.fourcamp.alphabank.dto.PaymentSetupRequestDTO;
+import com.foursys.fourcamp.alphabank.entities.PaymentDomesticSubmission;
 import com.foursys.fourcamp.alphabank.entities.Risk;
 import com.foursys.fourcamp.alphabank.exceptions.Handler;
 import com.foursys.fourcamp.alphabank.dto.InternationalTransferSubmissionDTO;
@@ -81,13 +82,8 @@ public class PaymentsController {
       }
 
       @GetMapping("/domestic/submissions/{transfer-submission-id}")
-      public ResponseEntity<Object> returnTransferSubmission(@PathVariable("transfer-submission-id") Long id){
-      return ResponseEntity.ok().body(paymentService.getPaymentDomesticSubmission(id));
-      }
-
-      @PostMapping("/risk")
-      public ResponseEntity<Object> createRisk(@RequestBody Risk obj){
-         return Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(paymentService.createRisk(obj)));
+      public ResponseEntity<PaymentDomesticSubmissionDTO> returnTransferSubmission(@PathVariable("transfer-submission-id") Long id){
+        return ResponseEntity.ok().body(modelMapper.map(paymentService.getPaymentDomesticSubmission(id), PaymentDomesticSubmissionDTO.class));
       }
 
       /*
