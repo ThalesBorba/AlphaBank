@@ -2,10 +2,12 @@ package com.foursys.fourcamp.alphabank.service;
 
 import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
 import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
+import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.exceptions.ObjectNotFoundException;
 import com.foursys.fourcamp.alphabank.repository.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -87,6 +90,7 @@ class AccountAndTransactionServiceTest {
     public static final List<Contact> CONTACTS = new ArrayList<>();
     public static final List<Adress> ADRESSES = new ArrayList<>();
 
+
     private BalancesResponseDTO balancesResponseDTO;
 
     private DirectDebitDetailedInfo directDebitDetailedInfo;
@@ -97,11 +101,15 @@ class AccountAndTransactionServiceTest {
 
     private Beneficiary beneficiary;
 
+    private StandingOrderDetailedDTO standingOrderDetailedDTO;
+
     private Optional<DirectDebitDetailedInfo> optionalDirectDebitDetailedInfo;
 
     private Optional<StandingOrderDetailedInfo> optionalStandingOrderDetailedInfo;
 
     private Optional<Beneficiary> optionalBeneficiary;
+
+    private Optional<StandingOrderDetailedDTO> optionalStandingOrderDetailedDTO;
     private Card card;
 
     private Transaction transaction;
@@ -247,6 +255,22 @@ class AccountAndTransactionServiceTest {
         assertThrows(ObjectNotFoundException.class,()->accountAndTransactionService.deleteAccountRequest(2L));
 
     }
+    @Test
+    void whenFindByIdAccountAndOrderDetailedThenReturnSucess() {
+        when(standingOrderRepository.findByIdAndAccountId(STRING_ID,STRING_ID)).thenReturn(standingOrderDetailedInfo);
+
+        StandingOrderDetailedDTO response = accountAndTransactionService.findByIdOrderDetailed(STRING_ID,STRING_ID);
+
+        assertNotNull(response);
+        assertEquals(StandingOrderDetailedDTO.class,response.getClass());
+        assertEquals(STRING_ID, response.getAccountId());
+        assertEquals("A",response.getName());
+        assertEquals(STRING_ID, response.getAccountId());
+        assertEquals(AMOUNT, response.getAmount());
+        assertEquals(CREDITOR_ACCOUNT, response.getCreditorAccount());
+
+    }
+
 
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
@@ -282,5 +306,6 @@ class AccountAndTransactionServiceTest {
                 "F", GENDER_ENUM, TAX_INFORMATION, PERSONAL_IDENTITY, CONTACTS, ADRESSES, "G", DATE, DATE, DATE, DATE);
         optionalBeneficiary = Optional.of(beneficiary);
     }
+
 
 }
