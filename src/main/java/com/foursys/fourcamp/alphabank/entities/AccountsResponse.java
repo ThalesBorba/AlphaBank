@@ -26,9 +26,18 @@ public class AccountsResponse implements Serializable {
     @NotEmpty(message = "Campo obrigatório")
     @OneToOne
     private AccountProfile accountProfile;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @NotEmpty(message = "Campo obrigatório")
     @OneToOne
     private Servicer servicer;
+
+    public AccountsResponse(Long id, AccountProfile accountProfile, Servicer servicer) {
+        this.id = id;
+        this.accountProfile = accountProfile;
+        this.servicer = servicer;
+    }
 
     @Override
     public boolean equals(Object o) {

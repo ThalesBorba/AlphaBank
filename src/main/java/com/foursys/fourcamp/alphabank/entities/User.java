@@ -28,6 +28,11 @@ public class User implements UserDetails{
     private String cpf;
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
+    @OneToMany(mappedBy = "user")
+    private List<AccountsResponse> accountsResponses;
+
     @ManyToMany
     @JoinTable(name = "tb_users_roles" , joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();

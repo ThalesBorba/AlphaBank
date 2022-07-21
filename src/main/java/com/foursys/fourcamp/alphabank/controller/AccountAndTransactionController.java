@@ -25,10 +25,10 @@ public class AccountAndTransactionController {
     @Autowired
     private ModelMapper mapper;
 
-//    @GetMapping("/accounts/{accountId}/details")
-//    public ResponseEntity<Object> returnAccount(@PathVariable String accountId) {
-//       return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findByUserId(accountId));
-//    }
+    @GetMapping("/accounts/{accountId}/details")
+    public ResponseEntity<Object> returnAccount(@PathVariable Long id) {
+       return ResponseEntity.status(HttpStatus.OK).body(accountAndTransactionService.findById(id));
+    }
 
     @PostMapping("/account-request")
     public ResponseEntity<AccountRequestDTO> create(@RequestBody AccountRequestDTO obj) {

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,7 +19,11 @@ import java.util.Objects;
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotEmpty(message = "Campo obrigatório")
     @OneToOne
@@ -28,12 +33,18 @@ public class Account implements Serializable {
     @OneToOne
     private Servicer servicer;
 
+    public Account(Long id, AccountProfile accountProfile, Servicer servicer) {
+        this.id = id;
+        this.accountProfile = accountProfile;
+        this.servicer = servicer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Account account = (Account) o;
-        return userID != null && Objects.equals(userID, account.userID);
+        return id != null && Objects.equals(id, account.id);
     }
 
     @Override

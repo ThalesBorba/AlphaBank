@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountAndTransactionService {
@@ -66,10 +65,6 @@ public class AccountAndTransactionService {
                 , detailed.getAccountId(), detailed.getAmount(), detailed.getCreditorAccount());
 
     }
-
-//    public List<Account> returnAllAccountByUserId(Long userId) {
-//        return accountRepository.findByUserId(userId);
-//    }
     
     public AccountRequest createAccountRequest(AccountRequestDTO accountRequest) {
         return accountRequestRepository.save(modelMapper.map(accountRequest, AccountRequest.class));
@@ -119,10 +114,5 @@ public class AccountAndTransactionService {
     
     public List<AccountsResponse> findAllAccountsResponse() {
         return accountsResponseRepository.findAll();
-    }
-
-    public Account findByUserId(String id){
-        Optional<Account> obj = accountRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 }

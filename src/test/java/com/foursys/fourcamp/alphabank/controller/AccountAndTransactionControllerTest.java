@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,9 @@ class AccountAndTransactionControllerTest {
     private AccountRequestDTO accountRequestDTO;
     private Beneficiary beneficiary;
 
+    @Mock
+    private HttpServletRequest HTTP_SERVLET_REQUEST;
+
     private StandingOrderBasicInfo standingOrderBasicInfo;
 
     private StandingOrderDetailedDTO standingOrderDetailedDTO;
@@ -143,7 +147,7 @@ class AccountAndTransactionControllerTest {
 //
 //    }
     @Test
-   void testarOResponseAccountRequestController(){
+   void testResponseAccountRequestController(){
         doNothing().when(accountAndTransactionService).deleteAccountRequest(anyLong());
         ResponseEntity<AccountRequest> response=accountAndTransactionController.deleteAccountRequest(ID);
         assertNotNull(response);
