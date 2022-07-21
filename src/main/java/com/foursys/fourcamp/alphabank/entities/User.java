@@ -22,16 +22,19 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
     private String email;
+
+    private String cpf;
     private String password;
 
-    @ManyToMany(mappedBy ="users" , fetch = FetchType.EAGER)
+    @ManyToMany
+    @JoinTable(name = "tb_users_roles" , joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
-    public User(Long id, String name, String email, String password) {
-        this.name = name;
+    public User(Long id,String email,String cpf, String password) {
         this.email = email;
+        this.cpf = cpf;
         this.password = password;
     }
 

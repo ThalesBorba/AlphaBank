@@ -23,9 +23,12 @@ public class Role implements GrantedAuthority {
 
     private String nameRole;
 
-    @ManyToMany
-    @JoinTable(name = "tb_users_roles" , joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy ="roles" , fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
+
+    public Role(String nameRole){
+        this.nameRole = nameRole;
+    }
 
     @Override
     public String getAuthority() {
