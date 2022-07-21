@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin(originPatterns = "*")
 @RestController
 @RequestMapping("/payments/transfers")
 public class PaymentsController {

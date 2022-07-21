@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/")
 @RestController
+@CrossOrigin(originPatterns = "*")
 public class AccountAndTransactionController {
 
     @Autowired
