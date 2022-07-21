@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                 .and() .csrf().ignoringAntMatchers("/h2-console/**")
                 .and() .headers( ).frameOptions().sameOrigin()
 
-                .and().csrf().disable()
+                .and().csrf().and().cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthenticationTokenFilter(tokenService , userRepository), UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -74,16 +74,6 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
-    }
-
-    protected void configure(HttpSecurity http) throws Exception {
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            http.headers().frameOptions().disable();
-        }
-
-        http.cors().and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean
