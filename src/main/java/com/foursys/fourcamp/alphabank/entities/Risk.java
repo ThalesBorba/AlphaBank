@@ -1,19 +1,13 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Size;
-
 import com.foursys.fourcamp.alphabank.enums.PaymentContextCodeEnum;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @AllArgsConstructor
@@ -29,6 +23,6 @@ public class Risk implements Serializable {
     private String merchantCategoryCode;
     @Size(min = 1, max = 70)
     private String merchantCustomerIdentification;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private DeliveryAddress deliveryAddress;
 }

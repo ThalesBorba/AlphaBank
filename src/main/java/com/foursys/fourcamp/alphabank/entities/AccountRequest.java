@@ -23,10 +23,10 @@ public class AccountRequest implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private ProductIdentifier productIdentifier;
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Risk risk;
 
 

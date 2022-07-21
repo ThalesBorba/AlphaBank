@@ -19,7 +19,7 @@ public class CurrencyRate {
 
     private Date exchangeRatesDate = new Date();
     private Date ecbrRatesDate = new Date();
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Currency currencies;
 
     public CurrencyRate(Currency currencies) {

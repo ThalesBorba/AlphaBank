@@ -17,7 +17,7 @@ public class CreditorAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Campo obrigatório")
+
     private ProductIdentifierEnum productIdentifier;
     @NotEmpty(message = "Campo obrigatório")
     @Size(min = 1, max = 34)
