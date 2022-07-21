@@ -32,11 +32,11 @@ public class User implements UserDetails{
     @JoinTable(name = "tb_users_roles" , joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
-    public User(Long id, String cpf, String email, String password) {
+    public User(Long id,String email,String cpf, String password) {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
-     }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
