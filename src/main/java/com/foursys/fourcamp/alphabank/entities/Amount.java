@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -23,10 +22,8 @@ public class Amount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Campo obrigatório")
-    @Pattern(regexp = "^\\d{1,13}\\.\\d{1,5}$")
     private String theAmount;
     @NotEmpty(message = "Campo obrigatório")
-    @Pattern(regexp = "^[A-Z]{3,3}$")
     private String currency;
 
     @Override

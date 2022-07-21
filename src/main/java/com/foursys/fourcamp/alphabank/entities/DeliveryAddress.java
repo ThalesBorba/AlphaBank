@@ -8,8 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -20,18 +18,16 @@ public class DeliveryAddress implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ElementCollection
-    @Size(max = 2)
-    private List<String> addressLine=new ArrayList<>();
+
+
+    private String addressLine;
     @Size(min = 1, max = 16)
     private String buildingNumber;
     @Size(min = 1, max = 16)
     private String postCode;
     @Size(min = 1, max = 35)
     private String townName;
-    @Size(max = 2)
-    @ElementCollection
-    private List<String> countrySubDivision=new ArrayList<>();
+    private String countrySubDivision;
     @Pattern(regexp = "^[A-Z]{2,2}$")
     private String country;
 }
