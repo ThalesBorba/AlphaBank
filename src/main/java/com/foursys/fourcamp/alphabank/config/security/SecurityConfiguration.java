@@ -58,8 +58,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                /*.antMatchers(HttpMethod.GET, "/topicos").permitAll()
-                .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()*/
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.GET, "/teste/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/user/**").hasRole("DIRECTOR")
@@ -80,7 +78,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**").allowedOrigins("http://localhost:8080")
+        registry.addMapping("/api/**").allowedOrigins("http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS",  "HEAD", "TRACE", "CONNECT");}
 
     @Bean
