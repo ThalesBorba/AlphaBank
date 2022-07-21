@@ -1,12 +1,43 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import javax.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Objects;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Table(name = "tb_account")
+@Entity
 public class Account implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userID;
 
-    @NotNull
+    @NotEmpty(message = "Campo obrigatório")
+    @OneToOne
     private AccountProfile accountProfile;
-    @NotNull
+    
+    @NotEmpty(message = "Campo obrigatório")
+    @OneToOne
     private Servicer servicer;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Account account = (Account) o;
+        return userID != null && Objects.equals(userID, account.userID);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

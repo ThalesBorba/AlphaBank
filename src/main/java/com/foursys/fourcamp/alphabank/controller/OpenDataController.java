@@ -1,45 +1,50 @@
 package com.foursys.fourcamp.alphabank.controller;
 
+import com.foursys.fourcamp.alphabank.dto.BankAtmsDTO;
+import com.foursys.fourcamp.alphabank.entities.Akps;
+import com.foursys.fourcamp.alphabank.entities.BranchList;
+import com.foursys.fourcamp.alphabank.entities.CurrencyRate;
 import com.foursys.fourcamp.alphabank.service.OpenDataService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/open-data")
 public class OpenDataController {
 
     @Autowired
-    private final OpenDataService openDataService;
-
+    private OpenDataService openDataService;
+    
     @Autowired
-    public OpenDataController(OpenDataService openDataService) {
-        this.openDataService = openDataService;
-    }
-/*
-    @GetMapping("/branches")
-    public ResponseEntity<Object> returnBankBranches(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
-    }
+    private ModelMapper mapper;
 
-    @GetMapping("/atm")
-    public ResponseEntity<Object> returnBankAtms(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+    @GetMapping("/branches")
+    public ResponseEntity<List<BranchList>> returnBankBranches(){
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.findAllBranch());
+    }
+    
+    @GetMapping("/rates")
+    public ResponseEntity<CurrencyRate> returnBankCurrencyRates(){
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.
+                returnBankCurrencyRates());
     }
 
     @GetMapping("/akps")
-    public ResponseEntity<Object> returnBankAkps(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+    public ResponseEntity<List<Akps>> listAllAkpsBank() {
+        return ResponseEntity.status(HttpStatus.OK).body(openDataService.listAllAkpsBank());
     }
 
-    @GetMapping("/rates")
-    public ResponseEntity<Object> returnBankCurrencyRates(@PathVariable String xAbBankId, String xAbLang, String
-            authorization, String ocpApimSubscriptionKey){
-        Handler.exceptionHandler(ResponseEntity.status(HttpStatus.OK).body(method));
+    //Tirei os parametros, irei ve como vou fazer
+    @GetMapping(value = "/atms")
+    public ResponseEntity<List<BankAtmsDTO>> returnBankAtms() {
+        return ResponseEntity.ok().body(openDataService.findAllAtms().stream().map(x -> mapper.map(x, BankAtmsDTO.class)).toList());
     }
-*/
 
 }
