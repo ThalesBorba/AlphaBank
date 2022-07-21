@@ -28,6 +28,10 @@ public class MockAdmin implements CommandLineRunner {
         roleRepository.save(admRole);
 
         adm.getRoles().add(admRole);
+
+    @Override
+    public void run(String... args) throws Exception {
+        User adm = new User(null ,"adm", "adm", "$2a$12$WZWz7pqNiVWX5VVJKC4u0uTYmSRnnfoxHRHubOeX316/IhroXn/EW");
         userRepository.save(adm);
     }
 }

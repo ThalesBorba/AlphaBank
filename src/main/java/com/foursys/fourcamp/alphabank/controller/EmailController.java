@@ -3,9 +3,9 @@ package com.foursys.fourcamp.alphabank.controller;
 import com.foursys.fourcamp.alphabank.config.security.TokenService;
 import com.foursys.fourcamp.alphabank.dto.EmailDTO;
 import com.foursys.fourcamp.alphabank.dto.PasswordRecoverDTO;
-import com.foursys.fourcamp.alphabank.entities.Email;
 import com.foursys.fourcamp.alphabank.entities.User;
 import com.foursys.fourcamp.alphabank.repository.UserRepository;
+import com.foursys.fourcamp.alphabank.entities.Email;
 import com.foursys.fourcamp.alphabank.service.EmailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,9 @@ import java.util.UUID;
 public class EmailController {
     @Autowired
     private EmailService emailService;
+
     @Autowired
     private UserRepository userRepository;
-
-
 
     @PostMapping("/sending-email")
     public ResponseEntity<Email> sendingEmail(@RequestBody @Valid EmailDTO emailDTO) {
@@ -66,3 +65,6 @@ public class EmailController {
 
     }
 }
+
+}
+
