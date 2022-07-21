@@ -102,7 +102,7 @@ public class AccountAndTransactionController {
     @GetMapping(value = "/details/deposit")
     public ResponseEntity<List<AccountsResponseDTO>> findAllDeposits(){
         List<AccountsResponseDTO> listAccount = accountAndTransactionService.findAllAccountsResponse().stream()
-                .map(x -> mapper.map(x, AccountsResponseDTO.class)).collect(Collectors.toList());
+                .map(x -> mapper.map(x, AccountsResponseDTO.class)).toList();
         return ResponseEntity.ok().body(listAccount);
     }
 }

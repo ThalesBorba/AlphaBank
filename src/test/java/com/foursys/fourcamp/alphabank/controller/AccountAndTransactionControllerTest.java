@@ -219,7 +219,6 @@ class AccountAndTransactionControllerTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(ArrayList.class, response.getBody().getClass());
         assertEquals(AccountsResponseDTO.class, response.getBody().get(INDEX).getClass());
         assertEquals(ID, response.getBody().get(INDEX).getId());
         assertEquals(ACCOUNT_PROFILE, response.getBody().get(INDEX).getAccountProfile());

@@ -1,8 +1,7 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,11 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,8 +24,21 @@ public class Amount implements Serializable {
     private Long id;
     @NotEmpty(message = "Campo obrigatório")
     @Pattern(regexp = "^\\d{1,13}\\.\\d{1,5}$")
-    private String amount;
+    private String theAmount;
     @NotEmpty(message = "Campo obrigatório")
     @Pattern(regexp = "^[A-Z]{3,3}$")
     private String currency;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Amount amount = (Amount) o;
+        return id != null && Objects.equals(id, amount.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

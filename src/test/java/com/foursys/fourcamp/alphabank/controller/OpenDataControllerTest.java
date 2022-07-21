@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +80,6 @@ class OpenDataControllerTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(ArrayList.class, response.getBody().getClass());
         assertEquals(BankAtmsDTO.class, response.getBody().get(INDEX).getClass());
 
         assertEquals(ID, response.getBody().get(INDEX).getId());
@@ -106,7 +104,7 @@ class OpenDataControllerTest {
         assertEquals(ID, response.getBody().get(INDEX).getId());
         assertEquals(NAME, response.getBody().get(INDEX).getName());
         assertEquals(CITY, response.getBody().get(INDEX).getCity());
-        assertEquals(ADDRESS, response.getBody().get(INDEX).getAndreess());
+        assertEquals(ADDRESS, response.getBody().get(INDEX).getAndress());
         assertEquals(ZIPCODE, response.getBody().get(INDEX).getZipCode());
         assertEquals(ISINBRANCH, response.getBody().get(INDEX).getIsInBranch());
         assertEquals(LATAKPS, response.getBody().get(INDEX).getLat());
@@ -126,7 +124,7 @@ class OpenDataControllerTest {
         assertEquals(CITY, response.getBody().get(INDEX).getCity());
         assertEquals(REGION, response.getBody().get(INDEX).getRegion());
         assertEquals(COUNTRY, response.getBody().get(INDEX).getCountry());
-        assertEquals(ADDRESS, response.getBody().get(INDEX).getAdress());
+        assertEquals(ADDRESS, response.getBody().get(INDEX).getAddress());
         assertEquals(ZIPCODE, response.getBody().get(INDEX).getZipCode());
         assertEquals(PHONE, response.getBody().get(INDEX).getPhone());
         assertEquals(FAX, response.getBody().get(INDEX).getFax());

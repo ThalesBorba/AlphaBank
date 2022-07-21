@@ -21,6 +21,7 @@ import java.util.List;
 @RequestMapping("/payments/transfers")
 public class PaymentsController {
 
+    public static final String ID = "/{id}";
     @Autowired
     private PaymentService paymentService;
     @Autowired
@@ -28,29 +29,22 @@ public class PaymentsController {
 
     @PostMapping("/domestic")
     public ResponseEntity<PaymentSetupRequestDTO> createTransferIntent(@RequestBody PaymentSetupRequestDTO objDto) {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(ID)
                 .buildAndExpand(paymentService.createDomesticPaymentSetupRequest(objDto).getTransferRequestId()).toUri();
-        return ResponseEntity.created(uri).build();
-    }
-
-    @PostMapping("/international")
-    public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransfer(@RequestBody InternationalTransferSubmissionDTO obj){
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(paymentService.createInternationalTransferSub(obj).getTransferRequestId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PostMapping("/international/submissions")
     public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransferSub(@RequestBody InternationalTransferSubmissionDTO obj) {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(ID)
                 .buildAndExpand(paymentService.createInternationalTransferSub(obj).getTransferRequestId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/domestic/{transfer-request-id}")
-    public ResponseEntity<PaymentSetupRequestDTO> returnTransferRequest(@PathVariable Long Id) {
+    public ResponseEntity<PaymentSetupRequestDTO> returnTransferRequest(@PathVariable Long id) {
         return ResponseEntity.ok()
-                .body(modelMapper.map(paymentService.getDomesticPaymentSetupRequest(Id), PaymentSetupRequestDTO.class));
+                .body(modelMapper.map(paymentService.getDomesticPaymentSetupRequest(id), PaymentSetupRequestDTO.class));
     }
     @GetMapping("/international/submissions/{transfer-submission-id}")
         public ResponseEntity<InternationalTransferSubmissionDTO> returnInternationalTransferSub(@PathVariable Long id) {
@@ -59,7 +53,7 @@ public class PaymentsController {
 
       @PostMapping("/domestic/submissions")
       public ResponseEntity<PaymentDomesticSubmissionDTO> createTransferSubmission(@RequestBody PaymentDomesticSubmissionDTO obj){
-          URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+          URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(ID)
                   .buildAndExpand(paymentService.createPaymentDomesticSubmission(obj).getTransferRequestId()).toUri();
           return ResponseEntity.created(uri).build();
       }
@@ -68,22 +62,6 @@ public class PaymentsController {
       public ResponseEntity<PaymentDomesticSubmissionDTO> returnTransferSubmission(@PathVariable("transfer-submission-id") Long id){
         return ResponseEntity.ok().body(modelMapper.map(paymentService.getPaymentDomesticSubmission(id), PaymentDomesticSubmissionDTO.class));
       }
-
-      /*
-     * @PostMapping("/internacional")
-     * public ResponseEntity<Object>
-     * createInternationalTransferIntent(@RequestBody @Valid class, @PathVariable
-     * String
-     * xIdempotencyKey, String xAbBankId, String xAbPsuLastLogged, String xAbPsuIp,
-     * String xAbInteractionId,
-     * String authorization, String xAbLang, String ocpApimSubscriptionKey){
-     * Handler.exceptionHandler(ResponseEntity.status(HttpStatus.CREATED).body(
-     * method));
-     * }
-     *
-     * 
-
-     */
 
     @GetMapping("/history/{account-id}")
     public ResponseEntity<List<TransferInfo>> returnTransfersByAccount(@PathVariable String accountId){
@@ -100,7 +78,7 @@ public class PaymentsController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.returnInternationalTransferRequest(tranferRequestId));
     }
 
-    @DeleteMapping("/internacional/{transfer-request-id}")
+    @DeleteMapping("/international/{transfer-request-id}")
     public ResponseEntity<InternationalTransferInitiation> deleteTransferRequest(@PathVariable Long
                                                                 tranferRequestId){
         paymentService.deleteInternationalTransferRequest(tranferRequestId);

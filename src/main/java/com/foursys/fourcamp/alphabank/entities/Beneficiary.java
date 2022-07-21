@@ -3,16 +3,22 @@ package com.foursys.fourcamp.alphabank.entities;
 import com.foursys.fourcamp.alphabank.enums.CustomerTypeEnum;
 import com.foursys.fourcamp.alphabank.enums.GenderEnum;
 import com.foursys.fourcamp.alphabank.enums.LanguageEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -39,13 +45,27 @@ public class Beneficiary implements Serializable {
     @OneToOne
     private PersonalIdentity personalIdentity;
     @OneToMany
+    @ToString.Exclude
     private List<Contact> contacts;
     @OneToMany
+    @ToString.Exclude
     private List<Adress> adresses;
     private String bussinessActivity;
     private Date corpExpirationDate;
     private Date legalEntityExpiryDate;
     private Date insuranceClearanceExpiryDate;
-    private Date TaxClearanceExpiryDate;
+    private Date taxClearanceExpiryDate;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Beneficiary that = (Beneficiary) o;
+        return customerNumber != null && Objects.equals(customerNumber, that.customerNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -32,13 +32,13 @@ public class Transaction implements Serializable {
     @NotEmpty(message = "Campo obrigatório")
     private CreditDebitIndicatorEnum creditDebitIndicator;
     @Column(unique = true)
-    private String OriginatorAccount;
+    private String originatorAccount;
     @NotEmpty(message = "Campo obrigatório")
     @Column(unique = true)
     private String endToEndIdentification;
     @NotEmpty(message = "Campo obrigatório")
     @Column(unique = true)
-    private String InstructionIdentification;
+    private String instructionIdentification;
     @NotEmpty(message = "Campo obrigatório")
     private Date bookingDateTime;
     private Date valueDateTime;

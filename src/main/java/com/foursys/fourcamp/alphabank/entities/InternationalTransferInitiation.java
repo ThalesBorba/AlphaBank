@@ -28,7 +28,7 @@ public class InternationalTransferInitiation implements Serializable {
     private String endToEndIdentification;
     @NotEmpty(message = "Campo obrigatório")
     @OneToMany
-    List<Amount> instructedAmmount;
+    private List<Amount> instructedAmmount;
     private String debtorAccount;
     @NotEmpty(message = "Campo obrigatório")
     @OneToOne

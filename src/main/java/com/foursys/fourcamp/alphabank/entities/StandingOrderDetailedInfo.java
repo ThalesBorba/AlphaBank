@@ -23,7 +23,6 @@ public class StandingOrderDetailedInfo implements Serializable {
 
     @NotEmpty(message = "Campo obrigatório")
     private String name;
-    //todo relacionamento
     private String accountId;
     private StatusEnum status;
     private Date dateCreated;

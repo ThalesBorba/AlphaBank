@@ -23,5 +23,5 @@ public class ProductIdentifier implements Serializable {
     @NotEmpty(message = "Campo obrigatório")
     private String accountCode;
     @NotEmpty(message = "Campo obrigatório")
-    private ProductIdentifierEnum productIdentifier;
+    private ProductIdentifierEnum productIdentifierEnum;
 }

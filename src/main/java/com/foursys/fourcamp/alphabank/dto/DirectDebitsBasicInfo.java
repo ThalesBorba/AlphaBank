@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DirectDebitsBasicInfo implements Serializable {
-    List<DirectDebitBasicInfo> directDebitBasicInfos;
+    private List<DirectDebitBasicInfo> directDebitBasicInfos;
 }
 

@@ -35,7 +35,7 @@ public class OpenDataService {
     private BranchListRepository branchListRepository;
 
     public CurrencyRate returnBankCurrencyRates() {
-        return currencyRateRepository.findById(1L).orElseThrow(() -> new NoSuchElementException());
+        return currencyRateRepository.findById(1L).orElseThrow(NoSuchElementException::new);
     }
 
     public List<BranchList> findAllBranch() {

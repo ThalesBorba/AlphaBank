@@ -118,7 +118,7 @@ class OpenDataServiceTest {
         assertEquals(ID, response.get(INDEX).getId());
         assertEquals(NAME, response.get(INDEX).getName());
         assertEquals(CITY, response.get(INDEX).getCity());
-        assertEquals(ADDRESS, response.get(INDEX).getAndreess());
+        assertEquals(ADDRESS, response.get(INDEX).getAndress());
         assertEquals(ZIPCODE, response.get(INDEX).getZipCode());
         assertEquals(ISINBRANCH, response.get(INDEX).getIsInBranch());
         assertEquals(LATAKPS, response.get(INDEX).getLat());
@@ -137,7 +137,7 @@ class OpenDataServiceTest {
         assertEquals(CITY, response.get(INDEX).getCity());
         assertEquals(REGION, response.get(INDEX).getRegion());
         assertEquals(COUNTRY, response.get(INDEX).getCountry());
-        assertEquals(ADDRESS, response.get(INDEX).getAdress());
+        assertEquals(ADDRESS, response.get(INDEX).getAddress());
         assertEquals(ZIPCODE, response.get(INDEX).getZipCode());
         assertEquals(PHONE, response.get(INDEX).getPhone());
         assertEquals(FAX, response.get(INDEX).getFax());

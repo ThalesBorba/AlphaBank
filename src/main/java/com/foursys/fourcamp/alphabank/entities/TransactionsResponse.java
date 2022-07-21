@@ -9,5 +9,5 @@ public class TransactionsResponse implements Serializable {
 
     @NotEmpty(message = "Campo obrigatório")
     @OneToMany
-    List<Transaction> transactions;
+    private List<Transaction> transactions;
 }

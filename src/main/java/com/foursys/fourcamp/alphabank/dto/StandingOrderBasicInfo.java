@@ -18,7 +18,6 @@ public class StandingOrderBasicInfo implements Serializable {
     private String standingOrderId;
     @NotEmpty(message = "Campo obrigatório")
     private String name;
-    //todo relacionamento
     private String accountId;
     private Amount amount;
     @NotEmpty(message = "Campo obrigatório")

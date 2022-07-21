@@ -202,7 +202,7 @@ class PaymentsControllerTest {
     void whenCreateInternationalSubDtoThenReturnCreated() {
         when(paymentService.createInternationalTransferSub(any())).thenReturn(internationalTransferSubmission);
 
-        ResponseEntity<InternationalTransferSubmissionDTO> response = paymentsController.createInternationalTransfer(internationalTransferSubmissionDTO);
+        ResponseEntity<InternationalTransferSubmissionDTO> response = paymentsController.createInternationalTransferSub(internationalTransferSubmissionDTO);
 
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());

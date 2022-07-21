@@ -50,7 +50,7 @@ public class AuthenticationController {
         String token2 = token.substring(7 , token.length());
         Long id = tokenService.getUserId(token2);
         Optional<User> user = userRepository.findById(id);
-        return ResponseEntity.ok().body(user).getBody().orElseThrow(()-> new NoSuchElementException());
+        return ResponseEntity.ok().body(user).getBody().orElseThrow(NoSuchElementException::new);
     }
 
 }
