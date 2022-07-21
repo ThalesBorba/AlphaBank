@@ -1,8 +1,6 @@
 package com.foursys.fourcamp.alphabank.controller;
 
-import com.foursys.fourcamp.alphabank.dto.BalancesResponseDTO;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderBasicInfo;
-import com.foursys.fourcamp.alphabank.dto.StandingOrderDetailedDTO;
+import com.foursys.fourcamp.alphabank.dto.*;
 import com.foursys.fourcamp.alphabank.entities.*;
 import com.foursys.fourcamp.alphabank.enums.*;
 import com.foursys.fourcamp.alphabank.service.AccountAndTransactionService;
@@ -57,6 +55,14 @@ class AccountAndTransactionControllerTest {
     public static final LanguageEnum LANGUAGE_ENUM = LanguageEnum.EL;
 
     public static final GenderEnum GENDER_ENUM = GenderEnum.MALE;
+
+    public static final AccountProfile ACCOUNT_PROFILE = new AccountProfile();
+
+    public static final Servicer SERVICER = new Servicer();
+
+    public static final ProductIdentifier PRODUCT_IDENTIFIER = new ProductIdentifier();
+
+    public static final Risk RISK = new Risk();
     public static final TaxInformation TAX_INFORMATION = new TaxInformation();
     public static final PersonalIdentity PERSONAL_IDENTITY = new PersonalIdentity();
     public static final List<Contact> CONTACTS = new ArrayList<>();
@@ -68,12 +74,18 @@ class AccountAndTransactionControllerTest {
 
     private Optional<Beneficiary> optionalBeneficiary;
 
+    private AccountRequest accountRequest;
+
+    private AccountRequestDTO accountRequestDTO;
     private Beneficiary beneficiary;
 
     private StandingOrderBasicInfo standingOrderBasicInfo;
 
     private StandingOrderDetailedDTO standingOrderDetailedDTO;
 
+    private AccountsResponse accountsResponse;
+
+    private AccountsResponseDTO accountsResponseDTO;
     private Optional<StandingOrderBasicInfo> optionalStandingOrderBasicInfo;
 
     private Optional<DirectDebitBasicInfo> optionalDirectDebitBasicInfo;
@@ -104,6 +116,8 @@ class AccountAndTransactionControllerTest {
         startStandingOrder();
         startBeneficiaries();
         startStandingOrderDetailedInfoDTO();
+        startAccountRequest();
+        startAccountResponse();
     }
 
     @Test
@@ -196,6 +210,24 @@ class AccountAndTransactionControllerTest {
     }
 
     @Test
+    void whenFindAllThenReturnListOfAccountsResponse() {
+        when(accountAndTransactionService.findAllAccountsResponse()).thenReturn(List.of(accountsResponse));
+        when(mapper.map(any(), any())).thenReturn(accountsResponseDTO);
+        ResponseEntity<List<AccountsResponseDTO>> response = accountAndTransactionController.findAllDeposits();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(AccountsResponseDTO.class, response.getBody().get(INDEX).getClass());
+        assertEquals(ID, response.getBody().get(INDEX).getId());
+        assertEquals(ACCOUNT_PROFILE, response.getBody().get(INDEX).getAccountProfile());
+        assertEquals(SERVICER, response.getBody().get(INDEX).getServicer());
+
+    }
+
+    @Test
     void whenFindAllThenReturnListOfDirectDebitsBasicInfo() {
         when(accountAndTransactionService.returnAllDirectDebitByAccount(STRING_ID)).thenReturn(new ArrayList<>(List.of(directDebitBasicInfo)));
 
@@ -248,6 +280,33 @@ class AccountAndTransactionControllerTest {
 
     }
 
+    @Test
+    void whenCreateAccountRequestThenReturnSucess() {
+        when(accountAndTransactionService.createAccountRequest(any())).thenReturn(accountRequest);
+
+        ResponseEntity<AccountRequestDTO> response = accountAndTransactionController.create(accountRequestDTO);
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getHeaders().get("Location"));
+    }
+
+    @Test
+    void whenFindByIdAccountRequestThenReturnSucess() {
+        when(accountAndTransactionService.findById(anyLong())).thenReturn(accountRequest);
+        when(mapper.map(any(), any())).thenReturn(accountRequestDTO);
+
+        ResponseEntity<AccountRequestDTO> response = accountAndTransactionController.findById(ID);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(AccountRequestDTO.class, response.getBody().getClass());
+
+        assertEquals(ID, response.getBody().getId());
+        assertEquals(PRODUCT_IDENTIFIER, response.getBody().getProductIdentifier());
+        assertEquals(RISK, response.getBody().getRisk());
+    }
+
 
     private void startBalances() {
         balancesResponse = new BalancesResponse(ID, new ArrayList<>());
@@ -281,5 +340,16 @@ class AccountAndTransactionControllerTest {
 
     private void startStandingOrderDetailedInfoDTO() {
         standingOrderDetailedDTO = new StandingOrderDetailedDTO(STRING_ID, "A", STRING_ID, AMOUNT, CREDITOR_ACCOUNT);
+    }
+
+    private void startAccountRequest(){
+        accountRequest = new AccountRequest(ID, PRODUCT_IDENTIFIER, RISK);
+        accountRequestDTO = new AccountRequestDTO(ID, PRODUCT_IDENTIFIER, RISK);
+    }
+
+    private void startAccountResponse() {
+            accountsResponse = new AccountsResponse(ID, ACCOUNT_PROFILE, SERVICER);
+            accountsResponseDTO = new AccountsResponseDTO(ID, ACCOUNT_PROFILE, SERVICER);
+
     }
 }

@@ -33,6 +33,13 @@ public class PaymentsController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PostMapping("/international")
+    public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransfer(@RequestBody InternationalTransferSubmissionDTO obj){
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(paymentService.createInternationalTransferSub(obj).getTransferRequestId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
     @PostMapping("/international/submissions")
     public ResponseEntity<InternationalTransferSubmissionDTO> createInternationalTransferSub(@RequestBody InternationalTransferSubmissionDTO obj) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

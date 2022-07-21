@@ -1,12 +1,11 @@
 package com.foursys.fourcamp.alphabank.entities;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -25,6 +24,7 @@ public class AccountRequest implements Serializable {
 	@NotNull
 	@OneToOne
 	private Risk risk;
-	
-	
+
+
+
 }
