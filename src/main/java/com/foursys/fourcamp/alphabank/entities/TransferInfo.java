@@ -32,15 +32,15 @@ public class TransferInfo implements Serializable {
     @Size(min = 1, max = 35)
     private String endToEndIdentification;
     @NotEmpty(message = "Campo obrigatório")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Amount instructedAmount;
     @NotEmpty(message = "Campo obrigatório")
     private String debtorAccount;
     @NotEmpty(message = "Campo obrigatório")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CreditorAccount creditorAccount;
     private String debtorInformation;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private RemittanceInformation remittanceInformation;
 
 }

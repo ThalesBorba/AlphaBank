@@ -16,11 +16,11 @@ public class Currency {
     private Long id;
     private Integer isoCode;
     private String name;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CurrencyValue bankNote;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CurrencyValue foreignExchange;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CurrencyValue ecb;
 
 }
