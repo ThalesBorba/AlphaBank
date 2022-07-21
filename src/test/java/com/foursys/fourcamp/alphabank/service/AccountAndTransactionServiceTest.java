@@ -128,6 +128,8 @@ class AccountAndTransactionServiceTest {
     private Optional<StandingOrderDetailedDTO> optionalStandingOrderDetailedDTO;
     private Card card;
 
+    private static final AccountProfile ACCOUNT_PROFILE = new AccountProfile();
+
     private Transaction transaction;
 
 

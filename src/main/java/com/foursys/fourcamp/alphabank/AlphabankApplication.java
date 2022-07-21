@@ -10,4 +10,5 @@ public class AlphabankApplication {
 		SpringApplication.run(AlphabankApplication.class, args);
 	}
 
+
 }

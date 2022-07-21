@@ -15,11 +15,14 @@ public class CurrencyRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id = 1L;
 
     private Date exchangeRatesDate = new Date();
     private Date ecbrRatesDate = new Date();
     @OneToOne
     private Currency currencies;
 
+    public CurrencyRate(Currency currencies) {
+        this.currencies = currencies;
+    }
 }
