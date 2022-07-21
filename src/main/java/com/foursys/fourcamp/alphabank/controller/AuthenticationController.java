@@ -6,6 +6,7 @@ import com.foursys.fourcamp.alphabank.dto.TokenDTO;
 import com.foursys.fourcamp.alphabank.entities.User;
 import com.foursys.fourcamp.alphabank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,7 +39,9 @@ public class AuthenticationController {
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             String token = tokenService.generateToken(authentication);
 
-            return ResponseEntity.ok(new TokenDTO(token , "Bearer"));
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, tokenService.generateToken(authentication))
+                    .body(new TokenDTO(token, "Bearer"));
+
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
