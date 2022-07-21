@@ -1,22 +1,22 @@
 package com.foursys.fourcamp.alphabank.controller;
 
-import com.foursys.fourcamp.alphabank.config.security.TokenService;
 import com.foursys.fourcamp.alphabank.dto.EmailDTO;
 import com.foursys.fourcamp.alphabank.dto.PasswordRecoverDTO;
+import com.foursys.fourcamp.alphabank.entities.Email;
 import com.foursys.fourcamp.alphabank.entities.User;
 import com.foursys.fourcamp.alphabank.repository.UserRepository;
-import com.foursys.fourcamp.alphabank.entities.Email;
 import com.foursys.fourcamp.alphabank.service.EmailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Pageable;
+
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,5 +66,5 @@ public class EmailController {
     }
 }
 
-}
+
 
