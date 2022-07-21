@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                 .and() .csrf().ignoringAntMatchers("/h2-console/**")
                 .and() .headers( ).frameOptions().sameOrigin()
 
-                .and().csrf().and().cors().disable()
+                .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthenticationTokenFilter(tokenService , userRepository), UsernamePasswordAuthenticationFilter.class);
         return http.build();
