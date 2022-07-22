@@ -4,8 +4,10 @@ import com.foursys.fourcamp.alphabank.controller.AuthenticationTokenFilter;
 import com.foursys.fourcamp.alphabank.repository.UserRepository;
 import com.foursys.fourcamp.alphabank.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @EnableWebSecurity
@@ -67,16 +75,29 @@ public class SecurityConfiguration {
         return web -> web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
     }
 
-   /* @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");}
-
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }*/
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+
+        List<String> all = Arrays.asList("*");
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedMethods(all);
+        config.setAllowedOrigins(all);
+        config.setAllowedHeaders(all);
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", config);
+
+        CorsFilter corFilter = new CorsFilter(source);
+
+        FilterRegistrationBean<CorsFilter> filter = new FilterRegistrationBean<>(corFilter);
+
+        filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
+        return filter;
+
+    }
+
 }
