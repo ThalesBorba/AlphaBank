@@ -9,7 +9,7 @@
 
 
 ## 🔎 Sobre o projeto
-#### Projeto prático para o curso de Java do FourCamp onde será criada uma api simulada de Banco, baseada em um Swagger pré-definido. Entre as rotas definadas, serão retornadas as contas, cartões, débito automática, listas de ATMs, cotação do dia, etc.
+#### Projeto prático para o curso de Java do FourCamp, elaborado seguindo as cerimônias de Scrum. Uma api simulada de Banco, baseada em um Swagger pré-definido. Entre as rotas definadas, serão retornadas as contas, cartões, débito automática, listas de ATMs, cotação do dia, etc. 
 <br><br>
 
 ## ✅ Features
@@ -51,4 +51,5 @@
  - [Repositório do Front-end](https://github.com/rafael-oliveira-hellz/alphabank-frontend)
  - [Endpoint base do Deploy](https://fourcamp-alphabank-api.herokuapp.com/)
  - [Endpoint base do Front-end](http://fourcamp-alphabank-frontend.netlify.app)
+ - [Trello](https://github.com/ThalesBorba/AlphaBank/tree/master/Imgs)
 
