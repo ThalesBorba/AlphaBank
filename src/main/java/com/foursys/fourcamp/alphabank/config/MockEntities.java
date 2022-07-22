@@ -22,6 +22,8 @@ public class MockEntities implements CommandLineRunner{
     private TransferInfoRepository transferInfoRepository;
     @Autowired
     private CurrencyRateRepository currencyRateRepository;
+    @Autowired
+    AccountsResponseRepository accountsResponseRepository;
 
     @Autowired
     private RemittanceInformationRepository remittanceInformationRepository;
@@ -93,6 +95,21 @@ public class MockEntities implements CommandLineRunner{
 
         currencyRateRepository.saveAll(Arrays.asList(currencyRate));
 
+        AccountProfile accountProfile = new AccountProfile("1", "17.554-3", PRODUCT_IDENTIFIER_ENUM, "R$", "PREMIUM",
+                "555214", "Checking Account", "333-87", "Checking",
+                true, true, true, true, true);
+        Servicer servicer = new Servicer(1L, "Santander");
+        AccountProfile accountProfile2 = new AccountProfile("2", "17.554-4", PRODUCT_IDENTIFIER_ENUM, "R$", "COMMON",
+                "555214", "Checking Account", "333-87", "Checking",
+                true, true, true, true, true);
+        AccountProfile accountProfile3 = new AccountProfile("3", "17.554-5", PRODUCT_IDENTIFIER_ENUM, "R$", "SUPERPREMIUM",
+                "555214", "Checking Account", "333-87", "Checking",
+                true, true, true, true, true);
 
+        AccountsResponse accountsResponse = new AccountsResponse(1L, accountProfile, servicer);
+        AccountsResponse accountsResponse2 = new AccountsResponse(2L, accountProfile2, servicer);
+        AccountsResponse accountsResponse3 = new AccountsResponse(3L, accountProfile3, servicer);
+
+        accountsResponseRepository.saveAll(Arrays.asList(accountsResponse, accountsResponse2, accountsResponse3));
     }
 }

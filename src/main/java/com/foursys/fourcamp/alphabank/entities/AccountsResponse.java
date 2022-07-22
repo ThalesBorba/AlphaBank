@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,15 +21,12 @@ public class AccountsResponse implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotEmpty(message = "Campo obrigatório")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AccountProfile accountProfile;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @NotEmpty(message = "Campo obrigatório")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Servicer servicer;
 
     public AccountsResponse(Long id, AccountProfile accountProfile, Servicer servicer) {

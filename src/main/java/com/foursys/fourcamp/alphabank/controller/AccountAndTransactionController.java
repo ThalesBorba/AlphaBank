@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestMapping("/")
 @RestController
@@ -96,8 +95,13 @@ public class AccountAndTransactionController {
     @GetMapping(value = "/accounts/balances")
     public ResponseEntity<List<BalancesResponseDTO>> findAllBalancesResponse(){
         return ResponseEntity.ok().body(accountAndTransactionService.findAllBalancesResponse().stream()
-                .map(x -> mapper.map(x, BalancesResponseDTO.class)).collect(Collectors.toList()));
+                .map(x -> mapper.map(x, BalancesResponseDTO.class)).toList());
     } 
+
+    @GetMapping(value = "/accounts/all")
+    public ResponseEntity<List<AccountsResponse>> findAllAccounts() {
+            return ResponseEntity.ok().body(accountAndTransactionService.findAllAccountsResponse());
+    }
 
 
     @GetMapping(value = "/details/deposit")
