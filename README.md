@@ -3,8 +3,9 @@
 
 <p align="center">
  <a href="#-sobre-o-projeto">Sobre</a> •
- <a href="#features">Features</a> •  
- <a href="#contribuicao">Contribuição</a> • 
+ <a href="#-features">Features</a> •  
+ <a href="#-contribuição">Contribuição</a> •
+ <a href="#-links">Links</a> 
 </p>
 
 
@@ -27,7 +28,7 @@
 
 <br>
 
-## 🔥 Team 4
+## 🔥 Contribuição
 <table>
   
   <tr>
