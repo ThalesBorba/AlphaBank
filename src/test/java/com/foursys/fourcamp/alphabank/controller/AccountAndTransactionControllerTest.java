@@ -135,17 +135,12 @@ class AccountAndTransactionControllerTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
-        assertEquals(ArrayList.class, response.getBody().getClass());
         assertEquals(BalancesResponseDTO.class, response.getBody().get(INDEX).getClass());
 
         assertEquals(ID, response.getBody().get(INDEX).getId());
 
     }
-//    public ResponseEntity deleteAccountRequest(@PathVariable Long accountRequestId) {
-//        accountAndTransactionService.deleteAccountRequest(accountRequestId);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//
-//    }
+
     @Test
    void testResponseAccountRequestController(){
         doNothing().when(accountAndTransactionService).deleteAccountRequest(anyLong());
